@@ -53,6 +53,8 @@ $$
         end if;
         if (green_zone_id not in (select zona_verde.green_zone_id from veiculo)) then 
             raise notice 'Veiculo nao associado a Zona Verde';
+        end if;
+        
     end;
 $$;
 
