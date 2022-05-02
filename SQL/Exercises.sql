@@ -8,7 +8,7 @@ $$
         INSERT INTO cliente values (nif,nome,morada,telefone,'P',ativo,referencia);
         INSERT INTO particulares VALUES (nif,cc);
         if(nif not in (SELECT cliente.nif FROM cliente)) then
-       		raise notice 'Cliente não inserido';        
+       		raise notice 'Cliente nï¿½o inserido';        
     	END IF;
     end;
 $$;
@@ -41,7 +41,18 @@ drop procedure if exists update_particular(nif_ varchar,nome_ varchar,morada_ va
 
 call update_particular('123456779' ,'DJDODIA' , null , null, B'1');
 
- -- h) --dica pardal(ito) -> usar cursor
+-- 1.h) --dica pardal(ito) -> usar cursor
+
+create procedure add_veicule_to_green_zone(green_zone_id integer, zone_radius integer, zone_gps_coords integer, matricula varchar)
+    language plpgsql
+as
+$$
+    begin
+        if ((green_zone_id is not null) and (zone_radius is not null) and (zone_gps_coords is not null)) then
+            insert into Zona_Verde values(green_zone_id, zone_radius, zone_gps_coords, matricula);
+        end if;
+    end;
+$$;
 
 create procedure add_vehicle_to_client_or_not(matricula varchar, driver varchar, phone_driver varchar, client_nif varchar, green_zone_id integer, zone_radius integer, zone_gps_coords integer)
     language plpgsql
@@ -51,20 +62,16 @@ $$
         if (client_nif in (select cliente.nif FROM cliente)) then
             if(not (client_nif in(select cliente.tipo = 'P'))) then
                 insert into Veiculo values(matricula, driver, phone_driver, client_nif, null);
-                if ((green_zone_id is not null) and (zone_radius is not null) and (zone_gps_coords is not null)) then
-                    insert into Zona_Verde values(green_zone_id, zone_radius, zone_gps_coords, matricula);
-                end if;
+                call add_veicule_to_green_zone(green_zone_id, zone_radius, zone_gps_coords, matricula);
             else 
                 if(count(client.nif = Veiculo.nif) < 3) then
                     insert into Veiculo values(matricula, driver, phone_driver, client_nif, 0);
-                    if ((green_zone_id is not null) and (zone_radius is not null) and (zone_gps_coords is not null)) then
-                        insert into Zona_Verde values (green_zone_id, zone_radius, zone_gps_coords, matricula);
-                    end if;
+                    call add_veicule_to_green_zone(green_zone_id, zone_radius, zone_gps_coords, matricula);
                 end if;
             end if;
         end if;
         if (matricula not in (select veiculo.matricula from veiculo)) then 
-            raise notice 'Veiculo não inserido';
+            raise notice 'Veiculo nao inserido';
         end if;
     end;
 $$;
@@ -72,6 +79,3 @@ $$;
 drop procedure if exists add_vehicle_to_client_or_not(matricula varchar, driver varchar, phone_driver varchar, client_nif varchar, green_zone_id integer, zone_radius integer, zone_gps_coords integer)
 
 call add_vehicle_to_client_or_not('BBBBBB','Josevaldo das caricas',967995999,123456779,6,500,10) 
-
-
-
