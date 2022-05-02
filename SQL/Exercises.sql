@@ -51,6 +51,8 @@ $$
         if ((green_zone_id is not null) and (zone_radius is not null) and (zone_gps_coords is not null)) then
             insert into Zona_Verde values(green_zone_id, zone_radius, zone_gps_coords, matricula);
         end if;
+        if (green_zone_id not in (select zona_verde.green_zone_id from veiculo)) then 
+            raise notice 'Veiculo nao associado a Zona Verde';
     end;
 $$;
 
