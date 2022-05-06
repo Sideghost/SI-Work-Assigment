@@ -46,8 +46,9 @@ create table Veiculo(
 	foreign key(NIF) references Cliente (NIF)
 );
 
+
 create table Zona_Verde(
-	id 			integer	not null,
+	id			serial,
 	raio		integer	not null,
 	coordenadas_GPS		integer not null,
 	matricula	varchar(6)	not null,
@@ -86,6 +87,3 @@ create table Registos_Invalidos(
 	id_GPS			integer,
 	primary key (id)
 );
-
-
-
