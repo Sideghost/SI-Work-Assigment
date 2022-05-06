@@ -54,7 +54,6 @@ $$
         if (green_zone_id not in (select zona_verde.green_zone_id from veiculo)) then 
             raise notice 'Veiculo nao associado a Zona Verde';
         end if;
-        
     end;
 $$;
 
@@ -63,12 +62,12 @@ create procedure add_vehicle_to_client_or_not(matricula varchar, driver varchar,
 as
 $$
     begin 
-        if (client_nif in (select cliente.nif FROM cliente)) then
-            if(not (client_nif in(select cliente.tipo = 'P'))) then
+        if (client_nif exists in (select cliente.nif from cliente)) then
+            if(not (client_nif in(select cliente.tipo = 'P' from cliente))) then
                 insert into Veiculo values(matricula, driver, phone_driver, client_nif, null);
                 call add_veicule_to_green_zone(green_zone_id, zone_radius, zone_gps_coords, matricula);
             else 
-                if(count(client.nif = Veiculo.nif) < 3) then
+                if(select count(cliente.nif = Veiculo.nif) < 3) then
                     insert into Veiculo values(matricula, driver, phone_driver, client_nif, 0);
                     call add_veicule_to_green_zone(green_zone_id, zone_radius, zone_gps_coords, matricula);
                 end if;
@@ -80,6 +79,8 @@ $$
     end;
 $$;
 
-drop procedure if exists add_vehicle_to_client_or_not(matricula varchar, driver varchar, phone_driver varchar, client_nif varchar, green_zone_id integer, zone_radius integer, zone_gps_coords integer)
+drop procedure if exists add_vehicle_to_client_or_not(matricula varchar, driver varchar, phone_driver varchar, client_nif varchar, green_zone_id integer, zone_radius integer, zone_gps_coords integer);
 
-call add_vehicle_to_client_or_not('BBBBBB','Josevaldo das caricas',967995999,123456779,6,500,10) 
+call add_vehicle_to_client_or_not('BBBBBB', 'Josevaldo das caricas', 967995999, '123456779', 6, 500, 10);
+
+call add_veicule_to_green_zone(6, 500, 10, 'BBBBBB');
