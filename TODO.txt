@@ -1,0 +1,4 @@
+TODO:
+    EX J G L M;
+    TERMINAR TESTES - ideia fazer uma function dentro para que funcione de assertEquals ou remove well done
+    RELATORIO

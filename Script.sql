@@ -8,7 +8,7 @@ $$
         insert into cliente values (nif,nome,morada,telefone,'P',referencia);
         insert into particulares values (nif,cc);
         if(nif not in (select cliente.nif from cliente)) then
-       		raise notice 'Cliente não inserido';        
+       		raise notice 'Cliente nï¿½o inserido';        
     	end if;
     end;
 $$;
@@ -51,7 +51,7 @@ declare
         update cliente set ativo = B'0' where NIF = nif_;
         select cliente.ativo  from cliente where (NIF = nif_) into ativoCurr;
         if(ativoCurr <> B'0') then
-            raise notice 'Cliente não removido';
+            raise notice 'Cliente nï¿½o removido';
         end if;
         end;
 $$;
@@ -119,7 +119,7 @@ $$
             end if;
         end if;
         if (matricula not in (select veiculo.matricula from veiculo)) then 
-            raise notice 'Veiculo não inserido';
+            raise notice 'Veiculo nï¿½o inserido';
         end if;
     end;
 $$;
