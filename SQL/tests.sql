@@ -3,7 +3,6 @@
 begin transaction;
 set ISOLATION LEVEL READ COMMITTED;
 
-
 --1.d)
 declare dummy_D_NIF VARCHAR := '123456791';
 declare dummy_D_name VARCHAR := 'FCPORTO';

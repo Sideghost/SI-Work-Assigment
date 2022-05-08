@@ -181,24 +181,22 @@ create or replace trigger desactivate_client
 	
 --m)
 
---create or replace function inc_alrm() 
-	--returns trigger 
-	--language plpgsql
---as 
---$$
-	--begin
-		--update veiculo 
-		--set n_alarmes = n_alarmes + 1		
-		--where veiculo.matricula in 
-		--(select gps.matricula
-		--from gps join alarmes on gps.id = alarmes.id_gps 
-		--);
-		--return null;
-	--end;
---$$;
-	
-	
-									
+create or replace function inc_alrm() 
+    returns trigger 
+    language plpgsql
+as 
+$$
+    begin
+        update veiculo 
+        set n_alarmes = n_alarmes + 1
+        where (veiculo.matricula in 
+        (select gps.matricula
+        from gps join alarmes on gps.id = alarmes.id_gps 
+        ));
+        return null;
+    end;
+$$;
+
 create or replace trigger increase_alarms
 after insert on alarmes
 for each row
