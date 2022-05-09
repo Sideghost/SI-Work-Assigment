@@ -5,7 +5,7 @@ create table Cliente(
  	telefone varchar(9)  not null,
  	tipo 	 varchar(1)	 not null,
  	referencia	varchar(9),
- 	ativo	 bit		 not null	defaault B'1',
+ 	ativo	 bit		 not null	default B'1',
  	primary key (NIF),
  	constraint tipo_errado check(tipo like 'I' or tipo like 'P'),
  	constraint telefone_errado check (telefone similar to '[0-9]{9}'),
