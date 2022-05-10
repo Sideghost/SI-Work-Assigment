@@ -1,6 +1,7 @@
 # SI_Trab1
  
 TODO:
+
     EX N;
     
     Criar uma tabela para coords, vai ter um id(serial), long(numeric (6,4)), lat(numeric (6,4));
