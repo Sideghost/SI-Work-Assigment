@@ -1,3 +1,5 @@
+delete from Alarmes;
+
 delete from Registos_Invalidos;
 
 delete from Registos_Processados;
@@ -15,5 +17,3 @@ delete from institucionais;
 delete from particulares;
 
 delete from cliente;
-
-
