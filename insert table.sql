@@ -39,16 +39,20 @@ insert into GPS values	(1, 1, 10,'AE12ER', 'Activo'),
 					
 --insert into Registos_Nao_Processados
 					
-insert into registos_invalidos values ('123','2','77','2022-04-07 16:39:53.171'),
-										('122','3','78','2022-05-07 16:39:53.171');
+insert into registos_invalidos values ('123','77','2022-04-07 16:39:53.171'),
+										('122','78','2022-05-07 16:39:53.171');
 
 
-insert into alarmes values (11,5,3);
+insert into alarmes values (11,3);
+insert into alarmes values (22,2);
 
 insert into Veiculo values ('12345E','slb',123456780,123456780,0),
 							('12344E','slb',123456780,123456780,0);
 						
 insert into Veiculo values ('12333A','cagativo',123456780,123456780,0);
+
+
+--insert into Registos_nao_processados values (1,null,null);
 
 	
 

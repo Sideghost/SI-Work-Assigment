@@ -8,7 +8,7 @@ $$
         insert into cliente values (nif,nome,morada,telefone,'P',referencia);
         insert into particulares values (nif,cc);
         if(nif not in (select cliente.nif from cliente)) then
-       		raise notice 'Cliente nï¿½o inserido';        
+       		raise notice 'Cliente não inserido';        
     	end if;
     end;
 $$;
@@ -34,7 +34,7 @@ $$
 	   if (new_ativo is not null) then 
 	   update CLIENTE set ativo = new_ativo where NIF = NIF_;
    	   end if;
-	   end;
+   	   end;
 $$;
 
 drop procedure if exists update_particular(nif_ varchar,nome_ varchar,morada_ varchar, telefone_ varchar, ativo_ bit);
@@ -51,7 +51,7 @@ declare
         update cliente set ativo = B'0' where NIF = nif_;
         select cliente.ativo  from cliente where (NIF = nif_) into ativoCurr;
         if(ativoCurr <> B'0') then
-            raise notice 'Cliente nï¿½o removido';
+            raise notice 'Cliente não removido';
         end if;
         end;
 $$;
@@ -78,7 +78,7 @@ $$
 
 drop function if exists number_of_alarms(ano integer, nif_ varchar);
 
-select number_of_alarms(2022, 'AE12ER')
+select number_of_alarms(2022)
 
 --1.f)
 
@@ -90,56 +90,143 @@ declare
 		id_zona_ integer;
 		id_GPS_	 integer;
 	begin 
-		select id_zona from Registos_Nao_Processados 
+		 select id_zona from Registos_nao_processados into id_zona_;
+		 select id_gps from Registos_nao_processados into id_gps_;
+		 for id_zona_ in select id_zona from Registos_nao_processados
+			loop
+				if(id_zona_ is not null or id_zona_ not in (select id from Zona_verde)) then
+					insert into registos_processados values (new.id,new.id_zona,new.id_gps);
+				else insert into registos_invalidos values (new.id,new.id_zona,new.id_gps);
+				end if;
+				if( id_gps_ is not null or id_gps_ not in (select id from Gps)) then
+					insert into registos_processados values (new.id,new.id_zona,new.id_gps);
+				else insert into registos_invalidos values (new.id,new.id_zona,new.id_gps);
+				end if;
+			end loop;
  	end;
-$$
+$$;
 
 call process_registers();
 
-drop procedure process_registers()
+drop procedure process_registers();
+
+--g)
+
+CREATE OR REPLACE FUNCTION valid_green_zone(latitude_zv integer, longitude_zv integer, raio_zv integer, latitude_rp integer, longitude_rp integer)
+ RETURNS boolean
+ LANGUAGE plpgsql
+ AS $$
+	begin
+		if ( select gps.estado from gps join registos_processados on (gps.id = id_gps) where (gps.id = new.id_gps) != 'PausaDeAlarmes') then 
+		 if(((latitude_zv + raio_zv) >= latitude_rp) and ((latitude_zv - raio_zv) <= latitude_rp) and ((longitude_zv + raio_zv) >= longitude_rp) and ((longitude_zv - raio_zv) <= longitude_rp )) then
+			return true;
+		end if;
+	else return false;
+		end if;	
+	end;
+$$;
+
+CREATE OR REPLACE FUNCTION alarm_generator()
+ RETURNS trigger
+ LANGUAGE plpgsql
+AS 
+$$
+	declare latitude_zv integer;
+	 		longitude_zv integer;
+	 		raio_zv integer;
+			latitude_rp integer;
+			longitude_rp integer;
+begin
+		select gps.latitude from gps join registos_processados on (gps.id = Registos_processados.id_gps) where(new.id_gps = gps.id) into latitude_rp; 
+		select gps.longitude from gps join registos_processados on(gps.id = Registos_processados.id_gps) where(new.id_gps = gps.id) into longitude_rp;
+		select raio from Zona_verde join registos_processados on (Zona_verde.id = Registos_processados.id_zona) where(new.id_zona = Zona_verde.id) into raio_zv;
+		select Zona_verde.longitude from Zona_verde join registos_processados on (Zona_verde.id = Registos_processados.id_zona) where(new.id_zona = Zona_verde.id) into longitude_zv;
+		select Zona_verde.latitude from Zona_verde join registos_processados on (Zona_verde.id =  Registos_processados.id_zona) where(new.id_zona = Zona_verde.id) into latitude_zv;
+		if(select valid_green_zone(latitude_zv,longitude_zv,raio_zv,latitude_rp,longitude_rp)) then
+			insert into alarmes values (new.id, new.id_zona, new.id_gps);
+		end if;
+		return new;
+	end;
+$$;
+
+create trigger vgz
+after insert on Registos_processados
+for each row
+execute function alarm_generator();
+
+insert into registos_processados values (13,1,1);
+
+drop trigger if exists vgz on Registos_processados;
+drop function alarm_generator() cascade;
 		
 --h)
 
-create procedure add_vehicle_to_client_or_not(matricula varchar, driver varchar, phone_driver varchar, client_nif varchar, green_zone_id integer, zone_radius integer, zone_gps_coords integer)
+create procedure add_veicule_to_green_zone(green_zone_id integer, zone_radius integer, gps_lat integer, gps_lon integer, car_matricula varchar)
     language plpgsql
 as
 $$
-    begin 
-        if (client_nif in (select cliente.nif FROM cliente)) then
-            if(not (client_nif in(select cliente.tipo = 'P'))) then
-                insert into Veiculo values(matricula, driver, phone_driver, client_nif, null);
-                    insert into Zona_Verde values(green_zone_id, zone_radius, zone_gps_coords, matricula);
-            else 
-                if(count(client.nif = Veiculo.nif) < 3) then
-                    insert into Veiculo values(matricula, driver, phone_driver, client_nif, 0);
-                    if ((green_zone_id is not null) and (zone_radius is not null) and (zone_gps_coords is not null)) then
-                        insert into Zona_Verde values (green_zone_id, zone_radius, zone_gps_coords, matricula);
-                    end if;
-                end if;
-            end if;
-        end if;
-        if (matricula not in (select veiculo.matricula from veiculo)) then 
-            raise notice 'Veiculo nï¿½o inserido';
+    begin
+        insert into Zona_Verde values(green_zone_id, zone_radius, gps_lon, gps_lat, car_matricula);
+        if (green_zone_id not in (select zona_verde.id from zona_verde where (zona_verde.matricula = car_matricula))) then 
+            raise notice 'Veiculo nao associado a Zona Verde';
         end if;
     end;
 $$;
 
-drop procedure if exists add_vehicle_to_client_or_not(matricula varchar, driver varchar, phone_driver varchar, client_nif varchar, green_zone_id integer, zone_radius integer, zone_gps_coords integer)
+create procedure add_vehicle_to_client_or_not(matricula varchar, driver varchar, phone_driver varchar, client_nif varchar, green_zone_id integer, zone_radius integer, zone_gps_lat integer, zone_gps_lon integer)
+    language plpgsql
+as
+$$
+	declare car_client_count varchar := 0;
+    begin
+        if (client_nif in (select cliente.nif FROM cliente)) then
+            if((select cliente.tipo from cliente where (cliente.nif = client_nif)) = 'I') then --client_nif in (select cliente.nif, cliente.tipo from cliente where (client_nif = cliente.nif)) = 'I') then
+                insert into Veiculo values(matricula, driver, phone_driver, client_nif, null);
+                call add_veicule_to_green_zone(green_zone_id, zone_radius, zone_gps_lat, zone_gps_lon, matricula);
+            else 
+            	select veiculo.nif from veiculo where (client_nif = Veiculo.nif) into car_client_count;
+                if(count(car_client_count) < 3) then
+                    insert into Veiculo values(matricula, driver, phone_driver, client_nif, 0);
+                    call add_veicule_to_green_zone(green_zone_id, zone_radius, zone_gps_lat, zone_gps_lon, matricula);
+                end if;
+            end if;
+        else raise notice 'Client not found';
+        end if;
+        if (matricula not in (select veiculo.matricula from veiculo)) then
+            raise notice 'Veiculo nao inserido';
+        end if;
+    end;
+$$;
 
-call add_vehicle_to_client_or_not('BBBBBB','Josevaldo das caricas','967995999','123456779',6,500,10) 
+drop procedure if exists add_veicule_to_green_zone(green_zone_id integer, zone_radius integer, gps_lat integer, gps_lon integer, matricula varchar);
+drop procedure if exists add_vehicle_to_client_or_not(matricula varchar, driver varchar, phone_driver varchar, client_nif varchar, green_zone_id integer, zone_radius integer, zone_gps_lat integer, zone_gps_lon integer)
+
+call add_vehicle_to_client_or_not('BBBBBB', 'Josevaldo das caricas', '967995999', '123456783', 6, 500, 10, 10);
 
 --i)
 
-create view all alarms as
+create view all_alarms as
 	select Veiculo.matricula, nome_condutor, latitude, longitude, Alarmes.marca_temporal as dia_hora 
 		from Veiculo 
 			join GPS
 			on (Veiculo.matricula = GPS.matricula)
 			join Alarmes
-			on (Alarmes.id_GPS = GPS.id)
-			group by Veiculo.matricula;
+			on (Alarmes.id_GPS = GPS.id);
 			
 drop view if exists alarms;
+
+--j)
+create function add_support()
+	language plpgsql
+	returns trigger
+as
+$$
+	begin
+		
+	end;
+$$;
+
+create trigger add_support_t()
 
 --k)
 	
@@ -171,7 +258,7 @@ $$
 	end;
 $$;
 	
-
+delete from Cliente;
 
 create or replace trigger desactivate_client
 	before delete on Cliente
@@ -182,26 +269,29 @@ create or replace trigger desactivate_client
 --m)
 
 create or replace function inc_alrm() 
-    returns trigger 
-    language plpgsql
+	returns trigger 
+	language plpgsql
 as 
 $$
-    begin
-        update veiculo 
-        set n_alarmes = n_alarmes + 1
-        where (veiculo.matricula in 
-        (select gps.matricula
-        from gps join alarmes on gps.id = alarmes.id_gps 
-        ));
-        return null;
-    end;
+	begin
+		update veiculo 
+		set n_alarmes = n_alarmes + 1		
+		where veiculo.matricula in 
+		(select gps.matricula
+		from gps join alarmes on gps.id = alarmes.id_gps where( gps.id = new.id_gps)
+		);
+		return null;
+	end;
 $$;
-
+	
+	
+									
 create or replace trigger increase_alarms
 after insert on alarmes
 for each row
 execute procedure inc_alrm();
 
---drop trigger if exists increase_alarms on Registos_processados cascade;
+insert into alarmes values(36,3);
+drop trigger if exists increase_alarms on Registos_processados cascade;
 
---drop function if exists inc_alrm() cascade;
+drop function if exists inc_alrm() cascade;
