@@ -14,7 +14,7 @@ $$
     	end if;
     end;
 $$;
-    
+
 drop procedure if exists insert_particular(nif varchar, nome varchar, morada varchar, telefone varchar, referencia varchar, cc varchar); 
 
 -- Procedure that allows to update the information of private client that already exits.
@@ -76,7 +76,7 @@ $$
 			return count(matricula) numero_alarmes from Alarmes join GPS on id_gps = GPS.id;
 		end if;
 	end;
-$$
+$$;
 
 drop function if exists number_of_alarms(ano integer, nif_ varchar);
 
@@ -123,10 +123,11 @@ drop procedure if exists process_registers();
 --      que retorna true quando a o arredondamento da coordenada da latitude do registo for par e 
 --      false quando for impar;
 
-CREATE OR REPLACE FUNCTION valid_green_zone(latitude_zv integer, longitude_zv integer, raio_zv integer, latitude_rp integer, longitude_rp integer)
-    RETURNS boolean
-    LANGUAGE plpgsql
-AS $$
+create or replace function valid_green_zone(latitude_zv integer, longitude_zv integer, raio_zv integer, latitude_rp integer, longitude_rp integer)
+    returns boolean
+    language plpgsql
+as 
+$$
  	declare estado_gps	varchar;
 	begin
 		select gps.estado from gps join registos_processados on (gps.id = id_gps) where ((latitude_rp = gps.latitude) and (longitude_rp = gps.longitude)) into estado_gps;
@@ -140,17 +141,17 @@ AS $$
 	end;
 $$;
 
-CREATE OR REPLACE FUNCTION alarm_generator()
-    RETURNS trigger
-    LANGUAGE plpgsql
-AS
+create or replace function alarm_generator()
+    returns trigger
+    language plpgsql
+as
 $$
 	declare latitude_zv integer;
 	 		longitude_zv integer;
 	 		raio_zv integer;
 			latitude_rp integer;
 			longitude_rp integer;
-begin
+	begin
 		select gps.latitude from gps join registos_processados on (gps.id = Registos_processados.id_gps) where(new.id_gps = gps.id) into latitude_rp; 
 		select gps.longitude from gps join registos_processados on(gps.id = Registos_processados.id_gps) where(new.id_gps = gps.id) into longitude_rp;
 		select raio from Zona_verde join Veiculo on (Zona_verde.matricula = Veiculo.matricula) join GPS on (GPS.matricula = Veiculo.matricula) join Registos_processados on (Registos_processados.id_gps = Gps.id)  where(new.id_gps = GPS.id) into raio_zv;
@@ -177,7 +178,6 @@ drop function alarm_generator() cascade;
 --      criação de uma zona verde, deve criar e associar o veículo a essa zona. Reutilize 
 --      procedimentos já existentes ou crie novos se necessário; Deve garantir as restrições de 
 --      negócio respectivas, nomeadamente a limitação do número de veículos.
-
 
 create procedure add_veicule_to_green_zone(green_zone_id integer, zone_radius integer, gps_lat integer, gps_lon integer, car_matricula varchar)
     language plpgsql
@@ -222,8 +222,9 @@ create view all_alarms as
 			on (Veiculo.matricula = GPS.matricula)
 			join Alarmes
 			on (Alarmes.id_GPS = GPS.id);
-			
+
 drop view if exists all_alarms;
+
 ---------------------------------------------------------------------------------------------------------------------------------
 --2.j)  Adicione suporte de modo que a execução da instrução INSERT sobre a vista da alínea 
 --      anterior permita adicionar um alarme e o respectivo registo tratado;
@@ -258,6 +259,7 @@ create or replace trigger adding_alarm
 
 drop trigger if exists adding_alarm on all_alarms;
 drop function add_alarm() cascade;
+
 ---------------------------------------------------------------------------------------------------------------------------------
 --2.k)  Implemente o procedimento que será chamado diariamente e que apaga os registos 
 --      inválidos existentes com duração superior a 15 dias;
@@ -274,6 +276,7 @@ $$
 $$;
 
 drop procedure if exists eliminate_invalid_registers();
+
 ---------------------------------------------------------------------------------------------------------------------------------
 --2.l)  Crie os mecanismos necessários para que a execução da instrução DELETE sobre a tabela de 
 --      cliente permita desativar o(s) Cliente(s) sem apagar os seus dados. Assuma que podem ser 
@@ -295,7 +298,10 @@ create or replace trigger desactivate_client
 	before delete on Cliente
 	for each row
 	execute function dst_clt();
-	
+
+drop trigger if exists desactivate_client on Cliente;
+drop function dst_clt() cascade;
+
 ---------------------------------------------------------------------------------------------------------------------------------
 --2.m)  Crie os mecanismos necessários para que, de forma automática, quando é criado um 
 --      alarme, o número de alarmes do veículo seja actualizado;
@@ -315,7 +321,7 @@ $$
 		return null;
 	end;
 $$;
-								
+
 create or replace trigger increase_alarms
 after insert on alarmes
 for each row
