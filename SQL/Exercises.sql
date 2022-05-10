@@ -198,16 +198,8 @@ $$
 	declare car_client_count varchar := 0;
     begin
         if (client_nif in (select cliente.nif FROM cliente)) then
-            if((select cliente.tipo from cliente where (cliente.nif = client_nif)) = 'I') then 
-                insert into Veiculo values(matricula, driver, phone_driver, client_nif, null);
-                call add_veicule_to_green_zone(green_zone_id, zone_radius, zone_gps_lat, zone_gps_lon, matricula);
-            else 
-            	select veiculo.nif from veiculo where (client_nif = Veiculo.nif) into car_client_count;
-                if(count(car_client_count) < 3) then
-                    insert into Veiculo values(matricula, driver, phone_driver, client_nif, 0);
-                    call add_veicule_to_green_zone(green_zone_id, zone_radius, zone_gps_lat, zone_gps_lon, matricula);
-                end if;
-            end if;
+			insert into Veiculo values(matricula, driver, phone_driver, client_nif, null);
+			call add_veicule_to_green_zone(green_zone_id, zone_radius, zone_gps_lat, zone_gps_lon, matricula);
         else raise notice 'Client not found';
         end if;
         if (matricula not in (select veiculo.matricula from veiculo)) then
