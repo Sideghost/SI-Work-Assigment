@@ -19,7 +19,6 @@ create table Particulares(
  	CC		varchar(14)		not null,
  	constraint NIF_errado check(NIF similar to '[0-9]{9}'),
  	constraint CC_errado check(CC similar to'[0-9]{8}'),
- 	--constraint NIF_Institucional check()
  	primary key(NIF),
  	foreign key (NIF) references CLiente (NIF)
 );
@@ -49,54 +48,51 @@ create table Veiculo(
 create table Zona_Verde(
 	id 			integer	not null,
 	raio		integer	not null,
-	coordenadas_GPS		integer not null,
+	longitude	numeric(6, 4) not null,
+	latitude	numeric(6, 4) not null,
 	matricula	varchar(6)	not null,
 	primary key (id),
 	foreign key (matricula) references Veiculo (matricula)
 );
 
 create table GPS(
-	id 				integer	  	not null,
-	latitude		integer   	not null,
-	longitude		integer		not null, 
-	matricula		varchar(6)	not null,
-	marca_temporal 	timestamp  	not null 	default NOW(),
+	id 				integer	  	 not null,
+	longitude		numeric(6,4) not null,
+	latitude 		numeric(6,4) not null , 
+	matricula		varchar(6)	 not null,
+	estado			varchar(15)	 not null,
+	marca_temporal 	timestamp  	 not null 	default NOW(),
 	primary key (id),
-	foreign key (matricula) references Veiculo(matricula)
+	foreign key (matricula) references Veiculo(matricula),
+	constraint state_values check(estado in ('Activo','PausaDeAlarmes','Inactivo'))
 );
 
 create table Registos_Nao_Processados(
 	id				integer,	--serial
-	id_zona			integer,
-	id_GPS			integer,
+	id_gps			integer,
 	marca_temporal	timestamp	not null	default NOW(),
 	primary key (id)
 );
 
 create table Registos_Processados(
 	id				serial		 not null,
-	id_zona 		integer		 not null,
-	id_GPS			integer 	 not null,
+	id_gps			integer 	 not null,
 	marca_temporal 	timestamp	 not null	default NOW(),
-	primary key (id)
+	primary key (id),
+	foreign key (id_GPS)  references GPS(id)
 );
 
 create table Registos_Invalidos(
 	id				serial		not null,
-	id_zona			integer,
 	id_GPS			integer,
-	marca_temporal	timestamp,
+	marca_temporal	timestamp	not null	default NOW(),
 	primary key (id)
 );
 
 create table alarmes(
 	id				integer		not null,--serial
-	id_zona			integer		not null,
 	id_GPS			integer		not null,
 	marca_temporal	timestamp	not null	default NOW(),
 	primary key	(id),
-	foreign key (id_zona) references Zona_Verde(id),
 	foreign key (id_GPS) references GPS(id)
 );
-
-
