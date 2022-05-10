@@ -30,9 +30,14 @@ declare dummy_E__licence_plate varchar := 'AE12ER';
 select number_of_alarms(dummy_E_year, dummy_E__licence_plate);
 
 --1.f)
-drop procedure process_registers();
+
+insert into registos_nao_processados values (12, 30);
+
+call process_registers();
 
 --1.g)
+
+insert into registos_processados values (19, 1);
 
 --1.h)
 declare dummy_H_licence_plate varchar := 'BBBBBB';
@@ -50,12 +55,18 @@ drop view if exists alarmes;
 
 --1.j)
 
+insert into all_alarms values (65, '12345A', 'agnaldo', 98, 98, '2022-04-07 16:39:53.171');
+
 --1.k)
+
 call eliminate_invalid_registers();
 
 --1.l)
 
+delete from Cliente;
+
 --1.m)
 
+insert into alarmes values(36,3);
 
 ROLLBACK;
