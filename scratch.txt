@@ -1,12 +1,4 @@
-TODO:
-    EX N;
-    criar uma tabela para coords, vai ter um id(serial), long(numeric (6,4)), lat(numeric (6,4));
-    TERMINAR TESTES - ideia fazer uma function dentro para que funcione de assertEquals ou remove well done;
-    Terminar de comentar o codigo de exercicios, mudar o codigo de pt para eng se houver tempo;
-    RELATORIO.
-
-
-scratch 
+Relatorio
 
 No âmbito da primeira fase do trabalho prático da cadeira, este relatório tem como propósito a elaboração de uma base de dados de uma empresa, \textbf{OnTrack}, com o objectio de gerir e registar a localizacao de automoveis e camioes. 
 O sistema deve registar os dados dos clientes da empresa, os quais podem ser particulares ou institucionais.
@@ -14,5 +6,7 @@ O sistema deve registar os dados dos clientes da empresa, os quais podem ser par
 Através do trabalho realizado pretendemos demonstrar conhecimento sobre ..., através da forma como resolvemos os problemas propostos. 
 
 Este relatório parte do pressuposto do acesso por parte do leitor ao código desenvolvido no ambito do mesmo, não sendo assim necessário enunciar lo em extensão, bastando mencionar trechos do mesmo.
+
+matematica
 
 (x -x0)^2 + (y - y0)^2 >= raio^2
