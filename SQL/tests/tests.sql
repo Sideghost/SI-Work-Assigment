@@ -1,7 +1,7 @@
 
 
 begin transaction;
-set ISOLATION LEVEL READ COMMITTED;
+set ISOLATION LEVEL SERIALIZABLE;
 
 --1.d)
 declare dummy_D_NIF VARCHAR := '123456791';
@@ -40,15 +40,24 @@ call process_registers();
 insert into registos_processados values (19, 1);
 
 --1.h)
-declare dummy_H_licence_plate varchar := 'BBBBBB';
-declare dummy_H_driver varchar := 'Josevaldo das caricas';
-declare dummy_H_phone_driver varchar := '967995999';
-declare dummy_H_nif varchar := '123456779';
-declare dummy_H_green_zone_id integer := 6;
-declare dummy_H_zone_radius integer := 500;
-declare dummy_H_zone_gps_coords integer := 10;
 
-call add_vehicle_to_client_or_not(dummy_H_licence_plate, dummy_H_driver,dummy_H_phone_driver,dummy_H_nif,dummy_H_green_zone_id,dummy_H_zone_radius,dummy_H_zone_gps_coords);
+--hope it works
+call add_vehicle_to_client_or_not ('BBBBBB', 'Josevaldo das caricas', '967995999', '123456779', 6, 500, 10, 10);
+
+-- tudo a null vai dar treta 
+call add_veicule_to_client_or_not (null, null, null, null, null, null, null, null);
+
+--client nif must be in db
+call add_veicule_to_client_or_not ('ABABAB', 'maria', '123123123', '123456778', 6, 500, 10, 10);
+
+--green zone must have values 
+call add_veicule_to_client_or_not ('ABABAB', 'maria', '123123123', '123456778', null, null, null, null);
+
+--last wont work
+call add_vehicle_to_client_or_not ('BBBBBB', 'Josevaldo das caricas', '967995999', '123456779', 6, 500, 10, 10);
+call add_vehicle_to_client_or_not ('BBBBBB', 'Josevaldo das caricas', '967995999', '123456779', 6, 500, 10, 10);
+call add_vehicle_to_client_or_not ('BBBBBB', 'Josevaldo das caricas', '967995999', '123456779', 6, 500, 10, 10);
+
 
 --1.i)
 drop view if exists alarmes;

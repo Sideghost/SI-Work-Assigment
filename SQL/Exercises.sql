@@ -2,7 +2,7 @@
 --      particular (CC, NIF, nome, morada, cliente que o referenciou);
 
 -- Procedure that allows to add a private client.
-create procedure insert_particular(nif varchar, nome varchar, morada varchar, telefone varchar, referencia varchar, cc varchar)    
+create procedure insert_particular(nif varchar, nome varchar, morada varchar, telefone varchar, cc varchar, referencia varchar = null)    
     LANGUAGE plpgsql
 as
 $$
@@ -15,7 +15,7 @@ $$
     end;
 $$;
 
-drop procedure if exists insert_particular(nif varchar, nome varchar, morada varchar, telefone varchar, referencia varchar, cc varchar); 
+drop procedure if exists insert_particular(nif varchar, nome varchar, morada varchar, telefone varchar, cc varchar, referencia varchar); 
 
 -- Procedure that allows to update the information of private client that already exits.
 create procedure update_particular(NIF_ varchar, new_nome varchar, new_morada varchar, new_telefone varchar, new_ativo bit)
