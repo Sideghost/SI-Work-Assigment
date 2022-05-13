@@ -1,0 +1,20 @@
+Relatorio
+
+No âmbito da primeira fase do trabalho prático da cadeira, este relatório tem como propósito a elaboração de uma base de dados de uma empresa, \textbf{OnTrack}, com o objectio de gerir e registar a localizacao de automoveis e camioes. 
+O sistema deve registar os dados dos clientes da empresa, os quais podem ser particulares ou institucionais.
+
+Através do trabalho realizado pretendemos demonstrar conhecimento sobre ..., através da forma como resolvemos os problemas propostos. 
+
+Este relatório parte do pressuposto do acesso por parte do leitor ao código desenvolvido no ambito do mesmo, não sendo assim necessário enunciar lo em extensão, bastando mencionar trechos do mesmo.
+
+
+
+
+Ao longo do trabalho foram utilizados à semelhança dos procedimentos armazenados, diversos \textit{triggers}. 
+
+
+
+
+matematica
+
+(x -x0)^2 + (y - y0)^2 >= raio^2
