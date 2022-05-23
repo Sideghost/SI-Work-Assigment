@@ -1,5 +1,7 @@
-begin transaction;
-set ISOLATION LEVEL serializable ;
+begin
+transaction;
+set
+ISOLATION LEVEL serializable ;
 
 --1.d)
  --dummy_D_NIF VARCHAR := '123456791';
@@ -31,13 +33,15 @@ select number_of_alarms(2022, 'AE12ER');
 
 --1.f)
 
-insert into registos_nao_processados values (12, 30);
+insert into registos_nao_processados
+values (12, 30);
 
 call process_registers();
 
 --1.g)
 
-insert into registos_processados values (19, 1);
+insert into registos_processados
+values (19, 1);
 
 --1.h)
 --declare dummy_H_licence_plate varchar := 'BBBBBB';
@@ -55,7 +59,8 @@ drop view if exists alarmes;
 
 --1.j)
 
-insert into all_alarms values (65, '12345A', 'agnaldo', 98, 98, '2022-04-07 16:39:53.171');
+insert into all_alarms
+values (65, '12345A', 'agnaldo', 98, 98, '2022-04-07 16:39:53.171');
 
 --1.k)
 
@@ -63,10 +68,12 @@ call eliminate_invalid_registers();
 
 --1.l)
 
-delete from Cliente;
+delete
+from Cliente;
 
 --1.m)
 
-insert into alarmes values(36,3);
+insert into alarmes
+values (36, 3);
 
 ROLLBACK;

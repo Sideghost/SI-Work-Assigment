@@ -1,6 +1,9 @@
 package isel.sisinf.grp3;
 
-import jakarta.persistence.*;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
+import jakarta.persistence.Query;
 
 import java.util.List;
 

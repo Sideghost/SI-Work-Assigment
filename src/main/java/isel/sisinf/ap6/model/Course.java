@@ -1,5 +1,4 @@
-/*
-MIT License
+/*MIT License
 
 Copyright (c) 2022, Nuno Datia, ISEL
 
@@ -21,26 +20,26 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
-package isel.sisinf.grp3;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+package isel.sisinf.ap6.model;
 
 import java.util.Objects;
+import java.util.Set;
 
-@Entity
-public class Country {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long countryId;
+
+public class Course {
+
+    private long courseId;
+
+
     private String name;
+
+
+    private Set<Student> students;
 
 
     @Override
     public int hashCode() {
-        return Objects.hash(countryId);
+        return Objects.hash(courseId);
     }
 
     @Override
@@ -51,20 +50,22 @@ public class Country {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Country other = (Country) obj;
-        return countryId == other.countryId;
+        Course other = (Course) obj;
+        return Objects.equals(courseId, other.courseId);
     }
 
-    //Getters & Setters
-
-    public long getCountryId() {
-        return countryId;
+    @Override
+    public String toString() {
+        return "Course [courseId=" + courseId + ", name=" + name + "]";
     }
 
-    public void setCountryId(long countryId) {
-        this.countryId = countryId;
+    public long getCourseId() {
+        return courseId;
     }
 
+    public void setCourseId(long courseId) {
+        this.courseId = courseId;
+    }
 
     public String getName() {
         return name;
@@ -73,4 +74,14 @@ public class Country {
     public void setName(String name) {
         this.name = name;
     }
+
+    public Set<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(Set<Student> students) {
+        this.students = students;
+    }
+
+
 }

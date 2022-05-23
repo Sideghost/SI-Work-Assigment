@@ -21,26 +21,19 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
-package isel.sisinf.grp3;
+package isel.sisinf.ap6.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-
+import java.sql.Date;
 import java.util.Objects;
 
-@Entity
-public class Country {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long countryId;
-    private String name;
 
+public class Student {
+
+    private int studentNumber;
 
     @Override
     public int hashCode() {
-        return Objects.hash(countryId);
+        return Objects.hash(studentNumber);
     }
 
     @Override
@@ -51,20 +44,30 @@ public class Country {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Country other = (Country) obj;
-        return countryId == other.countryId;
+        Student other = (Student) obj;
+        return studentNumber == other.studentNumber;
     }
 
-    //Getters & Setters
-
-    public long getCountryId() {
-        return countryId;
+    public Student() {
     }
 
-    public void setCountryId(long countryId) {
-        this.countryId = countryId;
+    public Student(int stNumber, String name, java.util.Date dtBirth, char sex, Country homeCountry) {
+        this.studentNumber = stNumber;
+        this.name = name;
+        this.dateBirth = new Date(dtBirth.getTime());
+        this.sex = sex;
+        this.homeCountry = homeCountry;
     }
 
+    public int getStudentNumber() {
+        return studentNumber;
+    }
+
+    public void setStudentNumber(int studentNumber) {
+        this.studentNumber = studentNumber;
+    }
+
+    private String name;
 
     public String getName() {
         return name;
@@ -73,4 +76,42 @@ public class Country {
     public void setName(String name) {
         this.name = name;
     }
+
+    private Date dateBirth;
+
+    private char sex;
+
+
+    public Date getDateBirth() {
+        return dateBirth;
+    }
+
+    public void setDateBirth(Date dateBirth) {
+        this.dateBirth = dateBirth;
+    }
+
+    public char getSex() {
+        return sex;
+    }
+
+    public void setSex(char sex) {
+        this.sex = sex;
+    }
+
+    public Country getHomeCountry() {
+        return homeCountry;
+    }
+
+    public void setHomeCountry(Country homeCountry) {
+        this.homeCountry = homeCountry;
+    }
+
+    private Country homeCountry;
+
+    @Override
+    public String toString() {
+        return "Student [studentNumber=" + studentNumber + ", name=" + name + ", dateBirth=" + dateBirth + ", sex="
+                + sex + ", homeCountry=" + homeCountry + "]";
+    }
+
 }

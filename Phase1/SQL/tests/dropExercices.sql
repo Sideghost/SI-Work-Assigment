@@ -1,6 +1,6 @@
 --2.d)
 
-drop procedure if exists insert_particular(nif varchar, nome varchar, morada varchar, telefone varchar, referencia varchar, cc varchar); 
+drop procedure if exists insert_particular(nif varchar, nome varchar, morada varchar, telefone varchar, referencia varchar, cc varchar);
 
 drop procedure if exists update_particular(nif_ varchar, nome_ varchar, morada_ varchar, telefone_ varchar, ativo_ bit);
 
@@ -12,7 +12,7 @@ drop function if exists number_of_alarms(ano integer, nif_ varchar);
 
 --2.f)
 
-drop procedure if exists process_registers(); 
+drop procedure if exists process_registers();
 
 --2.g)
 

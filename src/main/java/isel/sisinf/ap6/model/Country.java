@@ -21,19 +21,12 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
-package isel.sisinf.grp3;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+package isel.sisinf.ap6.model;
 
 import java.util.Objects;
 
-@Entity
 public class Country {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private long countryId;
     private String name;
 
