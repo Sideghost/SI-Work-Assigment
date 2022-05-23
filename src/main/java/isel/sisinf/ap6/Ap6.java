@@ -39,7 +39,7 @@ package isel.sisinf.ap6;
  * Atenção! não há uma correcta separação entre compoenntes das diferentes camadas
  */
 
-import isel.sisinf.ap6.model.Student;
+import isel.sisinf.ap6.model.Course;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
@@ -48,7 +48,10 @@ import jakarta.persistence.Query;
 import java.io.Console;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
 
 interface DbWorker {
     void doWork();
@@ -69,7 +72,9 @@ class App {
     private HashMap<Option, DbWorker> __dbMethods;
 
 
-    /** Devia estar noutra classe, dado que pertende à DAL. Apenas para motivo pedagógicos. */
+    /**
+     * Devia estar noutra classe, dado que pertende à DAL. Apenas para motivo pedagógicos.
+     */
     private final String __jpaPU = "AP6";
     private EntityManagerFactory __emf = null;
     private Credentials __cred = null;
@@ -197,8 +202,7 @@ class App {
     }
 
     /**
-     *	To implement from this point forward. Do not need to change the code above.
-     *
+     * To implement from this point forward. Do not need to change the code above.
      */
 
     private <T> void printResults(List<T> results) {
@@ -213,12 +217,26 @@ class App {
     }
 
     private void ListCourse() {
-        //TODO: Implement
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("");
+        //TODO: ERROS DE MERDA
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("List Courses");
         EntityManager em = emf.createEntityManager();
         try {
-            Query query = em.createQuery("select c from Course u");
-        };
+            Query query = em.createQuery("select c from Course c");
+            List<Course> lc = query.getResultList();
+
+            for (Course c : lc) {
+                System.out.printf("%d %s \n", c.getCourseId(), c.getName());
+            }
+
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            throw ex;
+
+        } finally {
+            em.close();
+            emf.close();
+        }
+
         System.out.println("ListCourse()");
     }
 
@@ -235,7 +253,6 @@ class App {
 }
 
 public class Ap6 {
-
 
     public static isel.sisinf.ap6.App.Credentials getCredentials() throws IOException {
 

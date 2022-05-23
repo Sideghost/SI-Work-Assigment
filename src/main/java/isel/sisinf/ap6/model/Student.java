@@ -23,12 +23,15 @@ SOFTWARE.
 */
 package isel.sisinf.ap6.model;
 
+import jakarta.persistence.*;
 import java.sql.Date;
 import java.util.Objects;
 
-
+@Entity
 public class Student {
 
+    @Id
+    @ManyToOne(mapedBy="student",)
     private int studentNumber;
 
     @Override

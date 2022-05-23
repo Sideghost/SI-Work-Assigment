@@ -22,18 +22,23 @@ SOFTWARE.
 */
 package isel.sisinf.ap6.model;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+//import jdk.jfr.Enabled;
+
 import java.util.Objects;
 import java.util.Set;
 
-
+@Entity
 public class Course {
-
+    @Id
     private long courseId;
-
 
     private String name;
 
-
+    @OneToMany(mappedBy = "student", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private Set<Student> students;
 
 
