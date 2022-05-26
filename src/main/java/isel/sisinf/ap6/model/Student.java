@@ -31,7 +31,6 @@ import java.util.Objects;
 public class Student {
 
     @Id
-    @ManyToOne(mapedBy="student",)
     private int studentNumber;
 
     @Override

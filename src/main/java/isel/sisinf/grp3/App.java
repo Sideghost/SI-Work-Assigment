@@ -1,5 +1,6 @@
 package isel.sisinf.grp3;
 
+import isel.sisinf.ap6.Country;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
