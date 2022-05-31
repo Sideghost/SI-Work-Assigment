@@ -16,9 +16,11 @@ public class Institutional extends Client {
         if (this == other) {
             return true;
         }
-        if(!(other instanceof Client)){return false;}
+        if(!(other instanceof Client)){
+            return false;
+        }
         Institutional castOther = (Institutional)other;
-        return (Objects.equals(this.getNif(), castOther.getNif())) &&
+        return (this.getNif().equals(castOther.getNif())) &&
                 this.contactName.equals(castOther.contactName);
     }
     @Override

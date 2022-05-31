@@ -16,7 +16,7 @@ public class App {
     @SuppressWarnings("unchecked")
     public static void main(String[] args) {
         System.out.println("HELLO WORD");
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("dal-v0");
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("t42dg3");
         EntityManager em = emf.createEntityManager();
         try {
             //CREATE

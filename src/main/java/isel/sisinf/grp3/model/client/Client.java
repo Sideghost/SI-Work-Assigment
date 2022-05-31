@@ -7,7 +7,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "cliente")
-abstract class Client {
+public class Client {
     @Id
     @Column(name = "NIF")
     private String  NIF; // TODO: 26/05/2022 Change to Integer
