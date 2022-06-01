@@ -23,7 +23,9 @@ SOFTWARE.
 */
 package isel.sisinf.ap6.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
 import java.sql.Date;
 import java.util.Objects;
 

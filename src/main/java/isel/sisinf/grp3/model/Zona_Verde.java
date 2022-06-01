@@ -2,62 +2,66 @@ package isel.sisinf.grp3.model;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
 @Entity
 public class Zona_Verde {
+
     @Id
-    private int id;
-    private int raio;
-    private double longitude;
-    private double latitude;
-    private String matricula;
+    @Column(name = "id_zona_verde", nullable = false, length = 50)
+    private String id;
 
-    public int getZonaVerdeId() {
-        return id;
-    }
-    public void setZonaVerdeId(int zonaVerdeId) {
-        this.id = zonaVerdeId;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "matricula")
+    private Veiculo matricula;
 
-    public int getZonaVerdeRaio() {
-        return raio;
-    }
-    public void setZonaVerdeRaio(int zonaVerdeRaio) {
-        this.raio = zonaVerdeRaio;
-    }
+    @Column(name = "raio", nullable = false)
+    private Integer raio;
 
-    public double getZonaVerdeLongitude() {
+    @Column(name = "latitude", nullable = false, precision = 8, scale = 5)
+    private BigDecimal latitude;
+
+    @Column(name = "longitude", nullable = false, precision = 8, scale = 5)
+    private BigDecimal longitude;
+
+    public BigDecimal getLongitude() {
         return longitude;
     }
-    public void setZonaVerdeLongitude(double zonaVerdeLongitude) {
-        this.longitude = zonaVerdeLongitude;
+
+    public void setLongitude(BigDecimal longitude) {
+        this.longitude = longitude;
     }
 
-    public double getZonaVerdeLatitude() {
+    public BigDecimal getLatitude() {
         return latitude;
     }
-    public void setZonaVerdeId(double zonaVerdeLatitude) {
-        this.latitude = zonaVerdeLatitude;
+
+    public void setLatitude(BigDecimal latitude) {
+        this.latitude = latitude;
     }
 
-    public String getZonaVerdeMatricula() {
+    public Integer getRaio() {
+        return raio;
+    }
+
+    public void setRaio(Integer raio) {
+        this.raio = raio;
+    }
+
+    public Veiculo getMatricula() {
         return matricula;
     }
-    public void setZonaVerdeMatricula(String zonaVerdeMatricula) {
-        this.matricula = zonaVerdeMatricula;
+
+    public void setMatricula(Veiculo matricula) {
+        this.matricula = matricula;
     }
-    @Override
-    public boolean equals (Object other) {
-        if (this == other) {
-            return true;
-        }
-        if(!(other instanceof Zona_Verde)){return false;}
-        Zona_Verde castOther = (Zona_Verde)other;
-        return (this.id == castOther.id);
+
+    public String getId() {
+        return id;
     }
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

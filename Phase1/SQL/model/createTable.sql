@@ -9,22 +9,20 @@ create table Cliente
     ativo      bit         not null default B'1',
     primary key (NIF),
     constraint tipo_errado check (tipo like 'I' or tipo like 'P'),
-    constraint telefone_errado check (telefone similar to '[0-9]{9}'
-) ,
- 	constraint NIF_errado check(NIF similar to '[0-9]{9}'),
- 	constraint referencia_errada check (referencia similar to '[0-9]{9}'),
- 	constraint referencia_proprio check (referencia <> NIF)
+    constraint telefone_errado check (telefone similar to '[0-9]{9}'),
+    constraint NIF_errado check (NIF similar to '[0-9]{9}'),
+    constraint referencia_errada check (referencia similar to '[0-9]{9}'),
+    constraint referencia_proprio check (referencia <> NIF)
 );
 
 create table Particulares
 (
     NIF varchar(9)  not null,
     CC  varchar(14) not null,
-    constraint NIF_errado check (NIF similar to '[0-9]{9}'
-) ,
- 	constraint CC_errado check(CC similar to'[0-9]{8}'),
- 	primary key(NIF),
- 	foreign key (NIF) references CLiente (NIF)
+    constraint NIF_errado check (NIF similar to '[0-9]{9}'),
+    constraint CC_errado check (CC similar to '[0-9]{8}'),
+    primary key (NIF),
+    foreign key (NIF) references CLiente (NIF)
 );
 
 ALTER TABLE Cliente
@@ -34,10 +32,9 @@ create table Institucionais
 (
     NIF           varchar(9)  not null,
     Nome_contacto varchar(30) not null,
-    constraint NIF_errado check (NIF similar to '[0-9]{9}'
-) ,
- 	primary key(NIF),
- 	foreign key (NIF) references Cliente (NIF)
+    constraint NIF_errado check (NIF similar to '[0-9]{9}'),
+    primary key (NIF),
+    foreign key (NIF) references Cliente (NIF)
 );
 
 create table Veiculo
@@ -47,11 +44,10 @@ create table Veiculo
     telefone_condutor varchar(9),
     NIF               varchar(9)  not null,
     n_alarmes         integer, --not null
-    constraint telefone_errado check (telefone_condutor similar to '[0-9]{9}'
-) ,
-	constraint NIF_errado check(NIF similar to '[0-9]{9}'),	
-	primary key (matricula),
-	foreign key(NIF) references Cliente (NIF)
+    constraint telefone_errado check (telefone_condutor similar to '[0-9]{9}'),
+    constraint NIF_errado check (NIF similar to '[0-9]{9}'),
+    primary key (matricula),
+    foreign key (NIF) references Cliente (NIF)
 );
 
 create table Zona_Verde

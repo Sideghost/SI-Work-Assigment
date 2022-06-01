@@ -1,55 +1,89 @@
 package isel.sisinf.grp3.model;
 
+import isel.sisinf.grp3.model.client.Client;
 import jakarta.persistence.*;
-
-import java.util.Objects;
 
 @Entity
 public class Veiculo {
+
     @Id
-    private String matricula;
-    private String nome_condutor;
-    private String telefone_condutor;
-    private String NIF;
+    @Column(name = "matricula", nullable = false, length = 30)
+    private String licencePlate;
 
-    private int n_alarmes;
+    @Column(name = "nome_condutor", nullable = false, length = 100)
+    private String driversName;
 
-    public String getVeiculoMatricula() {
-        return matricula;
-    }
-    public void setVeiculoMatricula(String VeiculoMatricula) {
-        this.matricula = VeiculoMatricula;
-    }
+    @Column(name = "telefone_condutor", nullable = false, length = 20)
+    private String driversPhone;
 
-    public void setVeiculoTelefoneCondutor(String VeiculoTelefoneCondutor) {
-        this.telefone_condutor = VeiculoTelefoneCondutor;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "estado")
+    private Gps estado;
 
-    public void setVeiculoCondutor(String VeiculoNomeCondutor) {
-        this.nome_condutor = VeiculoNomeCondutor;
-    }
-    public String getVeiculoTelefoneCondutor() {
-        return telefone_condutor;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_gps")
+    private Gps idGps;
 
-    public void setVeiculoNIF(String VeiculoNIF) {
-        this.NIF = VeiculoNIF;
-    }
-    public String getVeiculoNomeCondutor() {
-        return nome_condutor;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cliente_nif")
+    private Client clienteNif;
+
+    @Column(name = "alarmes")
+    private Integer alarmes;
+
+    public Integer getAlarmes() {
+        return alarmes;
     }
 
-    @Override
-    public boolean equals (Object other) {
-        if (this == other) {
-            return true;
-        }
-        if(!(other instanceof Veiculo)){return false;}
-        Veiculo castOther = (Veiculo)other;
-        return (this.matricula.equals(castOther.matricula));
+    public void setAlarmes(Integer alarmes) {
+        this.alarmes = alarmes;
     }
-    @Override
-    public int hashCode() {
-        return Objects.hash(matricula);
+
+    public Client getClienteNif() {
+        return clienteNif;
+    }
+
+    public void setClienteNif(Client clienteNif) {
+        this.clienteNif = clienteNif;
+    }
+
+    public Gps getIdGps() {
+        return idGps;
+    }
+
+    public void setIdGps(Gps idGps) {
+        this.idGps = idGps;
+    }
+
+    public Gps getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Gps estado) {
+        this.estado = estado;
+    }
+
+    public String getDriversPhone() {
+        return driversPhone;
+    }
+
+    public void setDriversPhone(String telefoneCondutor) {
+        this.driversPhone = telefoneCondutor;
+    }
+
+    public String getDriversName() {
+        return driversName;
+    }
+
+    public void setDriversName(String nomeCondutor) {
+        this.driversName = nomeCondutor;
+    }
+
+    public String getLicencePlate() {
+        return licencePlate;
+    }
+
+    public void setLicencePlate(String id) {
+        this.licencePlate = id;
     }
 }

@@ -1,31 +1,52 @@
 package isel.sisinf.grp3.model.registos;
 
+import isel.sisinf.grp3.model.Veiculo;
 import jakarta.persistence.*;
-import java.sql.Time;
-import java.util.Objects;
+
+import java.time.LocalDate;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "registos_processados")
-public class Processed_Registers extends Unprocessed_Registers {
+public class Processed_Registers {
+
     @Id
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Integer id;
 
-    private int id_gps;
+    @Column(name = "marca_temporal", nullable = false)
+    private LocalDate timeStamp;
 
-    @Column(name = "marca_temporal")
-    private Time timeStamp;
+    @ManyToMany
+    @JoinTable(name = "alarmes",
+            joinColumns = @JoinColumn(name = "id"),
+            inverseJoinColumns = @JoinColumn(name = "id")) // inverseJoinColumns WTF is this?
+    private Set<Veiculo> vehicles = new LinkedHashSet<>();
 
-//    @Override
-//    public boolean equals (Object other) {
-//        if (this == other) {
-//            return true;
-//        }
-//        if(!(other instanceof Unprocessed_Registers)){return false;}
-//        Processed_Registers castOther = (Processed_Registers)other;
-//        return (this.id == castOther.id);
-//    }
-//    @Override
-//    public int hashCode() {
-//        return Objects.hash(this.id);
-//    }
+    public Set<Veiculo> getVehicles() {
+        return vehicles;
+    }
+
+    public void setVehicles(Set<Veiculo> vehicles) {
+        this.vehicles = vehicles;
+    }
+
+    public LocalDate getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(LocalDate timeStamp) {
+        this.timeStamp = timeStamp;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
 }

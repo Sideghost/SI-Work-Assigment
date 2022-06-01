@@ -1,43 +1,81 @@
 package isel.sisinf.grp3.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import isel.sisinf.grp3.model.registos.Unprocessed_Registers;
+import jakarta.persistence.*;
 
-import java.sql.Time;
-import java.util.Objects;
+import java.math.BigDecimal;
+import java.time.Instant;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Entity
+@Table(name = "gps")
 public class Gps {
+
     @Id
-    private Integer id;
+    @Column(name = "id", nullable = false, length = 50)
+    private String id;
 
-    @Column(name = "longitude")
-    private Double longi;
+    @Column(name = "marca_temporal", nullable = false)
+    private Instant timeStamp;
 
-    @Column(name = "latitude")
-    private Double lat;
+    @Column(name = "latitude", nullable = false, precision = 8, scale = 5)
+    private BigDecimal latitude;
 
-    @Column(name = "matricula")
-    private Integer license_plate;
+    @Column(name = "longitude", nullable = false, precision = 8, scale = 5)
+    private BigDecimal longitude;
 
-    @Column(name = "estado")
-    private String status;
+    @OneToMany(mappedBy = "idGps")
+    private Set<Veiculo> veiculos = new LinkedHashSet<>();
 
-    @Column(name = "marca_temporal")
-    private Time timeStamp;
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "Gps")
+    private Unprocessed_Registers registosNaoProcessado;
 
-    @Override
-    public boolean equals (Object other) {
-        if (this == other) {
-            return true;
-        }
-        if(!(other instanceof Gps)){return false;}
-        Gps castOther = (Gps)other;
-        return (this.id.equals(castOther.id));
+    public Unprocessed_Registers getRegistosNaoProcessado() {
+        return registosNaoProcessado;
     }
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
+
+    public void setRegistosNaoProcessado(Unprocessed_Registers registosNaoProcessado) {
+        this.registosNaoProcessado = registosNaoProcessado;
+    }
+
+    public Set<Veiculo> getVeiculos() {
+        return veiculos;
+    }
+
+    public void setVeiculos(Set<Veiculo> veiculos) {
+        this.veiculos = veiculos;
+    }
+
+    public BigDecimal getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(BigDecimal longitude) {
+        this.longitude = longitude;
+    }
+
+    public BigDecimal getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(BigDecimal latitude) {
+        this.latitude = latitude;
+    }
+
+    public Instant getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(Instant marcaTemporal) {
+        this.timeStamp = marcaTemporal;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

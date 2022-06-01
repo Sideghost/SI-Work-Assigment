@@ -1,35 +1,60 @@
 package isel.sisinf.grp3.model.registos;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import isel.sisinf.grp3.model.Gps;
+import jakarta.persistence.*;
 
-import java.sql.Time;
-import java.util.Objects;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "registos_nao_processados")
-abstract class Unprocessed_Registers {
-    @Id
-    private int id;
+public class Unprocessed_Registers {
 
-    private int id_gps;
+    @Id
+    @Column(name = "id", nullable = false, length = 50)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Column(name = "id_gps", nullable = false, length = 50)
+    private Integer id_gps;
+
+    @MapsId
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "id_gps", nullable = false)
+    private Gps Gps;
+
 
     @Column(name = "marca_temporal")
-    private Time timeStamp;
+    private LocalDate timeStamp;
 
-    @Override
-    public boolean equals (Object other) {
-        if (this == other) {
-            return true;
-        }
-        if(!(other instanceof Unprocessed_Registers)){return false;}
-        Unprocessed_Registers castOther = (Unprocessed_Registers)other;
-        return (this.id == castOther.id);
+    public LocalDate getTimeStamp() {
+        return timeStamp;
     }
-    @Override
-    public int hashCode() {
-        return Objects.hash(this.id);
+
+    public void setTimeStamp(LocalDate timeStamp) {
+        this.timeStamp = timeStamp;
+    }
+
+    public Gps getGps() {
+        return Gps;
+    }
+
+    public void setGps(Gps equipamentoGps) {
+        this.Gps = equipamentoGps;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getId_gps() {
+        return id;
+    }
+
+    public void setId_gps(Integer id) {
+        this.id = id;
     }
 }

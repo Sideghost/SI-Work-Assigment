@@ -1,33 +1,50 @@
 package isel.sisinf.grp3.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-
-import java.sql.Time;
-import java.util.Objects;
+import isel.sisinf.grp3.model.registos.Processed_Registers;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "Alarmes")
 public class Alarms {
-   @Id
-   private Integer id;
-   private Integer id_GPS;
-   @Column(name = "marca_temporal")
-   private Time timeStamp;
 
-   @Override
-   public boolean equals (Object other) {
-      if (this == other) {
-         return true;
-      }
-      if(!(other instanceof Alarms)){return false;}
-      Alarms castOther = (Alarms)other;
-      return (this.id.equals(castOther.id));
-   }
-   @Override
-   public int hashCode() {
-      return Objects.hash(id);
-   }
+    @Id
+    @Column(name = "id", nullable = false, length = 50)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinTable(name = "registos_processados",
+            joinColumns = @JoinColumn(name = "id"),
+            inverseJoinColumns = @JoinColumn(name = "id"))
+    private Processed_Registers registerId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinTable(name = "veiculo",
+            joinColumns = @JoinColumn(name = "matricula"),
+            inverseJoinColumns = @JoinColumn(name = "matricula"))
+    private Veiculo veiculo;
+
+    public Veiculo getVehicle() {
+        return veiculo;
+    }
+
+    public void setVehicle(Veiculo vehicle) {
+        this.veiculo = vehicle;
+    }
+
+    public Processed_Registers getRegisterId() {
+        return registerId;
+    }
+
+    public void setRegisterId(Processed_Registers registerId) {
+        this.registerId = registerId;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 }
