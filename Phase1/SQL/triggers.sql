@@ -18,7 +18,7 @@ begin
             if (tipo_cliente = 'P') then
                 if (numero_veiculos >= 3) then
                     return old;
-                    raise notice 'Cliente nao pode ter mais veiculos associados';
+                    raise notice 'Cliente nao pode ter mais vehicles associados';
                 else
                     return new;
                 end if;

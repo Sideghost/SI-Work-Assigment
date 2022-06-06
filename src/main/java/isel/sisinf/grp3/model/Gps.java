@@ -26,7 +26,7 @@ public class Gps {
     private BigDecimal longitude;
 
     @OneToMany(mappedBy = "idGps")
-    private Set<Veiculo> veiculos = new LinkedHashSet<>();
+    private Set<Vehicle> vehicles = new LinkedHashSet<>();
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "Gps")
     private Unprocessed_Registers registosNaoProcessado;
@@ -39,12 +39,12 @@ public class Gps {
         this.registosNaoProcessado = registosNaoProcessado;
     }
 
-    public Set<Veiculo> getVeiculos() {
-        return veiculos;
+    public Set<Vehicle> getVeiculos() {
+        return vehicles;
     }
 
-    public void setVeiculos(Set<Veiculo> veiculos) {
-        this.veiculos = veiculos;
+    public void setVeiculos(Set<Vehicle> vehicles) {
+        this.vehicles = vehicles;
     }
 
     public BigDecimal getLongitude() {

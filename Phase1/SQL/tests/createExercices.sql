@@ -1,75 +1,51 @@
 --2.d)
 
-create procedure insert_particular(nif varchar, nome varchar, morada varchar, telefone varchar, referencia varchar,
-                                   cc varchar)
+create procedure insert_particular(nif varchar, nome varchar, morada varchar, telefone varchar, referencia varchar, cc varchar)
     LANGUAGE plpgsql
 as
 $$
-begin
-insert into cliente
-values (nif, nome, morada, telefone, 'P', referencia);
-insert into particulares
-values (nif, cc);
-if
-(nif not in (select cliente.nif from cliente)) then
-       		raise notice 'Cliente nao inserido';
-end if;
-end;
+    begin
+        insert into cliente values (nif, nome, morada, telefone, 'P', referencia);
+        insert into particulares values (nif, cc);
+        if (nif not in (select cliente.nif from cliente)) then
+            raise notice 'Cliente nao inserido';
+        end if;
+    end;
 $$;
 
-create procedure update_particular(NIF_ varchar, new_nome varchar, new_morada varchar, new_telefone varchar,
-                                   new_ativo bit)
+create procedure update_particular(NIF_ varchar, new_nome varchar, new_morada varchar, new_telefone varchar, new_ativo bit)
     LANGUAGE plpgsql
 as
 $$
-begin
-		ASSERT
-(Nif_ is not null), "Nif can't be null";
-		if
-(new_nome is not null) then
-update CLIENTE
-set nome = new_nome
-where NIF = NIF_;
-end if;
-	    if
-(new_morada is not null) then
-update CLIENTE
-set morada = new_morada
-where NIF = NIF_;
-end if;
-	    if
-(new_telefone is not null) then
-update CLIENTE
-set telefone = new_telefone
-where NIF = NIF_;
-end if;
-	    if
-(new_ativo is not null) then
-update CLIENTE
-set ativo = new_ativo
-where NIF = NIF_;
-end if;
-end;
+    begin
+        ASSERT (Nif_ is not null), "Nif can't be null";
+        if (new_nome is not null) then
+            update CLIENTE set nome = new_nome where NIF = NIF_;
+        end if;
+        if (new_morada is not null) then
+            update CLIENTE set morada = new_morada where NIF = NIF_;
+        end if;
+        if (new_telefone is not null) then
+            update CLIENTE set telefone = new_telefone where NIF = NIF_;
+        end if;
+        if (new_ativo is not null) then
+            update CLIENTE set ativo = new_ativo where NIF = NIF_;
+        end if;
+    end;
 $$;
 
 create Procedure remove_particular(nif_ varchar)
     LANGUAGE plpgsql
 as
 $$
-declare
-ativoCurr bit;
-begin
-update cliente
-set ativo = B'0'
-where (NIF = nif_);
-select cliente.ativo
-from cliente
-where (NIF = nif_) into ativoCurr;
-if
-(ativoCurr <> B'0') then
-            raise notice 'Cliente nao removido';
-end if;
-end;
+    declare ativoCurr bit;
+    begin
+        update cliente set ativo = B'0' where (NIF = nif_);
+        select cliente.ativo from cliente where (NIF = nif_) into ativoCurr;
+        if (ativoCurr <> B'0') then
+             raise notice 'Cliente nao removido';
+        end if;
+    end;
 $$;
 
 --2.e)

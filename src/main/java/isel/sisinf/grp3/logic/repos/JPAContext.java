@@ -1,11 +1,10 @@
-package isel.sisinf.grp3.logic.DBAccess;
+package isel.sisinf.grp3.logic.repos;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Query;
 
-import javax.swing.text.html.parser.Entity;
 import java.util.List;
 
 public class JPAContext implements Context{
@@ -48,6 +47,26 @@ public class JPAContext implements Context{
     @Override
     public void flush() {
         em.flush();
+    }
+
+    @Override
+    public ClientRepository getClients() {
+        return null;
+    }
+
+    @Override
+    public RegistersRepository getRegisters() {
+        return null;
+    }
+
+    @Override
+    public VehicleRepository getVehicles() {
+        return null;
+    }
+
+    @Override
+    public ZonaVerdeRepository getZonasVerdes() {
+        return null;
     }
 
     @Override

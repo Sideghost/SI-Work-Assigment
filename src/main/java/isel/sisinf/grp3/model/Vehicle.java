@@ -4,7 +4,8 @@ import isel.sisinf.grp3.model.client.Client;
 import jakarta.persistence.*;
 
 @Entity
-public class Veiculo {
+@Table(name = "veiculo")
+public class Vehicle {
 
     @Id
     @Column(name = "matricula", nullable = false, length = 30)

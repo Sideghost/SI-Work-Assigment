@@ -22,14 +22,14 @@ public class Alarms {
     @JoinTable(name = "veiculo",
             joinColumns = @JoinColumn(name = "matricula"),
             inverseJoinColumns = @JoinColumn(name = "matricula"))
-    private Veiculo veiculo;
+    private Vehicle vehicle;
 
-    public Veiculo getVehicle() {
-        return veiculo;
+    public Vehicle getVehicle() {
+        return vehicle;
     }
 
-    public void setVehicle(Veiculo vehicle) {
-        this.veiculo = vehicle;
+    public void setVehicle(Vehicle vehicle) {
+        this.vehicle = vehicle;
     }
 
     public Processed_Registers getRegisterId() {

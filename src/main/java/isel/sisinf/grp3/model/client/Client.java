@@ -1,6 +1,6 @@
 package isel.sisinf.grp3.model.client;
 
-import isel.sisinf.grp3.model.Veiculo;
+import isel.sisinf.grp3.model.Vehicle;
 import jakarta.persistence.*;
 
 import java.util.LinkedHashSet;
@@ -12,10 +12,10 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "cliente")
-public class Client {
+public class Client implements IClient{
 
     @Id
-    @Column(name = "nif", nullable = false, length = 15)
+    @Column(name = "nif", nullable = false, length = 15) // mudar para Integer
     private String nif;
 
     @Column(name = "nome", nullable = false, length = 100)
@@ -37,7 +37,7 @@ public class Client {
     private InstitutionalClient institutionalClient;
 
     @OneToMany(mappedBy = "clientNIF")
-    private Set<Veiculo> vehicles = new LinkedHashSet<>();
+    private Set<Vehicle> vehicles = new LinkedHashSet<>();
 
     @ManyToMany
     @JoinTable(name = "cliente",
@@ -61,11 +61,11 @@ public class Client {
         this.clients = clients;
     }
 
-    public Set<Veiculo> getVehicles() {
+    public Set<Vehicle> getVehicles() {
         return vehicles;
     }
 
-    public void setVehicles(Set<Veiculo> vehicles) {
+    public void setVehicles(Set<Vehicle> vehicles) {
         this.vehicles = vehicles;
     }
 
@@ -99,6 +99,17 @@ public class Client {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    @Override
+    public String getClientId() {
+        return getNif();
+
+    }
+
+    @Override
+    public void setClientId(String clientId) {
+        setNif(clientId);
     }
 
     public String getName() {

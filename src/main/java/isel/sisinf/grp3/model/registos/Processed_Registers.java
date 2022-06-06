@@ -1,6 +1,6 @@
 package isel.sisinf.grp3.model.registos;
 
-import isel.sisinf.grp3.model.Veiculo;
+import isel.sisinf.grp3.model.Vehicle;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -23,13 +23,13 @@ public class Processed_Registers {
     @JoinTable(name = "alarmes",
             joinColumns = @JoinColumn(name = "id"),
             inverseJoinColumns = @JoinColumn(name = "id")) // inverseJoinColumns WTF is this?
-    private Set<Veiculo> vehicles = new LinkedHashSet<>();
+    private Set<Vehicle> vehicles = new LinkedHashSet<>();
 
-    public Set<Veiculo> getVehicles() {
+    public Set<Vehicle> getVehicles() {
         return vehicles;
     }
 
-    public void setVehicles(Set<Veiculo> vehicles) {
+    public void setVehicles(Set<Vehicle> vehicles) {
         this.vehicles = vehicles;
     }
 

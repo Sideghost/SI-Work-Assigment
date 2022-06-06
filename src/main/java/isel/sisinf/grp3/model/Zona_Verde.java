@@ -13,7 +13,7 @@ public class Zona_Verde {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "matricula")
-    private Veiculo matricula;
+    private Vehicle matricula;
 
     @Column(name = "raio", nullable = false)
     private Integer raio;
@@ -48,11 +48,11 @@ public class Zona_Verde {
         this.raio = raio;
     }
 
-    public Veiculo getMatricula() {
+    public Vehicle getMatricula() {
         return matricula;
     }
 
-    public void setMatricula(Veiculo matricula) {
+    public void setMatricula(Vehicle matricula) {
         this.matricula = matricula;
     }
 
