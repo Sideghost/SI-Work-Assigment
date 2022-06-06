@@ -3,13 +3,12 @@ package isel.sisinf.grp3.model;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
-import java.util.Objects;
 
 @Entity
 public class Zona_Verde {
 
     @Id
-    @Column(name = "id_zona_verde", nullable = false, length = 50)
+    @Column(name = "id", nullable = false, length = 50)
     private String id;
 
     @ManyToOne(fetch = FetchType.LAZY)

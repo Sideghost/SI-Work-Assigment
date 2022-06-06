@@ -36,7 +36,7 @@ public class Client {
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "client")
     private InstitutionalClient institutionalClient;
 
-    @OneToMany(mappedBy = "clienteNif")
+    @OneToMany(mappedBy = "clientNIF")
     private Set<Veiculo> vehicles = new LinkedHashSet<>();
 
     @ManyToMany
@@ -119,8 +119,10 @@ public class Client {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         Client client = (Client) o;
         return nif != null && Objects.equals(nif, client.nif);
     }

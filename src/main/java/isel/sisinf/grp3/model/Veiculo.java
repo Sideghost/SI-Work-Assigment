@@ -18,33 +18,33 @@ public class Veiculo {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "estado")
-    private Gps estado;
+    private Gps status;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_gps")
     private Gps idGps;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cliente_nif")
-    private Client clienteNif;
+    @ManyToOne(fetch = FetchType.LAZY) //foreign key
+    @JoinColumn(name = "nif")
+    private Client clientNIF;
 
-    @Column(name = "alarmes")
-    private Integer alarmes;
+    @Column(name = "n_alarmes")
+    private Integer nrAlarms;
 
-    public Integer getAlarmes() {
-        return alarmes;
+    public Integer getNrAlarms() {
+        return nrAlarms;
     }
 
-    public void setAlarmes(Integer alarmes) {
-        this.alarmes = alarmes;
+    public void setNrAlarms(Integer alarmes) {
+        this.nrAlarms = alarmes;
     }
 
-    public Client getClienteNif() {
-        return clienteNif;
+    public Client getClientNIF() {
+        return clientNIF;
     }
 
-    public void setClienteNif(Client clienteNif) {
-        this.clienteNif = clienteNif;
+    public void setClientNIF(Client clienteNif) {
+        this.clientNIF = clienteNif;
     }
 
     public Gps getIdGps() {
@@ -55,13 +55,13 @@ public class Veiculo {
         this.idGps = idGps;
     }
 
-    public Gps getEstado() {
-        return estado;
+    public Gps getStatus() {
+        return status;
     }
 
-    public void setEstado(Gps estado) {
-        this.estado = estado;
-    }
+    public void setStatus(Gps estado) {
+        this.status = estado;
+    }*/
 
     public String getDriversPhone() {
         return driversPhone;
