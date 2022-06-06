@@ -16,13 +16,13 @@ public class Veiculo {
     @Column(name = "telefone_condutor", nullable = false, length = 20)
     private String driversPhone;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    /*@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "estado")
     private Gps status;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_gps")
-    private Gps idGps;
+    @JoinColumn(name = "idgps")
+    private Gps idGps;*/
 
     @ManyToOne(fetch = FetchType.LAZY) //foreign key
     @JoinColumn(name = "nif")
@@ -47,7 +47,7 @@ public class Veiculo {
         this.clientNIF = clienteNif;
     }
 
-    public Gps getIdGps() {
+    /*public Gps getIdGps() {
         return idGps;
     }
 
