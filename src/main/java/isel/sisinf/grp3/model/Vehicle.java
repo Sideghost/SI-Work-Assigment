@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "veiculo")
-public class Vehicle {
+public class Vehicle implements IVehicle {
 
     @Id
     @Column(name = "matricula", nullable = false, length = 30)
@@ -17,14 +17,6 @@ public class Vehicle {
     @Column(name = "telefone_condutor", nullable = false, length = 20)
     private String driversPhone;
 
-    /*@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "estado")
-    private Gps status;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idgps")
-    private Gps idGps;*/
-
     @ManyToOne(fetch = FetchType.LAZY) //foreign key
     @JoinColumn(name = "nif")
     private Client clientNIF;
@@ -32,58 +24,50 @@ public class Vehicle {
     @Column(name = "n_alarmes")
     private Integer nrAlarms;
 
+    @Override
     public Integer getNrAlarms() {
         return nrAlarms;
     }
 
-    public void setNrAlarms(Integer alarmes) {
-        this.nrAlarms = alarmes;
+    @Override
+    public void setNrAlarms(Integer nrAlarms) {
+        this.nrAlarms = nrAlarms;
     }
 
     public Client getClientNIF() {
         return clientNIF;
     }
 
-    public void setClientNIF(Client clienteNif) {
-        this.clientNIF = clienteNif;
+    public void setClientNIF(Client clientNIF) {
+        this.clientNIF = clientNIF;
     }
 
-    /*public Gps getIdGps() {
-        return idGps;
-    }
-
-    public void setIdGps(Gps idGps) {
-        this.idGps = idGps;
-    }
-
-    public Gps getStatus() {
-        return status;
-    }
-
-    public void setStatus(Gps estado) {
-        this.status = estado;
-    }*/
-
+    @Override
     public String getDriversPhone() {
         return driversPhone;
     }
 
-    public void setDriversPhone(String telefoneCondutor) {
-        this.driversPhone = telefoneCondutor;
+    @Override
+    public void setDriversPhone(String driversPhone) {
+        this.driversPhone = driversPhone;
     }
 
+    @Override
     public String getDriversName() {
         return driversName;
     }
 
-    public void setDriversName(String nomeCondutor) {
-        this.driversName = nomeCondutor;
+    @Override
+    public void setDriversName(String driversName) {
+        this.driversName = driversName;
     }
 
+    @Override
     public String getLicencePlate() {
         return licencePlate;
     }
 
+    @Override
     public void setLicencePlate(String id) {
         this.licencePlate = id;
     }

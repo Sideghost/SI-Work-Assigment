@@ -15,5 +15,5 @@ public interface Context extends AutoCloseable {
 
     VehicleRepository getVehicles();
 
-    ZonaVerdeRepository getZonasVerdes();
+    GreenZoneRepository getGreenZones();
 }

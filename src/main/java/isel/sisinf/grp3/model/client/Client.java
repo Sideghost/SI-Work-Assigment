@@ -9,10 +9,11 @@ import java.util.Set;
 
 /**
  * Mapping of table "Cliente" present in DB.
+ * todo
  */
 @Entity
 @Table(name = "cliente")
-public class Client implements IClient{
+public class Client implements IClient {
 
     @Id
     @Column(name = "nif", nullable = false, length = 15) // mudar para Integer
@@ -43,7 +44,7 @@ public class Client implements IClient{
     @JoinTable(name = "cliente",
             joinColumns = @JoinColumn(name = "referencia"),
             inverseJoinColumns = @JoinColumn(name = "referencia"))
-    private Set<Client> clients = new LinkedHashSet<>();
+    private Set<Client> reference = new LinkedHashSet<>();
 
     public Boolean getStatus() {
         return status;
@@ -53,12 +54,12 @@ public class Client implements IClient{
         this.status = status;
     }
 
-    public Set<Client> getClients() {
-        return clients;
+    public Set<Client> getReference() {
+        return reference;
     }
 
-    public void setClients(Set<Client> clients) {
-        this.clients = clients;
+    public void setReference(Set<Client> clients) {
+        this.reference = clients;
     }
 
     public Set<Vehicle> getVehicles() {
@@ -85,18 +86,22 @@ public class Client implements IClient{
         this.privateClient = privateClient;
     }
 
+    @Override
     public String getPhone() {
         return phone;
     }
 
+    @Override
     public void setPhone(String phone) {
         this.phone = phone;
     }
 
+    @Override
     public String getAddress() {
         return address;
     }
 
+    @Override
     public void setAddress(String address) {
         this.address = address;
     }
@@ -112,13 +117,16 @@ public class Client implements IClient{
         setNif(clientId);
     }
 
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public void setName(String nome) {
         this.name = nome;
     }
+
 
     public String getNif() {
         return nif;
