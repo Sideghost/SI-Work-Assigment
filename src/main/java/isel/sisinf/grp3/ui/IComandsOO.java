@@ -1,8 +1,8 @@
 package isel.sisinf.grp3.ui;
 
 public interface IComandsOO {
-    public void action();
+    void action();
 
-    public String getSintax();
+    String getSintax();
 
 }

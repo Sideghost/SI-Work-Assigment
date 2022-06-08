@@ -9,8 +9,13 @@ import java.time.LocalDate;
  * todo
  */
 @Entity
+@NamedStoredProcedureQuery(
+        name = ,
+        procedureName = "process_registers",
+        parameters = {}
+)
 @Table(name = "registos_nao_processados")
-public class Unprocessed_Registers implements IRegisters {
+public class UnprocessedRegisters implements IUnprocessedRegisters {
 
     @Id
     @Column(name = "id", nullable = false, length = 50)
@@ -18,7 +23,7 @@ public class Unprocessed_Registers implements IRegisters {
     private Long id;
 
     @Column(name = "id_gps", nullable = false, length = 50)
-    private Long id_gps;
+    private Long idGps;
 
     @MapsId
     @OneToOne(fetch = FetchType.LAZY, optional = false)
@@ -59,11 +64,11 @@ public class Unprocessed_Registers implements IRegisters {
 
     @Override
     public Long getIdGps() {
-        return id;
+        return idGps;
     }
 
     @Override
-    public void setIdGps(Long id) {
-        this.id = id;
+    public void setIdGps(Long idgps) {
+        this.idGps = idgps;
     }
 }

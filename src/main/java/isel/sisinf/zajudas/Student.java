@@ -90,7 +90,7 @@ public class Student {
 	}
 	
 	public Student() {} 
-	public Student(int stNumber,String name, java.util.Date dtBirth, char sex, int  homeCountry) 
+	public Student(int stNumber,String name, java.util.Date dtBirth, char sex, int homeCountry)
 	{
 		//How to construct a country? No JPAcontext code should be here. Again, the solution is to use a Virtual Proxy
 		this(stNumber,name,dtBirth,sex,null);
@@ -152,8 +152,6 @@ public class Student {
 	public void setHomeCountry(Country homeCountry) {
 		this.homeCountry = homeCountry;
 	}
-	
-	
 
 	public Set<Course> getCourses() {
 		return courses;
@@ -161,6 +159,4 @@ public class Student {
 	public void setCourses(Set<Course> courses) {
 		this.courses = courses;
 	}
-	
-	
 }

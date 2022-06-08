@@ -8,6 +8,17 @@ import java.math.BigDecimal;
  * todo
  */
 @Entity
+@NamedStoredProcedureQuery(
+        name =  , // TODO: 09/06/2022 esta e auxiliar e preciso por ?
+        procedureName = "valid_green_zone",
+        parameters = {
+                @StoredProcedureParameter(mode = ParameterMode.IN, type = Integer.class),
+                @StoredProcedureParameter(mode = ParameterMode.IN, type = Integer.class),
+                @StoredProcedureParameter(mode = ParameterMode.IN, type = Integer.class),
+                @StoredProcedureParameter(mode = ParameterMode.IN, type = Integer.class),
+                @StoredProcedureParameter(mode = ParameterMode.IN, type = Integer.class)
+        }
+)
 @Table(name = "zona_verde")
 public class GreenZone implements IGreenZone {
 

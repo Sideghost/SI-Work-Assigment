@@ -7,6 +7,15 @@ import jakarta.persistence.*;
  * todo
  */
 @Entity
+@NamedStoredProcedureQuery(
+        name = ,
+        procedureName = "number_of_alarms",
+        parameters = {
+                @StoredProcedureParameter(mode = ParameterMode.IN, type = Integer.class),
+                @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class),
+                @StoredProcedureParameter(mode = ParameterMode.OUT, type = Integer.class)
+        }
+)
 @Table(name = "veiculo")
 public class Vehicle implements IVehicle {
 

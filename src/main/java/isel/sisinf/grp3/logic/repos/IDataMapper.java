@@ -3,7 +3,7 @@ package isel.sisinf.grp3.logic.repos;
 /**
  * todo
  */
-public interface DataMapper<T, Tid> {
+public interface IDataMapper<T, Tid> {
     T Create(T entity);
 
     T Update(T entity);

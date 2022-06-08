@@ -12,12 +12,21 @@ import java.util.Set;
  * todo
  */
 @Entity
-@NamedQueries()
+@NamedQuery(name = "Client.findByKey",
+        query = "SELECT c FROM Client c WHERE c.nif =:key")
+@NamedStoredProcedureQuery(
+        name = "addVehicleToGreenZone",
+        procedureName = "add_vehicle_to_client_or_not", //todo procedimento que chama procedimento corre ou nao corre?
+        parameters = {
+                @StoredProcedureParameter(mode = ParameterMode.IN, type = Integer.class)//,
+                //@StoredProcedureParameter(mode = ParameterMode.REF_CURSOR, type = void.class)
+        }
+)
 @Table(name = "cliente")
 public class Client implements IClient {
 
     @Id
-    @Column(name = "nif", nullable = false, length = 15) // mudar para Integer
+    @Column(name = "nif", nullable = false, length = 15)
     private String nif;
 
     @Column(name = "nome", nullable = false, length = 100)

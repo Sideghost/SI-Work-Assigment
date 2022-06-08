@@ -8,8 +8,39 @@ import java.util.Set;
  * todo
  */
 @Entity
+@NamedStoredProcedureQuery(
+        name = "updatePrivateClient",
+        procedureName = "update_particular",
+        parameters = {
+                @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class),
+                @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class),
+                @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class),
+                @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class),
+                @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class),
+                @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class)
+        }
+)
+@NamedStoredProcedureQuery(
+        name = "insertPrivateClient",
+        procedureName = "insert_particular",
+        parameters = {
+                @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class),
+                @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class),
+                @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class),
+                @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class),
+                @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class),
+                @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class),
+        }
+)
+@NamedStoredProcedureQuery(
+        name = "removePrivateClient",
+        procedureName = "remove_particular",
+        parameters = {
+                @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class)
+        }
+)
 @Table(name = "particulares")
-public class PrivateClient implements IPrivateClient{
+public class PrivateClient implements IPrivateClient {
 
     @Id
     @Column(name = "nif", nullable = false, length = 15)

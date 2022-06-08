@@ -9,8 +9,13 @@ import java.time.LocalDate;
  * todo
  */
 @Entity
+@NamedStoredProcedureQuery(
+        name = "eliminateInvalidRegisters" ,
+        procedureName = "eliminate_invalid_registers",
+        parameters = {}
+)
 @Table(name = "Registos_invalidos")
-public class Invalid_Registers {
+public class InvalidRegisters implements IInvalidRegisters{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

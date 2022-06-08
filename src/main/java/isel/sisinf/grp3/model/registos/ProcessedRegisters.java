@@ -12,17 +12,17 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "registos_processados")
-public class Processed_Registers {
+public class ProcessedRegisters implements IProcessedRegisters {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private Integer id;
+    private Long id;
 
     @Column(name = "marca_temporal", nullable = false)
     private LocalDate timeStamp;
 
-    @ManyToMany
+    @ManyToMany // anotacao e esta ou OnetoOne
     @JoinTable(name = "alarmes",
             joinColumns = @JoinColumn(name = "id"),
             inverseJoinColumns = @JoinColumn(name = "id")) // inverseJoinColumns WTF is this?
@@ -44,11 +44,11 @@ public class Processed_Registers {
         this.timeStamp = timeStamp;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

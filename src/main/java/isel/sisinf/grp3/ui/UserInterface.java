@@ -35,6 +35,7 @@ public class UserInterface {
 
     /**
      * todo
+     *
      * @return
      */
     public static String readOption() {
@@ -43,6 +44,7 @@ public class UserInterface {
 
     /**
      * todo
+     *
      * @return
      */
     public static String readCommand() {

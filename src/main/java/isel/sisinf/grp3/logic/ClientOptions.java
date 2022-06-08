@@ -11,7 +11,6 @@ import java.util.Objects;
 public class ClientOptions {
 
     /**
-     *
      * @param client
      * @param newName
      * @param newAddress
@@ -20,16 +19,17 @@ public class ClientOptions {
      */
     void update(PrivateClient client, String newName, String newAddress, String newPhone, String newStatus) {
         Boolean status = client.getClient().getStatus();
-        if(newStatus != null && !(newAddress.trim()).isEmpty()) {
+        if (newStatus != null && !(newAddress.trim()).isEmpty()) {
             switch (newStatus) {
-                case "1": status = true;
-                case "0": status = false;
+                case "1":
+                    status = true;
+                case "0":
+                    status = false;
             }
         }
     }
 
     /**
-     *
      * @param privateClient
      */
     void remove(PrivateClient privateClient) {
@@ -37,7 +37,6 @@ public class ClientOptions {
     }
 
     /**
-     *
      * @param NIF
      * @param name
      * @param address

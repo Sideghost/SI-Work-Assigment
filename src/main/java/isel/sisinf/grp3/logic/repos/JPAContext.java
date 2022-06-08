@@ -27,7 +27,8 @@ package isel.sisinf.grp3.logic.repos;
 import isel.sisinf.grp3.model.GreenZone;
 import isel.sisinf.grp3.model.Vehicle;
 import isel.sisinf.grp3.model.client.Client;
-import isel.sisinf.grp3.model.registos.Unprocessed_Registers;
+import isel.sisinf.grp3.model.client.PrivateClient;
+import isel.sisinf.grp3.model.registos.UnprocessedRegisters;
 import jakarta.persistence.*;
 
 import java.util.Collection;
@@ -36,18 +37,16 @@ import java.util.List;
 /**
  * todo
  */
-public class JPAContext implements Context {
+public class JPAContext implements IContext {
 
     private final EntityManagerFactory emf;
     private final EntityManager em;
-
+    private final IClientRepository clientRepository;
+    private final IRegistersRepository registersRepository;
+    private final IVehicleRepository vehicleRepository;
+    private final IGreenZoneRepository greenZoneRepository;
     private EntityTransaction tx;
     private int txCount;
-
-    private final ClientRepository clientRepository;
-    private final RegistersRepository registersRepository;
-    private final VehicleRepository vehicleRepository;
-    private final GreenZoneRepository greenZoneRepository;
 
     /**
      * todo
@@ -58,16 +57,17 @@ public class JPAContext implements Context {
 
     /**
      * todo
+     *
      * @param persistentCtx
      */
     public JPAContext(String persistentCtx) {
         super(); // TODO: 07/06/2022 what this means ?
         emf = Persistence.createEntityManagerFactory(persistentCtx);
         em = emf.createEntityManager();
-        clientRepository = new ClientRepository();
-        vehicleRepository = new VehicleRepository();
-        registersRepository = new RegistersRepository();
-        greenZoneRepository = new GreenZoneRepository();
+        clientRepository = new IClientRepository();
+        vehicleRepository = new IVehicleRepository();
+        registersRepository = new IRegistersRepository();
+        greenZoneRepository = new IGreenZoneRepository();
     }
 
     /**
@@ -124,7 +124,7 @@ public class JPAContext implements Context {
      * @return
      */
     @Override
-    public ClientRepository getClients() {
+    public IClientRepository getClients() {
         return clientRepository;
     }
 
@@ -134,7 +134,7 @@ public class JPAContext implements Context {
      * @return
      */
     @Override
-    public RegistersRepository getRegisters() {
+    public IRegistersRepository getRegisters() {
         return registersRepository;
     }
 
@@ -144,7 +144,7 @@ public class JPAContext implements Context {
      * @return
      */
     @Override
-    public VehicleRepository getVehicles() {
+    public IVehicleRepository getVehicles() {
         return vehicleRepository;
     }
 
@@ -154,7 +154,7 @@ public class JPAContext implements Context {
      * @return
      */
     @Override
-    public GreenZoneRepository getGreenZones() {
+    public IGreenZoneRepository getGreenZones() {
         return greenZoneRepository;
     }
 
@@ -174,7 +174,7 @@ public class JPAContext implements Context {
     /**
      * todo por aqui as queries que queremos para cada class
      */
-    protected class ClientRepository implements isel.sisinf.grp3.logic.repos.ClientRepository {
+    protected class IClientRepository implements isel.sisinf.grp3.logic.repos.IClientRepository {
 
         /**
          * todo por aqui as queries que queremos para cada class
@@ -183,7 +183,7 @@ public class JPAContext implements Context {
          * @return
          */
         @Override
-        public Client findByKey(Long key) {
+        public Client findByKey(String key) {
             return em.createNamedQuery("Client.findByKey", Client.class).setParameter("key", key).getSingleResult();
         }
 
@@ -199,12 +199,22 @@ public class JPAContext implements Context {
         public Collection<Client> find(String jpql, Object... params) {
             return helperQueryImpl(jpql, params);
         }
+
+        @Override
+        public Collection<Client> getAllClients() {
+            return null;
+        }
+
+        @Override
+        public Integer getClientNrVehicles(PrivateClient privateClient) {
+            return null;
+        }
     }
 
     /**
      * todo por aqui as queries que queremos para cada class
      */
-    protected class RegistersRepository implements isel.sisinf.grp3.logic.repos.RegistersRepository {
+    protected class IRegistersRepository implements isel.sisinf.grp3.logic.repos.IRegistersRepository {
 
         /**
          * todo por aqui as queries que queremos para cada class
@@ -213,19 +223,20 @@ public class JPAContext implements Context {
          * @return
          */
         @Override
-        public Unprocessed_Registers findByKey(Long key) {
-            return em.createNamedQuery("Unprocessed_Registers.findByKey", Unprocessed_Registers.class).setParameter("key", key).getSingleResult();
+        public UnprocessedRegisters findByKey(Long key) {
+            return em.createNamedQuery("Unprocessed_Registers.findByKey", UnprocessedRegisters.class).setParameter("key", key).getSingleResult();
         }
 
         /**
          * todo
+         *
          * @param jpql
          * @param params
          * @return
          */
         @SuppressWarnings("unchecked")
         @Override
-        public Collection<Unprocessed_Registers> find(String jpql, Object... params) {
+        public Collection<UnprocessedRegisters> find(String jpql, Object... params) {
             return helperQueryImpl(jpql, params);
         }
     }
@@ -233,7 +244,7 @@ public class JPAContext implements Context {
     /**
      * todo por aqui as queries que queremos para cada class
      */
-    protected class VehicleRepository implements isel.sisinf.grp3.logic.repos.VehicleRepository {
+    protected class IVehicleRepository implements isel.sisinf.grp3.logic.repos.IVehicleRepository {
 
         /**
          * todo por aqui as queries que queremos para cada class
@@ -248,6 +259,7 @@ public class JPAContext implements Context {
 
         /**
          * todo
+         *
          * @param jpql
          * @param params
          * @return
@@ -262,7 +274,7 @@ public class JPAContext implements Context {
     /**
      * todo por aqui as queries que queremos para cada class
      */
-    protected class GreenZoneRepository implements isel.sisinf.grp3.logic.repos.GreenZoneRepository {
+    protected class IGreenZoneRepository implements isel.sisinf.grp3.logic.repos.IGreenZoneRepository {
 
         /**
          * todo por aqui as queries que queremos para cada class
@@ -277,6 +289,7 @@ public class JPAContext implements Context {
 
         /**
          * todo
+         *
          * @param jpql
          * @param params
          * @return

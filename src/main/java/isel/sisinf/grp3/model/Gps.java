@@ -1,6 +1,6 @@
 package isel.sisinf.grp3.model;
 
-import isel.sisinf.grp3.model.registos.Unprocessed_Registers;
+import isel.sisinf.grp3.model.registos.UnprocessedRegisters;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -32,14 +32,14 @@ public class Gps {
     private Set<Vehicle> vehicles = new LinkedHashSet<>();
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "Gps")
-    private Unprocessed_Registers registosNaoProcessado;
+    private UnprocessedRegisters unprocessedRegisters;
 
-    public Unprocessed_Registers getRegistosNaoProcessado() {
-        return registosNaoProcessado;
+    public UnprocessedRegisters getUnprocessedRegisters() {
+        return unprocessedRegisters;
     }
 
-    public void setRegistosNaoProcessado(Unprocessed_Registers registosNaoProcessado) {
-        this.registosNaoProcessado = registosNaoProcessado;
+    public void setUnprocessedRegisters(UnprocessedRegisters registosNaoProcessado) {
+        this.unprocessedRegisters = registosNaoProcessado;
     }
 
     public Set<Vehicle> getVeiculos() {

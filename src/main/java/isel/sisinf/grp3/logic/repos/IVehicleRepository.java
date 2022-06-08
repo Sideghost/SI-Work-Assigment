@@ -7,6 +7,6 @@ import java.util.Collection;
 /**
  * todo
  */
-public interface VehicleRepository extends Repository<Vehicle, Collection<Vehicle>, Long/*why*/> {
+public interface IVehicleRepository extends IRepository<Vehicle, Collection<Vehicle>, Long/*why*/> {
 
 }

@@ -3,7 +3,7 @@ package isel.sisinf.grp3.model.client;
 /**
  * todo
  */
-public interface IInstitucionalClient extends IClient{
+public interface IInstitucionalClient extends IClient {
 
     String getContactName();
 

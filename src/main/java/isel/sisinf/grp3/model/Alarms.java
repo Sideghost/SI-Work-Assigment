@@ -1,6 +1,6 @@
 package isel.sisinf.grp3.model;
 
-import isel.sisinf.grp3.model.registos.Processed_Registers;
+import isel.sisinf.grp3.model.registos.ProcessedRegisters;
 import jakarta.persistence.*;
 
 /**
@@ -19,7 +19,7 @@ public class Alarms {
     @JoinTable(name = "registos_processados",
             joinColumns = @JoinColumn(name = "id"),
             inverseJoinColumns = @JoinColumn(name = "id"))
-    private Processed_Registers registerId;
+    private ProcessedRegisters registerId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinTable(name = "veiculo",
@@ -35,11 +35,11 @@ public class Alarms {
         this.vehicle = vehicle;
     }
 
-    public Processed_Registers getRegisterId() {
+    public ProcessedRegisters getRegisterId() {
         return registerId;
     }
 
-    public void setRegisterId(Processed_Registers registerId) {
+    public void setRegisterId(ProcessedRegisters registerId) {
         this.registerId = registerId;
     }
 

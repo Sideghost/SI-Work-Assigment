@@ -7,6 +7,6 @@ import java.util.Collection;
 /**
  * todo
  */
-public interface GreenZoneRepository extends Repository<GreenZone, Collection<GreenZone>, Long/*why*/> {
+public interface IGreenZoneRepository extends IRepository<GreenZone, Collection<GreenZone>, Long/*why*/> {
 
 }

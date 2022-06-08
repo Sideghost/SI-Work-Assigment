@@ -2,7 +2,7 @@ package isel.sisinf.grp3.ui;
 
 import java.util.Map;
 
-public class CommandsOO implements IComandsOO{
+public class CommandsOO implements IComandsOO {
     @Override
     public void action() {
 
@@ -14,9 +14,10 @@ public class CommandsOO implements IComandsOO{
     }
 
     public Map<String, CommandsOO> getCommandsOO() {
-        return Map.ofEntries(Map.entry("EXIT" , this.action() {
+        return Map.ofEntries(Map.entry("EXIT", this.action() {
             String something = "2";
-        };),);
+        }
+        ),)
     }
 
 }
