@@ -58,28 +58,15 @@ interface DbWorker {
 }
 
 class App {
-    private enum Option {
-        Unknown,
-        Exit,
-        ListStudent,
-        ListCourse,
-        RegisterStudent,
-        EnrolStudent
-    }
-
     private static App __instance = null;
-    private String __connectionString;
-    private HashMap<Option, DbWorker> __dbMethods;
-
-
     /**
      * Devia estar noutra classe, dado que pertende à DAL. Apenas para motivo pedagógicos.
      */
     private final String __jpaPU = "AP6";
+    private String __connectionString;
+    private final HashMap<Option, DbWorker> __dbMethods;
     private EntityManagerFactory __emf = null;
     private Credentials __cred = null;
-
-
     private App() {
         __dbMethods = new HashMap<Option, DbWorker>();
         __dbMethods.put(Option.ListStudent, new DbWorker() {
@@ -112,20 +99,9 @@ class App {
         return __instance;
     }
 
-    public class Credentials {
-        private String _userName;
-        private String _pass;
-
-        public Credentials(String user, String pass) {
-            _userName = user;
-            _pass = pass;
-        }
-
-        public void Clean() {
-            _userName = "";
-            _pass = "";
-
-        }
+    private final static void clearConsole() throws Exception {
+        for (int y = 0; y < 25; y++) //console is 80 columns and 25 lines
+            System.out.println("\n");
 
     }
 
@@ -152,12 +128,6 @@ class App {
         }
 
         return option;
-
-    }
-
-    private final static void clearConsole() throws Exception {
-        for (int y = 0; y < 25; y++) //console is 80 columns and 25 lines
-            System.out.println("\n");
 
     }
 
@@ -250,6 +220,32 @@ class App {
         System.out.println("EnrolStudent()");
     }
 
+    private enum Option {
+        Unknown,
+        Exit,
+        ListStudent,
+        ListCourse,
+        RegisterStudent,
+        EnrolStudent
+    }
+
+    public class Credentials {
+        private String _userName;
+        private String _pass;
+
+        public Credentials(String user, String pass) {
+            _userName = user;
+            _pass = pass;
+        }
+
+        public void Clean() {
+            _userName = "";
+            _pass = "";
+
+        }
+
+    }
+
 }
 
 public class Ap6 {
@@ -278,7 +274,7 @@ public class Ap6 {
     }
 
 
-    public static void main(String[] args) throws SQLException, Exception {
+    public static void main(String[] args) throws Exception {
 
 
         isel.sisinf.ap6.App.Credentials credentials = getCredentials();

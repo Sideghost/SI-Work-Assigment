@@ -3,26 +3,27 @@ package isel.sisinf.grp3.model.client;
 import java.util.Set;
 
 /**
- *
+ * todo
  */
 public interface IClient {
-    public String getClientId();
-    public void setClientId(String clientId);
+    String getClientId();
 
-    public String getName();
-    public void setName(String name);
+    void setClientId(String clientId);
 
-    public String getAddress();
-    public void setAddress(String address);
+    String getName();
 
-    public String getPhone();
-    public void setPhone(String phone);
+    void setName(String name);
 
-    public String getCC();
-    public void setCC(String CC);
+    String getAddress();
 
-    public String getReference(); // TODO: 07/06/2022 devera ser set de clientes ou set de referencias?
-    public void setReference(String reference);
-    public Set<Client> getClients();
-    public void setClients(Set<Client> clients);
+    void setAddress(String address);
+
+    String getPhone();
+
+    void setPhone(String phone);
+
+    String getReference(); // TODO: 07/06/2022 devera ser set de clientes ou set de referencias?
+
+    void setReference(String reference);
+
 }

@@ -12,6 +12,7 @@ import java.util.Set;
  * todo
  */
 @Entity
+@NamedQueries()
 @Table(name = "cliente")
 public class Client implements IClient {
 
@@ -54,7 +55,7 @@ public class Client implements IClient {
         this.status = status;
     }
 
-    public Set<Client> getReference() {
+    public String getReference() {
         return reference;
     }
 

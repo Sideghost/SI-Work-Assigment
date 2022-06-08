@@ -2,9 +2,14 @@ package isel.sisinf.grp3.model.client;
 
 import jakarta.persistence.*;
 
+import java.util.Set;
+
+/**
+ * todo
+ */
 @Entity
 @Table(name = "institucionais")
-public class InstitutionalClient {
+public class InstitutionalClient implements IInstitucionalClient {
 
     @Id
     @Column(name = "nif", nullable = false, length = 15)
@@ -42,4 +47,63 @@ public class InstitutionalClient {
         this.id = id;
     }
 
+    @Override
+    public String getClientId() {
+        return null;
+    }
+
+    @Override
+    public void setClientId(String clientId) {
+
+    }
+
+    @Override
+    public String getName() {
+        return null;
+    }
+
+    @Override
+    public void setName(String name) {
+
+    }
+
+    @Override
+    public String getAddress() {
+        return null;
+    }
+
+    @Override
+    public void setAddress(String address) {
+
+    }
+
+    @Override
+    public String getPhone() {
+        return null;
+    }
+
+    @Override
+    public void setPhone(String phone) {
+
+    }
+
+    @Override
+    public String getReference() {
+        return null;
+    }
+
+    @Override
+    public void setReference(String reference) {
+
+    }
+
+    @Override
+    public Set<Client> getClients() {
+        return null;
+    }
+
+    @Override
+    public void setClients(Set<Client> clients) {
+
+    }
 }

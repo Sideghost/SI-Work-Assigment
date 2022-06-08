@@ -1,17 +1,13 @@
 package isel.sisinf.grp3.ui;
 
-import isel.sisinf.grp3.model.client.PrivateClient;
-
 import java.sql.*;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public interface Command {  // TODO: 06/06/2022 meter aqui os repos
-    void execute();
-}
-
-
+/**
+ * todo
+ */
 class Commands {
 
     //Constants
@@ -21,8 +17,9 @@ class Commands {
 
     /**
      * Executes the Insert, Update or Create query.
-     * @param con database connection
-     * @param stmt statement to be used
+     *
+     * @param con   database connection
+     * @param stmt  statement to be used
      * @param query query to be executed
      */
 
@@ -35,7 +32,8 @@ class Commands {
 
     /**
      * Executes the Insert, Update or Create query in the prepared statement.
-     * @param con database connection
+     *
+     * @param con  database connection
      * @param stmt statement to be used
      */
 
@@ -47,7 +45,7 @@ class Commands {
     }
 
 
-    static class exitCommand implements Command {
+    static class exitCommand implements ICommand {
 
         /**
          * Exits the application.
@@ -61,7 +59,7 @@ class Commands {
     }
 
 
-    static class updatePrivateClient implements Command { // TODO: 06/06/2022
+    static class updatePrivateClient implements ICommand { // TODO: 06/06/2022
 
         private static final int idIdx = 1;
         private static final int nameIdx = 2;
@@ -74,7 +72,6 @@ class Commands {
         private static final int typeIdIdx = 9;
         private static final int companyIdIdx = 10;
         private static final int managerIdIdx = 11;
-
 
 
         @Override
@@ -185,10 +182,11 @@ class Commands {
     }
 
 
-    static class totalAlarms implements Command {
+    static class totalAlarms implements ICommand {
 
         /**
          * Replaces a person in a team with another one by specifying the substitute and removed person ids.
+         *
          * @throws SQLException
          */
 
@@ -203,10 +201,10 @@ class Commands {
             String year = UserInterface.readCommand();
             System.out.print("Enter the licence plate:");
             String licencePlate = UserInterface.readCommand();
-            if(licencePlate.isEmpty()){
+            if (licencePlate.isEmpty()) {
                 ResultSet result = stmt.executeQuery("count(matricula) numero_alarmes from Alarmes join GPS on id_gps = GPS.id");
-            }
-            else ResultSet result =  stmt.executeQuery("count(matricula) numero_alarmes from Alarmes join GPS on id_gps = GPS.id where (matricula = matricula_ and extract(year from GPS.marca_temporal) = ano)")
+            } else
+                ResultSet result = stmt.executeQuery("count(matricula) numero_alarmes from Alarmes join GPS on id_gps = GPS.id where (matricula = matricula_ and extract(year from GPS.marca_temporal) = ano)");
             //String teamId = reader.nextLine().trim();
             ResultSet result = stmt.executeQuery("select codigo from EQUIPA where codigo = " + teamId);
             if (!result.next()) {
@@ -231,7 +229,7 @@ class Commands {
                 return;
             }
 
-            String removeFromTeam =  "update PESSOA set equipa = " + "NULL" + " " + "where id = " + replacedId;
+            String removeFromTeam = "update PESSOA set equipa = " + "NULL" + " " + "where id = " + replacedId;
             String addToTeam = "update PESSOA set equipa = " + teamId + " " + "where id = " + substituteId;
             commitUpdate(con, stmt, removeFromTeam);
             commitUpdate(con, stmt, addToTeam);
@@ -240,10 +238,11 @@ class Commands {
     }
 
 
-    static class makeAssetOutOfService implements Command {
+    static class makeAssetOutOfService implements ICommand {
 
         /**
          * Puts an asset out of service by assigning 0 to state column.
+         *
          * @throws SQLException
          */
 
@@ -269,10 +268,11 @@ class Commands {
     }
 
 
-    static class getAssetTotalCost implements Command {
+    static class getAssetTotalCost implements ICommand {
 
         /**
          * Gets the total cost of an asset specified by the user.
+         *
          * @throws SQLException
          */
 
@@ -305,10 +305,11 @@ class Commands {
     }
 
 
-    static class getWorkersAndManagersOf implements Command {
+    static class getWorkersAndManagersOf implements ICommand {
 
         /**
          * Gets all the people working on or managing a certain asset.
+         *
          * @throws SQLException
          */
 
@@ -365,10 +366,11 @@ class Commands {
     }
 
 
-    static class getAllActivesOf implements Command {
+    static class getAllActivesOf implements ICommand {
 
         /**
          * Gets all actives names managed or inspected by a certain person.
+         *
          * @throws SQLException
          */
 
@@ -387,7 +389,7 @@ class Commands {
 
             Connection con = Connect.getConnected();
             Statement stmt = con.createStatement(TYPE_SCROLL_INSENSITIVE, CONCUR_READ_ONLY);
-            ResultSet result = stmt.executeQuery("select id from PESSOA where id = " + personId );
+            ResultSet result = stmt.executeQuery("select id from PESSOA where id = " + personId);
             if (!result.next()) {
                 System.out.println("Please insert a valid person Id. Aborting...");
                 return;
@@ -427,7 +429,7 @@ class Commands {
     }
 
 
-    static class getTeamManagersThatHadOrHaveAssets implements Command {
+    static class getTeamManagersThatHadOrHaveAssets implements ICommand {
 
         /**
          * Gets the team's managers that had or have assets.
@@ -469,7 +471,7 @@ class Commands {
     }
 
 
-    static class everyInterventionUntil implements Command {
+    static class everyInterventionUntil implements ICommand {
 
         /**
          * Gets the future interventions in a set time specified by the user ( in days ).

@@ -8,6 +8,9 @@ import java.time.Instant;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+/**
+ * todo
+ */
 @Entity
 @Table(name = "gps")
 public class Gps {

@@ -5,9 +5,12 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 
+/**
+ * todo
+ */
 @Entity
 @Table(name = "registos_nao_processados")
-public class Unprocessed_Registers implements IRegisters{
+public class Unprocessed_Registers implements IRegisters {
 
     @Id
     @Column(name = "id", nullable = false, length = 50)
@@ -48,6 +51,7 @@ public class Unprocessed_Registers implements IRegisters{
     public Long getId() {
         return id;
     }
+
     @Override
     public void setId(Long id) {
         this.id = id;

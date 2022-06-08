@@ -2,13 +2,19 @@ package isel.sisinf.grp3.model.registos;
 
 import java.time.LocalDate;
 
+/**
+ * todo
+ */
 public interface IRegisters {
-    public Long getId();
-    public void setId(Long Id);
+    Long getId();
 
-    public Long getIdGps();
-    public void setIdGps(Long idGps);
+    void setId(Long Id);
 
-    public LocalDate getTimeStamp();
-    public void setTimeStamp(LocalDate timeStamp);
+    Long getIdGps();
+
+    void setIdGps(Long idGps);
+
+    LocalDate getTimeStamp();
+
+    void setTimeStamp(LocalDate timeStamp);
 }

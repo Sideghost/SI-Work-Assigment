@@ -4,5 +4,8 @@ import isel.sisinf.grp3.model.client.Client;
 
 import java.util.Collection;
 
-public interface ClientRepository extends Repository<Client, Collection<Client>, Long/*why*/>{
+/**
+ * todo
+ */
+public interface ClientRepository extends Repository<Client, Collection<Client>, Long/*tipo da chave*/> {
 }

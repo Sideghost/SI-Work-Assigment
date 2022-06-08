@@ -3,16 +3,20 @@ package isel.sisinf.grp3.model;
 import java.math.BigDecimal;
 
 public interface IGreenZone {
-    public Long getId();
-    public void setId(Long Id);
+    Long getId();
 
-    public Integer getRadius();
-    public void setRadius(Integer radius);
+    void setId(Long Id);
 
-    public BigDecimal getLongitude();
-    public void setLongitude(BigDecimal longitude);
+    Integer getRadius();
 
-    public BigDecimal getLatitude();
-    public void setLatitude(BigDecimal latitude);
+    void setRadius(Integer radius);
+
+    BigDecimal getLongitude();
+
+    void setLongitude(BigDecimal longitude);
+
+    BigDecimal getLatitude();
+
+    void setLatitude(BigDecimal latitude);
 
 }

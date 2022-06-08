@@ -28,32 +28,19 @@ create procedure update_particular(NIF_ varchar, new_nome varchar, new_morada va
 as
 $$
 begin
-        ASSERT
-(Nif_ is not null), "Nif can't be null";
-	    if
-(new_nome is not null) then
-update CLIENTE
-set nome = new_nome
-where NIF = NIF_;
-end if;
-	    if
-(new_morada is not null) then
-update CLIENTE
-set morada = new_morada
-where NIF = NIF_;
-end if;
-	    if
-(new_telefone is not null) then
-update CLIENTE
-set telefone = new_telefone
-where NIF = NIF_;
-end if;
-	    if
-(new_ativo is not null) then
-update CLIENTE
-set ativo = new_ativo
-where NIF = NIF_;
-end if;
+        ASSERT(Nif_ is not null), "Nif can't be null";
+	    if(new_nome is not null) then
+	        update CLIENTE set nome = new_nome where NIF = NIF_;
+        end if;
+	    if(new_morada is not null) then
+            update CLIENTE set morada = new_morada where NIF = NIF_;
+        end if;
+	    if (new_telefone is not null) then
+            update CLIENTE set telefone = new_telefone where NIF = NIF_;
+        end if;
+	    if (new_ativo is not null) then
+            update CLIENTE set ativo = new_ativo where NIF = NIF_;
+        end if;
 end;
 $$;
 

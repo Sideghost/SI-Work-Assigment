@@ -34,6 +34,21 @@ public class Student {
 
     @Id
     private int studentNumber;
+    private String name;
+    private Date dateBirth;
+    private char sex;
+    private Country homeCountry;
+
+    public Student() {
+    }
+
+    public Student(int stNumber, String name, java.util.Date dtBirth, char sex, Country homeCountry) {
+        this.studentNumber = stNumber;
+        this.name = name;
+        this.dateBirth = new Date(dtBirth.getTime());
+        this.sex = sex;
+        this.homeCountry = homeCountry;
+    }
 
     @Override
     public int hashCode() {
@@ -52,17 +67,6 @@ public class Student {
         return studentNumber == other.studentNumber;
     }
 
-    public Student() {
-    }
-
-    public Student(int stNumber, String name, java.util.Date dtBirth, char sex, Country homeCountry) {
-        this.studentNumber = stNumber;
-        this.name = name;
-        this.dateBirth = new Date(dtBirth.getTime());
-        this.sex = sex;
-        this.homeCountry = homeCountry;
-    }
-
     public int getStudentNumber() {
         return studentNumber;
     }
@@ -71,8 +75,6 @@ public class Student {
         this.studentNumber = studentNumber;
     }
 
-    private String name;
-
     public String getName() {
         return name;
     }
@@ -80,11 +82,6 @@ public class Student {
     public void setName(String name) {
         this.name = name;
     }
-
-    private Date dateBirth;
-
-    private char sex;
-
 
     public Date getDateBirth() {
         return dateBirth;
@@ -109,8 +106,6 @@ public class Student {
     public void setHomeCountry(Country homeCountry) {
         this.homeCountry = homeCountry;
     }
-
-    private Country homeCountry;
 
     @Override
     public String toString() {

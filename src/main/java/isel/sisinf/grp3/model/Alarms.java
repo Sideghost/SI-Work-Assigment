@@ -3,6 +3,9 @@ package isel.sisinf.grp3.model;
 import isel.sisinf.grp3.model.registos.Processed_Registers;
 import jakarta.persistence.*;
 
+/**
+ * todo
+ */
 @Entity
 @Table(name = "Alarmes")
 public class Alarms {

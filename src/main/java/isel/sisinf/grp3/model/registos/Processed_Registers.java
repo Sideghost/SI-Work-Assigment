@@ -7,6 +7,9 @@ import java.time.LocalDate;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+/**
+ * todo
+ */
 @Entity
 @Table(name = "registos_processados")
 public class Processed_Registers {

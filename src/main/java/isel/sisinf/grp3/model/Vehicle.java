@@ -3,6 +3,9 @@ package isel.sisinf.grp3.model;
 import isel.sisinf.grp3.model.client.Client;
 import jakarta.persistence.*;
 
+/**
+ * todo
+ */
 @Entity
 @Table(name = "veiculo")
 public class Vehicle implements IVehicle {

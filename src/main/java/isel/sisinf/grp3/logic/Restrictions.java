@@ -1,9 +1,11 @@
 package isel.sisinf.grp3.logic;
 
-import org.glassfish.jaxb.core.v2.TODO;
-
+/**
+ * todo
+ */
 public class Restrictions {
 
-    void checkRestrictions(){}
+    void checkRestrictions() {
+    }
 
 }

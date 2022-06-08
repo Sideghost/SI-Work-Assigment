@@ -4,9 +4,12 @@ import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 
+/**
+ * todo
+ */
 @Entity
 @Table(name = "zona_verde")
-public class GreenZone implements IGreenZone{
+public class GreenZone implements IGreenZone {
 
     @Id
     @Column(name = "id", nullable = false, length = 50)

@@ -5,6 +5,9 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 
+/**
+ * todo
+ */
 @Entity
 @Table(name = "Registos_invalidos")
 public class Invalid_Registers {

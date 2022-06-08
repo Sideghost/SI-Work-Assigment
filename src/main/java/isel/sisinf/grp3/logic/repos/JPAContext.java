@@ -36,145 +36,66 @@ import java.util.List;
 /**
  * todo
  */
-public class JPAContext implements Context{
+public class JPAContext implements Context {
 
-    private EntityManagerFactory emf;
-    private EntityManager em;
+    private final EntityManagerFactory emf;
+    private final EntityManager em;
 
     private EntityTransaction tx;
     private int txCount;
 
-    private ClientRepository clientRepository;
-    private RegistersRepository registersRepository;
-    private VehicleRepository vehicleRepository;
-    private GreenZoneRepository greenZoneRepository;
+    private final ClientRepository clientRepository;
+    private final RegistersRepository registersRepository;
+    private final VehicleRepository vehicleRepository;
+    private final GreenZoneRepository greenZoneRepository;
 
     /**
      * todo
+     */
+    public JPAContext() {
+        this("t42dg3");
+    }
+
+    /**
+     * todo
+     * @param persistentCtx
+     */
+    public JPAContext(String persistentCtx) {
+        super(); // TODO: 07/06/2022 what this means ?
+        emf = Persistence.createEntityManagerFactory(persistentCtx);
+        em = emf.createEntityManager();
+        clientRepository = new ClientRepository();
+        vehicleRepository = new VehicleRepository();
+        registersRepository = new RegistersRepository();
+        greenZoneRepository = new GreenZoneRepository();
+    }
+
+    /**
+     * todo
+     *
      * @param jpql
      * @param params
      * @return
      */
-    protected List helperQueryImpl(String jpql, Object... params)
-    {
+    protected List helperQueryImpl(String jpql, Object... params) {
         Query q = em.createQuery(jpql);
 
-        for(int i = 0; i < params.length; ++i)
-            q.setParameter(i+1, params[i]);
+        for (int i = 0; i < params.length; ++i)
+            q.setParameter(i + 1, params[i]);
 
         return q.getResultList();
     }
-
-    /**
-     * todo por aqui as queries que queremos para cada class
-     */
-    protected class ClientRepository implements isel.sisinf.grp3.logic.repos.ClientRepository {
-
-        /**
-         * todo por aqui as queries que queremos para cada class
-         * @param key
-         * @return
-         */
-        @Override
-        public Client findByKey(Long key) {
-            return em.createNamedQuery("Client.findByKey", Client.class).setParameter("key", key).getSingleResult();
-        }
-
-        /**
-         * todo
-         * @param jpql
-         * @param params
-         * @return
-         */
-        @SuppressWarnings("unchecked")
-        @Override
-        public Collection<Client> find(String jpql, Object... params) {
-            return helperQueryImpl(jpql, params);
-        }
-    }
-
-    /**
-     *
-     * todo por aqui as queries que queremos para cada class
-     */
-    protected class RegistersRepository implements isel.sisinf.grp3.logic.repos.RegistersRepository {
-
-        /**
-         *
-         * todo por aqui as queries que queremos para cada class
-         * @param key
-         * @return
-         */
-        @Override
-        public Unprocessed_Registers findByKey(Long key) {
-            return em.createNamedQuery("Unprocessed_Registers.findByKey", Unprocessed_Registers.class).setParameter("key", key).getSingleResult();
-        }
-
-        @SuppressWarnings("unchecked")
-        @Override
-        public Collection<Unprocessed_Registers> find(String jpql, Object... params) {
-            return helperQueryImpl(jpql, params);
-        }
-    }
-
-
-    /**
-     * todo por aqui as queries que queremos para cada class
-     */
-    protected class VehicleRepository implements isel.sisinf.grp3.logic.repos.VehicleRepository {
-
-        /**
-         *
-         * todo por aqui as queries que queremos para cada class
-         * @param key
-         * @return
-         */
-        @Override
-        public Vehicle findByKey(Long key) {
-            return em.createNamedQuery("Vehicle.findByKey", Vehicle.class).setParameter("key", key).getSingleResult();
-        }
-
-        @SuppressWarnings("unchecked")
-        @Override
-        public Collection<Vehicle> find(String jpql, Object... params) {
-            return helperQueryImpl(jpql, params);
-        }
-    }
-
-    /**
-     * todo por aqui as queries que queremos para cada class
-     */
-    protected class GreenZoneRepository implements isel.sisinf.grp3.logic.repos.GreenZoneRepository{
-
-        /**
-         *
-         * todo por aqui as queries que queremos para cada class
-         * @param key
-         * @return
-         */
-        @Override
-        public GreenZone findByKey(Long key) {
-            return em.createNamedQuery("GreenZone.findByKey", GreenZone.class).setParameter("key", key).getSingleResult();
-        }
-
-        @SuppressWarnings("unchecked")
-        @Override
-        public Collection<GreenZone> find(String jpql, Object... params) {
-            return helperQueryImpl(jpql, params);
-        }
-    }
-
 
     /**
      * todo
      */
     @Override
     public void beginTransaction() {
-         if (tx == null){
-              tx = em.getTransaction();
-              tx.begin();
-              txCount = 0;
-         }
+        if (tx == null) {
+            tx = em.getTransaction();
+            tx.begin();
+            txCount = 0;
+        }
     }
 
     /**
@@ -183,7 +104,7 @@ public class JPAContext implements Context{
     @Override
     public void commit() {
         --txCount;
-        if (txCount == 0 & tx != null){
+        if (txCount == 0 & tx != null) {
             tx.commit();
             tx = null;
         }
@@ -197,22 +118,9 @@ public class JPAContext implements Context{
         em.flush();
     }
 
-    public JPAContext() {
-        this("t42dg3");
-    }
-
-    public JPAContext(String persistentCtx) {
-        super(); // TODO: 07/06/2022 what this means ?
-        emf = Persistence.createEntityManagerFactory(persistentCtx);
-        em = emf.createEntityManager();
-        clientRepository = new ClientRepository();
-        vehicleRepository = new VehicleRepository();
-        registersRepository = new RegistersRepository();
-        greenZoneRepository = new GreenZoneRepository();
-    }
-
     /**
      * todo
+     *
      * @return
      */
     @Override
@@ -222,6 +130,7 @@ public class JPAContext implements Context{
 
     /**
      * todo
+     *
      * @return
      */
     @Override
@@ -231,6 +140,7 @@ public class JPAContext implements Context{
 
     /**
      * todo
+     *
      * @return
      */
     @Override
@@ -240,6 +150,7 @@ public class JPAContext implements Context{
 
     /**
      * todo
+     *
      * @return
      */
     @Override
@@ -249,6 +160,7 @@ public class JPAContext implements Context{
 
     /**
      * todo
+     *
      * @throws Exception
      */
     @Override
@@ -257,5 +169,122 @@ public class JPAContext implements Context{
             tx.rollback();
         em.close();
         emf.close();
+    }
+
+    /**
+     * todo por aqui as queries que queremos para cada class
+     */
+    protected class ClientRepository implements isel.sisinf.grp3.logic.repos.ClientRepository {
+
+        /**
+         * todo por aqui as queries que queremos para cada class
+         *
+         * @param key
+         * @return
+         */
+        @Override
+        public Client findByKey(Long key) {
+            return em.createNamedQuery("Client.findByKey", Client.class).setParameter("key", key).getSingleResult();
+        }
+
+        /**
+         * todo
+         *
+         * @param jpql
+         * @param params
+         * @return
+         */
+        @SuppressWarnings("unchecked")
+        @Override
+        public Collection<Client> find(String jpql, Object... params) {
+            return helperQueryImpl(jpql, params);
+        }
+    }
+
+    /**
+     * todo por aqui as queries que queremos para cada class
+     */
+    protected class RegistersRepository implements isel.sisinf.grp3.logic.repos.RegistersRepository {
+
+        /**
+         * todo por aqui as queries que queremos para cada class
+         *
+         * @param key
+         * @return
+         */
+        @Override
+        public Unprocessed_Registers findByKey(Long key) {
+            return em.createNamedQuery("Unprocessed_Registers.findByKey", Unprocessed_Registers.class).setParameter("key", key).getSingleResult();
+        }
+
+        /**
+         * todo
+         * @param jpql
+         * @param params
+         * @return
+         */
+        @SuppressWarnings("unchecked")
+        @Override
+        public Collection<Unprocessed_Registers> find(String jpql, Object... params) {
+            return helperQueryImpl(jpql, params);
+        }
+    }
+
+    /**
+     * todo por aqui as queries que queremos para cada class
+     */
+    protected class VehicleRepository implements isel.sisinf.grp3.logic.repos.VehicleRepository {
+
+        /**
+         * todo por aqui as queries que queremos para cada class
+         *
+         * @param key
+         * @return
+         */
+        @Override
+        public Vehicle findByKey(Long key) {
+            return em.createNamedQuery("Vehicle.findByKey", Vehicle.class).setParameter("key", key).getSingleResult();
+        }
+
+        /**
+         * todo
+         * @param jpql
+         * @param params
+         * @return
+         */
+        @SuppressWarnings("unchecked")
+        @Override
+        public Collection<Vehicle> find(String jpql, Object... params) {
+            return helperQueryImpl(jpql, params);
+        }
+    }
+
+    /**
+     * todo por aqui as queries que queremos para cada class
+     */
+    protected class GreenZoneRepository implements isel.sisinf.grp3.logic.repos.GreenZoneRepository {
+
+        /**
+         * todo por aqui as queries que queremos para cada class
+         *
+         * @param key
+         * @return
+         */
+        @Override
+        public GreenZone findByKey(Long key) {
+            return em.createNamedQuery("GreenZone.findByKey", GreenZone.class).setParameter("key", key).getSingleResult();
+        }
+
+        /**
+         * todo
+         * @param jpql
+         * @param params
+         * @return
+         */
+        @SuppressWarnings("unchecked")
+        @Override
+        public Collection<GreenZone> find(String jpql, Object... params) {
+            return helperQueryImpl(jpql, params);
+        }
     }
 }
