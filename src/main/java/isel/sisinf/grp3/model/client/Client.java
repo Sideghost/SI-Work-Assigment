@@ -117,10 +117,7 @@ public class Client implements IClient {
     }
 
     @Override
-    public String getClientId() {
-        return getNif();
-
-    }
+    public String getClientId() { return getNif(); }
 
     @Override
     public void setClientId(String clientId) {
