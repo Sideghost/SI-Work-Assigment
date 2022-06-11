@@ -8,6 +8,8 @@ import java.math.BigDecimal;
  * todo
  */
 @Entity
+@NamedQuery(name = "GreenZone.findByKey",
+        query = "SELECT gz FROM GreenZone gz WHERE gz.id =:key")
 @NamedStoredProcedureQuery(
         name =  , // TODO: 09/06/2022 esta e auxiliar e preciso por ?
         procedureName = "valid_green_zone",

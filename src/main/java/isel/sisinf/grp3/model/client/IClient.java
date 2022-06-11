@@ -20,8 +20,8 @@ public interface IClient {
 
     void setPhone(String phone);
 
-    String getReference(); // TODO: 07/06/2022 devera ser set de clientes ou set de referencias? como e que e pra fazer esta merda
+    Client getReference();
 
-    void setReference(String reference);
+    void setReference(Client reference);
 
 }

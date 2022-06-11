@@ -8,6 +8,8 @@ import java.util.Set;
  * todo
  */
 @Entity
+@NamedQuery(name = "PrivateClient.findByKey",
+        query = "SELECT pc FROM PrivateClient pc WHERE pc.nif =:key")
 @NamedStoredProcedureQuery(
         name = "updatePrivateClient",
         procedureName = "update_particular",
@@ -111,12 +113,12 @@ public class PrivateClient implements IPrivateClient {
     }
 
     @Override
-    public String getReference() {
-        return client.getReference();
+    public Client getReference() {
+        return client;
     }
 
     @Override
-    public void setReference(String reference) {
+    public void setReference(Client reference) {
         client.setReference(reference);
     }
 

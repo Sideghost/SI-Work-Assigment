@@ -16,10 +16,9 @@ import java.util.Set;
         query = "SELECT c FROM Client c WHERE c.nif =:key")
 @NamedStoredProcedureQuery(
         name = "addVehicleToGreenZone",
-        procedureName = "add_vehicle_to_client_or_not", //todo procedimento que chama procedimento corre ou nao corre?
+        procedureName = "add_vehicle_to_client_or_not",
         parameters = {
-                @StoredProcedureParameter(mode = ParameterMode.IN, type = Integer.class)//,
-                //@StoredProcedureParameter(mode = ParameterMode.REF_CURSOR, type = void.class)
+                @StoredProcedureParameter(mode = ParameterMode.IN, type = Integer.class)
         }
 )
 @Table(name = "cliente")
@@ -50,11 +49,11 @@ public class Client implements IClient {
     @OneToMany(mappedBy = "clientNIF")
     private Set<Vehicle> vehicles = new LinkedHashSet<>();
 
-    @ManyToMany
+    @ManyToOne
     @JoinTable(name = "cliente",
             joinColumns = @JoinColumn(name = "referencia"),
             inverseJoinColumns = @JoinColumn(name = "referencia"))
-    private Set<Client> reference = new LinkedHashSet<>();
+    private Client reference;
 
     public Boolean getStatus() {
         return status;
@@ -64,12 +63,12 @@ public class Client implements IClient {
         this.status = status;
     }
 
-    public String getReference() {
+    public Client getReference() {
         return reference;
     }
 
-    public void setReference(Set<Client> clients) {
-        this.reference = clients;
+    public void setReference(Client client) {
+        this.reference = client;
     }
 
     public Set<Vehicle> getVehicles() {

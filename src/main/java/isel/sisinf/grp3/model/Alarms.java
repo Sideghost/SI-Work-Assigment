@@ -1,19 +1,22 @@
 package isel.sisinf.grp3.model;
 
-import isel.sisinf.grp3.model.registos.ProcessedRegisters;
+import isel.sisinf.grp3.model.registors.ProcessedRegisters;
 import jakarta.persistence.*;
+import org.eclipse.persistence.jpa.jpql.parser.DateTime;
 
 /**
  * todo
  */
 @Entity
-@Table(name = "Alarmes")
-public class Alarms {
+@NamedQuery(name = "Alarms.findByKey",
+        query = "SELECT a FROM Alarms a WHERE a.id =:key")
+@Table(name = "alarmes")
+public class Alarms implements IAlarm{
 
     @Id
     @Column(name = "id", nullable = false, length = 50)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinTable(name = "registos_processados",
@@ -43,11 +46,41 @@ public class Alarms {
         this.registerId = registerId;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
+    }
+
+    @Override
+    public void setAlarmId(Long id) {
+        setId(id);
+    }
+
+    @Override
+    public Long getAlarmId() {
+        return this.getId();
+    }
+
+    @Override
+    public void setGpsId(Long id) {
+
+    }
+
+    @Override
+    public Long getGpsId() {
+        return null;
+    }
+
+    @Override
+    public void setTimeStamp(DateTime timeStamp) {
+
+    }
+
+    @Override
+    public DateTime getTimestamp() {
+        return null;
     }
 }

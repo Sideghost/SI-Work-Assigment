@@ -1,6 +1,6 @@
 package isel.sisinf.grp3.model;
 
-import isel.sisinf.grp3.model.registos.UnprocessedRegisters;
+import isel.sisinf.grp3.model.registors.UnprocessedRegisters;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -12,6 +12,8 @@ import java.util.Set;
  * todo
  */
 @Entity
+@NamedQuery(name = "Gps.findByKey",
+        query = "SELECT gps FROM Gps gps WHERE gps.id =:key")
 @Table(name = "gps")
 public class Gps {
 

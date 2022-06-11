@@ -1,9 +1,9 @@
-package isel.sisinf.grp3.model.registos;
+package isel.sisinf.grp3.model.registors;
 
 import java.time.LocalDate;
 
 /**
- * todo
+ * Interface of a generic register.
  */
 public interface IRegisters {
     Long getId();

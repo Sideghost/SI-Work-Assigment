@@ -43,7 +43,7 @@ package isel.sisinf.zajudas;
  * */
 import java.util.List;
 
-import isel.sisinf.dal.v6.repo.JPAContext;
+import isel.sisinf.zajudas.repo.JPAContext;
 import jakarta.persistence.*;
 
 

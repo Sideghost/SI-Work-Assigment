@@ -28,10 +28,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-import isel.sisinf.dal.v6.Country;
-import isel.sisinf.dal.v6.Course;
-import isel.sisinf.dal.v6.Student;
-import isel.sisinf.dal.v6.IStudent;
+import isel.sisinf.zajudas.Country;
+import isel.sisinf.zajudas.Course;
+import isel.sisinf.zajudas.Student;
+import isel.sisinf.zajudas.IStudent;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;

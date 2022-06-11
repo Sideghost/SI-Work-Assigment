@@ -27,8 +27,11 @@ package isel.sisinf.grp3.logic.repos;
 import isel.sisinf.grp3.model.GreenZone;
 import isel.sisinf.grp3.model.Vehicle;
 import isel.sisinf.grp3.model.client.Client;
+import isel.sisinf.grp3.model.client.InstitutionalClient;
 import isel.sisinf.grp3.model.client.PrivateClient;
-import isel.sisinf.grp3.model.registos.UnprocessedRegisters;
+import isel.sisinf.grp3.model.registors.InvalidRegisters;
+import isel.sisinf.grp3.model.registors.ProcessedRegisters;
+import isel.sisinf.grp3.model.registors.UnprocessedRegisters;
 import jakarta.persistence.*;
 
 import java.util.Collection;
@@ -41,8 +44,13 @@ public class JPAContext implements IContext {
 
     private final EntityManagerFactory emf;
     private final EntityManager em;
+
     private final IClientRepository clientRepository;
-    private final IRegistersRepository registersRepository;
+    private final IInstitutionalClientRepository institutionalClientRepository;
+    private final IPrivateClientRepository privateClientRepository;
+    private final IInvalidRegistersRepository invalidRegistersRepository;
+    private final IUnprocessedRegistersRepository unprocessedRegistersRepository;
+    private final IProcessedRegistersRepository processedRegistersRepository;
     private final IVehicleRepository vehicleRepository;
     private final IGreenZoneRepository greenZoneRepository;
     private EntityTransaction tx;
@@ -61,12 +69,16 @@ public class JPAContext implements IContext {
      * @param persistentCtx
      */
     public JPAContext(String persistentCtx) {
-        super(); // TODO: 07/06/2022 what this means ?
+        super();
         emf = Persistence.createEntityManagerFactory(persistentCtx);
         em = emf.createEntityManager();
         clientRepository = new IClientRepository();
+        institutionalClientRepository = new IInstitutionalClientRepository();
+        privateClientRepository = new IPrivateClientRepository();
         vehicleRepository = new IVehicleRepository();
-        registersRepository = new IRegistersRepository();
+        invalidRegistersRepository = new IInvalidRegistersRepository();
+        unprocessedRegistersRepository = new IUnprocessedRegistersRepository();
+        processedRegistersRepository = new IProcessedRegistersRepository();
         greenZoneRepository = new IGreenZoneRepository();
     }
 
@@ -128,14 +140,29 @@ public class JPAContext implements IContext {
         return clientRepository;
     }
 
-    /**
-     * todo
-     *
-     * @return
-     */
     @Override
-    public IRegistersRepository getRegisters() {
-        return registersRepository;
+    public IPrivateClientRepository getPrivateClients() {
+        return privateClientRepository;
+    }
+
+    @Override
+    public IInstitutionalClientRepository getInstitutionalClients() {
+        return institutionalClientRepository;
+    }
+
+    @Override
+    public IUnprocessedRegistersRepository getUnprocessedRegisters() {
+        return unprocessedRegistersRepository;
+    }
+
+    @Override
+    public IInvalidRegistersRepository getInvalidRegisters() {
+        return invalidRegistersRepository;
+    }
+
+    @Override
+    public IProcessedRegistersRepository getProcessedRegisters() {
+        return processedRegistersRepository;
     }
 
     /**
@@ -174,10 +201,9 @@ public class JPAContext implements IContext {
     /**
      * todo por aqui as queries que queremos para cada class
      */
-    protected class IClientRepository implements isel.sisinf.grp3.logic.repos.IClientRepository {
+    protected class IClientRepository implements isel.sisinf.grp3.logic.repos.client.IClientRepository {
 
         /**
-         * todo por aqui as queries que queremos para cada class
          *
          * @param key
          * @return
@@ -199,32 +225,73 @@ public class JPAContext implements IContext {
         public Collection<Client> find(String jpql, Object... params) {
             return helperQueryImpl(jpql, params);
         }
+        // apenas fazer o repositorio com o find e o findByKey
 
+    }
+
+    protected class IPrivateClientRepository implements isel.sisinf.grp3.logic.repos.client.IPrivateClientRepository {
+
+        /**
+         *
+         * @param key
+         * @return
+         */
         @Override
-        public Collection<Client> getAllClients() {
-            return null;
+        public PrivateClient findByKey(String key) {
+            return em.createNamedQuery("PrivateClient.findByKey", PrivateClient.class).setParameter("key", key).getSingleResult();
         }
 
+        /**
+         *
+         * @param jpql
+         * @param params
+         * @return
+         */
+        @SuppressWarnings("unchecked")
         @Override
-        public Integer getClientNrVehicles(PrivateClient privateClient) {
-            return null;
+        public Collection<PrivateClient> find(String jpql, Object... params) {
+            return helperQueryImpl(jpql, params);
+        }
+    }
+
+    protected class IInstitutionalClientRepository implements isel.sisinf.grp3.logic.repos.client.IInstitutionalClientRepository {
+
+        /**
+         *
+         * @param key
+         * @return
+         */
+        @Override
+        public InstitutionalClient findByKey(String key) {
+            return em.createNamedQuery("InstitutionalClient.findByKey", InstitutionalClient.class).setParameter("key", key).getSingleResult();
+        }
+
+        /**
+         *
+         * @param jpql
+         * @param params
+         * @return
+         */
+        @SuppressWarnings("unchecked")
+        @Override
+        public Collection<InstitutionalClient> find(String jpql, Object... params) {
+            return helperQueryImpl(jpql,params);
         }
     }
 
     /**
-     * todo por aqui as queries que queremos para cada class
+     * todo
      */
-    protected class IRegistersRepository implements isel.sisinf.grp3.logic.repos.IRegistersRepository {
+    protected class IUnprocessedRegistersRepository implements isel.sisinf.grp3.logic.repos.registers.IUnprocessedRegistersRepository {
 
         /**
-         * todo por aqui as queries que queremos para cada class
          *
          * @param key
          * @return
          */
         @Override
         public UnprocessedRegisters findByKey(Long key) {
-            return em.createNamedQuery("Unprocessed_Registers.findByKey", UnprocessedRegisters.class).setParameter("key", key).getSingleResult();
+            return em.createNamedQuery("UnprocessedRegisters.findByKey", UnprocessedRegisters.class).setParameter("key", key).getSingleResult();
         }
 
         /**
@@ -237,6 +304,62 @@ public class JPAContext implements IContext {
         @SuppressWarnings("unchecked")
         @Override
         public Collection<UnprocessedRegisters> find(String jpql, Object... params) {
+            return helperQueryImpl(jpql, params);
+        }
+    }
+
+    /**
+     * todo
+     */
+    protected class IInvalidRegistersRepository implements isel.sisinf.grp3.logic.repos.registers.IInvalidRegistersRepository {
+
+        /**
+         * todo
+         * @param key
+         * @return
+         */
+        @Override
+        public InvalidRegisters findByKey(Long key) {
+            return em.createNamedQuery("InvalidRegisters.findByKey", InvalidRegisters.class).setParameter("key", key).getSingleResult();
+        }
+
+        /**
+         * todo
+         * @param jpql
+         * @param params
+         * @return
+         */
+        @SuppressWarnings("unchecked")
+        @Override
+        public Collection<InvalidRegisters> find(String jpql, Object... params) {
+            return helperQueryImpl(jpql, params);
+        }
+    }
+
+    /**
+     * todo
+     */
+    protected class IProcessedRegistersRepository implements isel.sisinf.grp3.logic.repos.registers.IProcessedRegistersRepository {
+
+        /**
+         * todo
+         * @param key
+         * @return
+         */
+        @Override
+        public ProcessedRegisters findByKey(Long key) {
+            return em.createNamedQuery("ProcessedRegisters.findByKey", ProcessedRegisters.class).setParameter("key", key).getSingleResult();
+        }
+
+        /**
+         * todo
+         * @param jpql
+         * @param params
+         * @return
+         */
+        @SuppressWarnings("unchecked")
+        @Override
+        public Collection<ProcessedRegisters> find(String jpql, Object... params) {
             return helperQueryImpl(jpql, params);
         }
     }
@@ -300,4 +423,8 @@ public class JPAContext implements IContext {
             return helperQueryImpl(jpql, params);
         }
     }
+
+
+
+
 }

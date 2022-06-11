@@ -7,6 +7,8 @@ import jakarta.persistence.*;
  * todo
  */
 @Entity
+@NamedQuery(name = "Vehicle.findByKey",
+        query = "SELECT v FROM Vehicle v WHERE v.licencePlate =:key")
 @NamedStoredProcedureQuery(
         name = ,
         procedureName = "number_of_alarms",

@@ -1,4 +1,4 @@
-package isel.sisinf.grp3.model.registos;
+package isel.sisinf.grp3.model.registors;
 
 import isel.sisinf.grp3.model.Vehicle;
 import jakarta.persistence.*;
@@ -11,6 +11,8 @@ import java.util.Set;
  * todo
  */
 @Entity
+@NamedQuery(name = "ProcessedRegisters.findByKey",
+        query = "SELECT pr FROM ProcessedRegisters pr WHERE pr.id =:key")
 @Table(name = "registos_processados")
 public class ProcessedRegisters implements IProcessedRegisters {
 
@@ -25,7 +27,7 @@ public class ProcessedRegisters implements IProcessedRegisters {
     @ManyToMany // anotacao e esta ou OnetoOne
     @JoinTable(name = "alarmes",
             joinColumns = @JoinColumn(name = "id"),
-            inverseJoinColumns = @JoinColumn(name = "id")) // inverseJoinColumns WTF is this?
+            inverseJoinColumns = @JoinColumn(name = "id")) // inverseJoinColumns WTF is this? tabela no meio para saber juntar info
     private Set<Vehicle> vehicles = new LinkedHashSet<>();
 
     public Set<Vehicle> getVehicles() {
@@ -50,6 +52,16 @@ public class ProcessedRegisters implements IProcessedRegisters {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    @Override
+    public Long getIdGps() { // TODO: 11/06/2022 como?
+        return null;
+    }
+
+    @Override
+    public void setIdGps(Long idGps) {
+
     }
 
 }

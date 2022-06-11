@@ -1,4 +1,4 @@
-package isel.sisinf.grp3.model.registos;
+package isel.sisinf.grp3.model.registors;
 
 import isel.sisinf.grp3.model.Gps;
 import jakarta.persistence.*;
@@ -9,8 +9,10 @@ import java.time.LocalDate;
  * todo
  */
 @Entity
+@NamedQuery(name = "UnprocessedRegisters.findByKey",
+        query = "SELECT ur FROM UnprocessedRegisters ur WHERE ur.id =:key")
 @NamedStoredProcedureQuery(
-        name = ,
+        name = "", //todo
         procedureName = "process_registers",
         parameters = {}
 )

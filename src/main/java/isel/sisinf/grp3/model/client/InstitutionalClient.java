@@ -2,18 +2,18 @@ package isel.sisinf.grp3.model.client;
 
 import jakarta.persistence.*;
 
-import java.util.Set;
-
 /**
  * todo
  */
 @Entity
+@NamedQuery(name = "InstitutionalClient.findByKey",
+        query = "SELECT ic FROM InstitutionalClient ic WHERE ic.nif =:key")
 @Table(name = "institucionais")
 public class InstitutionalClient implements IInstitucionalClient {
 
     @Id
     @Column(name = "nif", nullable = false, length = 15)
-    private String id;
+    private String nif;
 
     @MapsId
     @OneToOne(fetch = FetchType.LAZY, optional = false)
@@ -39,12 +39,12 @@ public class InstitutionalClient implements IInstitucionalClient {
         this.client = client;
     }
 
-    public String getId() {
-        return id;
+    public String getNif() {
+        return nif;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setNif(String id) {
+        this.nif = id;
     }
 
     @Override
@@ -88,22 +88,13 @@ public class InstitutionalClient implements IInstitucionalClient {
     }
 
     @Override
-    public String getReference() {
-        return null;
+    public Client getReference() {
+        return client.getReference();
     }
 
     @Override
-    public void setReference(String reference) {
-
+    public void setReference(Client reference) {
+        this.client.setReference(reference);
     }
 
-    @Override
-    public Set<Client> getClients() {
-        return null;
-    }
-
-    @Override
-    public void setClients(Set<Client> clients) {
-
-    }
 }
