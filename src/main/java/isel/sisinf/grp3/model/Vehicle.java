@@ -3,16 +3,35 @@ package isel.sisinf.grp3.model;
 import isel.sisinf.grp3.model.client.Client;
 import jakarta.persistence.*;
 
+import java.util.Objects;
+
 /**
  * todo
  */
+
+@NamedStoredProcedureQuery(
+        name = "numberOfAlarms",
+        procedureName = "number_of_alarms",
+        parameters = {
+                @StoredProcedureParameter(mode = ParameterMode.IN, type = Integer.class),
+                @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class),
+                @StoredProcedureParameter(mode = ParameterMode.OUT, type = Integer.class)
+        }
+)
 @Entity
 @Table(name = "veiculo")
+@NamedQueries({
+        @NamedQuery(name = "Vehicle.findByKey",
+                query = "SELECT v FROM Vehicle v WHERE v.licensePlate =:key"),
+        @NamedQuery(name = "Vehicle.alarms",
+                query = "select Alarms.id as id_alarm, Vehicle.licensePlate, Vehicle.driversName, Gps.latitude, Gps.longitude, Alarms.timeStamp as dia_hora from Vehicle join Gps on (Vehicle.licensePlate = Gps.vehicle.licensePlate) join Alarms on (Alarms.gps.id = Gps.id)")
+
+})
 public class Vehicle implements IVehicle {
 
     @Id
-    @Column(name = "matricula", nullable = false, length = 30)
-    private String licencePlate;
+    @Column(name = "matricula", nullable = false, length = 6)
+    private String licensePlate;
 
     @Column(name = "nome_condutor", nullable = false, length = 100)
     private String driversName;
@@ -90,5 +109,25 @@ public class Vehicle implements IVehicle {
 
     public void setLicensePlate(String id) {
         this.licensePlate = id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        Vehicle vehicle = (Vehicle) o;
+        return licensePlate != null && Objects.equals(licensePlate, vehicle.licensePlate);
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "(" +
+                "licensePlate = " + licensePlate + ", " +
+                "driversName = " + driversName + ", " +
+                "driversPhone = " + driversPhone + ", " +
+                "NIF = " + client.getClientId() + ", " +
+                "nrAlarms" + nrAlarms + ")";
     }
 }

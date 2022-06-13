@@ -183,6 +183,7 @@ public class Client implements IClient {
                 "nif = " + nif + ", " +
                 "name = " + name + ", " +
                 "address = " + address + ", " +
-                "phone = " + phone + ")";
+                "phone = " + phone + ", " +
+                "status =" + status + ")";
     }
 }

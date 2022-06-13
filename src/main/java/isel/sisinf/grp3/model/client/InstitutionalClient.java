@@ -2,6 +2,8 @@ package isel.sisinf.grp3.model.client;
 
 import jakarta.persistence.*;
 
+import java.util.Objects;
+
 /**
  * todo
  */
@@ -23,6 +25,14 @@ public class InstitutionalClient implements IInstitucionalClient {
     @Column(name = "nome_contacto", nullable = false, length = 100)
     private String contactName;
 
+    public InstitutionalClient() {
+    }
+
+    public InstitutionalClient(String nif, String contactName) {
+        this.nif = nif;
+        this.contactName = contactName;
+    }
+    
     public String getContactName() {
         return contactName;
     }
@@ -97,4 +107,20 @@ public class InstitutionalClient implements IInstitucionalClient {
         this.client.setReference(reference);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        InstitutionalClient institutionalClient = (InstitutionalClient) o;
+        return nif != null && Objects.equals(nif, institutionalClient.nif);
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "(" +
+                "nif = " + nif + ", " +
+                "contactName = " + contactName + ")";
+    }
 }

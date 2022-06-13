@@ -35,8 +35,27 @@ public class Gps implements IGps {
     @Column(name = "longitude", nullable = false, precision = 8, scale = 5)
     private BigDecimal longitude;
 
+    @Column(name = "estado", nullable = false, length = 15)
+    private String status;
+
+    @OneToOne
+    @JoinColumn(name = "matricula", nullable = false)
+    private Vehicle vehicle;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private UnprocessedRegisters unprocessedRegisters;
+
+    public Gps() {
+    }
+
+    public Gps(Long id, BigDecimal longitude, BigDecimal latitude, String licensePlate, String status, Timestamp timeStamp) {
+        this.id = id;
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.vehicle.setLicensePlate(licensePlate);
+        this.status = status;
+        this.timeStamp = timeStamp;
+    }
 
     public UnprocessedRegisters getUnprocessedRegisters() {
         return unprocessedRegisters;
@@ -104,5 +123,26 @@ public class Gps implements IGps {
     @Override
     public void setId(Long id) {
         this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        Gps gps = (Gps) o;
+        return id != null && Objects.equals(id, gps.id);
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "(" +
+                "id = " + id + ", " +
+                "longitude = " + longitude + ", " +
+                "latitude = " + latitude + ", " +
+                "status = " + status + ", " +
+                "licensePlate" + vehicle.getLicensePlate() +
+                "timeStamp = " + timeStamp + ")";
     }
 }

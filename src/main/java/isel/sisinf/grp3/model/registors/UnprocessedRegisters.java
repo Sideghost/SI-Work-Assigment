@@ -76,4 +76,22 @@ public class UnprocessedRegisters implements IUnprocessedRegisters {
     public void setTimeStamp(Timestamp timeStamp) {
         this.timeStamp = timeStamp;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        UnprocessedRegisters unprocessedRegister = (UnprocessedRegisters) o;
+        return id != null && Objects.equals(id, unprocessedRegister.id);
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "(" +
+                "id = " + id + ", " +
+                "idGps = " + idGps + ", " +
+                "timeStamp = " + timeStamp + ")";
+    }
 }

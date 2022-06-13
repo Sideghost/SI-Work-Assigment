@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 
 import java.sql.Timestamp;
 import java.util.LinkedHashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -79,4 +80,21 @@ public class ProcessedRegisters implements IProcessedRegisters {
         this.timeStamp = timeStamp;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        ProcessedRegisters processedRegister = (ProcessedRegisters) o;
+        return id != null && Objects.equals(id, processedRegister.id);
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "(" +
+                "id = " + id + ", " +
+                "idGps = " + getGps().getId() + ", " +
+                "timeStamp = " + timeStamp + ")";
+    }
 }

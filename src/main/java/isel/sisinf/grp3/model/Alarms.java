@@ -10,8 +10,6 @@ import java.util.Objects;
  * todo
  */
 @Entity
-@NamedQuery(name = "Alarms.findByKey",
-        query = "SELECT a FROM Alarms a WHERE a.id =:key")
 @Table(name = "alarmes")
 @NamedQuery(name = "Alarms.findByKey",
         query = "SELECT a FROM Alarms a WHERE a.id =:key")
@@ -39,6 +37,13 @@ public class Alarms implements IAlarm {
             joinColumns = @JoinColumn(name = "matricula"),
             inverseJoinColumns = @JoinColumn(name = "matricula"))
     private Vehicle vehicle;
+
+    public Alarms() {}
+
+    public Alarms(Timestamp timeStamp) {
+        this.timeStamp = timeStamp;
+
+    }
 
     public Vehicle getVehicle() {
         return vehicle;
@@ -92,5 +97,23 @@ public class Alarms implements IAlarm {
     @Override
     public Timestamp getTimestamp() {
         return this.timeStamp;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        Alarms alarm = (Alarms) o;
+        return id != null && Objects.equals(id, alarm.id);
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "(" +
+                "id = " + id + ", " +
+                "idGps = " + gps.getId() + ", " +
+                "timeStamp = " + timeStamp + ")";
     }
 }

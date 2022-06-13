@@ -2,6 +2,7 @@ package isel.sisinf.grp3.model.client;
 
 import jakarta.persistence.*;
 
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -24,6 +25,14 @@ public class PrivateClient implements IPrivateClient {
 
     @Column(name = "cc", nullable = false, length = 15)
     private String cc;
+
+    public PrivateClient() {
+    }
+
+    public PrivateClient(String nif, String cc) {
+        this.nif = nif;
+        this.cc = cc;
+    }
 
     public Client getClient() {
         return client;
@@ -109,5 +118,22 @@ public class PrivateClient implements IPrivateClient {
     @Override
     public void setCC(String cc) {
         this.cc = cc;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        PrivateClient privateClient = (PrivateClient) o;
+        return nif != null && Objects.equals(nif, privateClient.nif);
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "(" +
+                getClient().toString() +
+                "cc = " + cc + ")";
     }
 }

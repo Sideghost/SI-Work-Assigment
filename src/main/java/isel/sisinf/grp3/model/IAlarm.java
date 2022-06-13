@@ -2,6 +2,8 @@ package isel.sisinf.grp3.model;
 
 //import java.time.LocalDate;
 
+import java.sql.Timestamp;
+
 public interface IAlarm {
 
     Long getAlarmId();

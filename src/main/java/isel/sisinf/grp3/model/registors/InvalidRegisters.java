@@ -37,6 +37,11 @@ public class InvalidRegisters implements IInvalidRegisters {
         this.timeStamp = new Timestamp(System.currentTimeMillis());
     }
 
+    public InvalidRegisters(){
+        this.idGps = null;
+        this.timeStamp = new Timestamp(System.currentTimeMillis());
+    }
+
     public Long getId() {
         return id;
     }
@@ -66,4 +71,21 @@ public class InvalidRegisters implements IInvalidRegisters {
         this.timeStamp = timeStamp;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        InvalidRegisters invalidRegister = (InvalidRegisters) o;
+        return id != null && Objects.equals(id, invalidRegister.id);
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "(" +
+                "id = " + id + ", " +
+                "idGps = " + idGps + ", " +
+                "timeStamp = " + timeStamp + ")";
+    }
 }
