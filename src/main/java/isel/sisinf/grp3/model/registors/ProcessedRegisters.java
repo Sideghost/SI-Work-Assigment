@@ -1,9 +1,10 @@
 package isel.sisinf.grp3.model.registors;
 
+import isel.sisinf.grp3.model.Gps;
 import isel.sisinf.grp3.model.Vehicle;
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
+import java.sql.Timestamp;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -22,13 +23,24 @@ public class ProcessedRegisters implements IProcessedRegisters {
     private Long id;
 
     @Column(name = "marca_temporal", nullable = false)
-    private LocalDate timeStamp;
+    private Timestamp timeStamp;
 
     @ManyToMany // anotacao e esta ou OnetoOne
     @JoinTable(name = "alarmes",
             joinColumns = @JoinColumn(name = "id"),
-            inverseJoinColumns = @JoinColumn(name = "id")) // inverseJoinColumns WTF is this? tabela no meio para saber juntar info
+            inverseJoinColumns = @JoinColumn(name = "id"))
+    // inverseJoinColumns WTF is this? tabela no meio para saber juntar info
     private Set<Vehicle> vehicles = new LinkedHashSet<>();
+
+
+    public ProcessedRegisters() {
+    }
+
+    public ProcessedRegisters(Long id, Timestamp timeStamp) {
+        this.id = id;
+        this.id = getGps().getId();
+        this.timeStamp = timeStamp;
+    }
 
     public Set<Vehicle> getVehicles() {
         return vehicles;
@@ -38,13 +50,6 @@ public class ProcessedRegisters implements IProcessedRegisters {
         this.vehicles = vehicles;
     }
 
-    public LocalDate getTimeStamp() {
-        return timeStamp;
-    }
-
-    public void setTimeStamp(LocalDate timeStamp) {
-        this.timeStamp = timeStamp;
-    }
 
     public Long getId() {
         return id;
@@ -55,13 +60,23 @@ public class ProcessedRegisters implements IProcessedRegisters {
     }
 
     @Override
-    public Long getIdGps() { // TODO: 11/06/2022 como?
+    public Gps getGps() {
         return null;
     }
 
     @Override
-    public void setIdGps(Long idGps) {
+    public void setGps(Gps gps) {
 
+    }
+
+    @Override
+    public Timestamp getTimeStamp() {
+        return timeStamp;
+    }
+
+    @Override
+    public void setTimeStamp(Timestamp timeStamp) {
+        this.timeStamp = timeStamp;
     }
 
 }

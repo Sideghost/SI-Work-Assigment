@@ -15,9 +15,15 @@ import java.util.Set;
 @NamedQuery(name = "Client.findByKey",
         query = "SELECT c FROM Client c WHERE c.nif =:key")
 @NamedStoredProcedureQuery(
-        name = "addVehicleToGreenZone",
+        name = "addVehicleToClient",
         procedureName = "add_vehicle_to_client_or_not",
         parameters = {
+                @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class),
+                @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class),
+                @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class),
+                @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class),
+                @StoredProcedureParameter(mode = ParameterMode.IN, type = Integer.class),
+                @StoredProcedureParameter(mode = ParameterMode.IN, type = Integer.class),
                 @StoredProcedureParameter(mode = ParameterMode.IN, type = Integer.class)
         }
 )
@@ -46,14 +52,27 @@ public class Client implements IClient {
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "client")
     private InstitutionalClient institutionalClient;
 
-    @OneToMany(mappedBy = "clientNIF")
+    @OneToMany(mappedBy = "client")
     private Set<Vehicle> vehicles = new LinkedHashSet<>();
 
     @ManyToOne
     @JoinTable(name = "cliente",
             joinColumns = @JoinColumn(name = "referencia"),
             inverseJoinColumns = @JoinColumn(name = "referencia"))
-    private Client reference;
+    private PrivateClient reference;
+
+    public Client() {
+    }
+
+    public Client(String nif, String name, String address, String phone, String reference) {
+        this.nif = nif;
+        this.name = name;
+        this.address = address;
+        this.phone = phone;
+        this.status = true;
+        //this.reference = reference;
+        this.institutionalClient = null;
+    }
 
     public Boolean getStatus() {
         return status;
@@ -63,11 +82,11 @@ public class Client implements IClient {
         this.status = status;
     }
 
-    public Client getReference() {
+    public PrivateClient getReference() {
         return reference;
     }
 
-    public void setReference(Client client) {
+    public void setReference(PrivateClient client) {
         this.reference = client;
     }
 
@@ -116,7 +135,9 @@ public class Client implements IClient {
     }
 
     @Override
-    public String getClientId() { return getNif(); }
+    public String getClientId() {
+        return getNif();
+    }
 
     @Override
     public void setClientId(String clientId) {
@@ -132,7 +153,6 @@ public class Client implements IClient {
     public void setName(String nome) {
         this.name = nome;
     }
-
 
     public String getNif() {
         return nif;

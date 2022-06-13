@@ -1,13 +1,15 @@
 package isel.sisinf.grp3.model.registors;
 
-import java.time.LocalDate;
+//import java.time.LocalDate;
 
+
+import java.sql.Timestamp;
 
 /**
  * Implementation of a generic type of register.
  * Not used in this work assigment.
  */
-public class Registers implements IRegisters{
+public class Registers implements IRegisters {
     @Override
     public Long getId() {
         return null;
@@ -29,12 +31,13 @@ public class Registers implements IRegisters{
     }
 
     @Override
-    public LocalDate getTimeStamp() {
+    public Timestamp getTimeStamp() {
         return null;
     }
 
     @Override
-    public void setTimeStamp(LocalDate timeStamp) {
+    public void setTimeStamp(Timestamp timeStamp) {
 
     }
+
 }

@@ -1,16 +1,19 @@
 package isel.sisinf.grp3.model;
 
-import org.eclipse.persistence.jpa.jpql.parser.DateTime;
+//import java.time.LocalDate;
 
 public interface IAlarm {
 
-    void setAlarmId(Long id);
     Long getAlarmId();
 
-    void setGpsId(Long id);
+    void setAlarmId(Long id);
+
     Long getGpsId();
 
-    void setTimeStamp(DateTime timeStamp);
-    DateTime getTimestamp();
+    void setGpsId(Long id);
+
+    void setTimeStamp(Timestamp timeStamp);
+
+    Timestamp getTimestamp();
 
 }

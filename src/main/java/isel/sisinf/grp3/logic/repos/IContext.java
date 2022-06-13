@@ -6,7 +6,6 @@ import isel.sisinf.grp3.logic.repos.client.IInstitutionalClientRepository;
 import isel.sisinf.grp3.logic.repos.client.IPrivateClientRepository;
 import isel.sisinf.grp3.logic.repos.registers.IInvalidRegistersRepository;
 import isel.sisinf.grp3.logic.repos.registers.IProcessedRegistersRepository;
-import isel.sisinf.grp3.logic.repos.registers.IRegistersRepository;
 import isel.sisinf.grp3.logic.repos.registers.IUnprocessedRegistersRepository;
 
 /**
@@ -21,14 +20,22 @@ public interface IContext extends AutoCloseable {
     void flush();
 
     IClientRepository getClients();
+
     IPrivateClientRepository getPrivateClients();
+
     IInstitutionalClientRepository getInstitutionalClients();
 
     IUnprocessedRegistersRepository getUnprocessedRegisters();
+
     IInvalidRegistersRepository getInvalidRegisters();
+
     IProcessedRegistersRepository getProcessedRegisters();
 
     IVehicleRepository getVehicles();
 
     IGreenZoneRepository getGreenZones();
+
+    IAlarmsRepository getAlarms();
+
+    IGpsRepository getGpss();
 }

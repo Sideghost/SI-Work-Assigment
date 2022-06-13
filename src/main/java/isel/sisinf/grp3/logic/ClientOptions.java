@@ -1,10 +1,5 @@
 package isel.sisinf.grp3.logic;
 
-import isel.sisinf.grp3.model.client.Client;
-import isel.sisinf.grp3.model.client.PrivateClient;
-
-import java.util.Objects;
-
 /**
  * todo
  */

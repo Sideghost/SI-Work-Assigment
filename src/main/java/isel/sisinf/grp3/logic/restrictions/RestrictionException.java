@@ -1,4 +1,4 @@
-package isel.sisinf.grp3.logic;
+package isel.sisinf.grp3.logic.restrictions;
 
 
 /**

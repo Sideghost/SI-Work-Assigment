@@ -24,16 +24,14 @@ SOFTWARE.
 
 package isel.sisinf.grp3.logic.repos;
 
-import isel.sisinf.grp3.model.GreenZone;
-import isel.sisinf.grp3.model.Vehicle;
-import isel.sisinf.grp3.model.client.Client;
-import isel.sisinf.grp3.model.client.InstitutionalClient;
-import isel.sisinf.grp3.model.client.PrivateClient;
-import isel.sisinf.grp3.model.registors.InvalidRegisters;
-import isel.sisinf.grp3.model.registors.ProcessedRegisters;
-import isel.sisinf.grp3.model.registors.UnprocessedRegisters;
+import isel.sisinf.grp3.logic.repos.client.*;
+import isel.sisinf.grp3.logic.repos.registers.*;
+import isel.sisinf.grp3.model.*;
+import isel.sisinf.grp3.model.client.*;
+import isel.sisinf.grp3.model.registors.*;
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
 
@@ -43,16 +41,21 @@ import java.util.List;
 public class JPAContext implements IContext {
 
     private final EntityManagerFactory emf;
-    private final EntityManager em;
+    public final EntityManager em;
 
     private final IClientRepository clientRepository;
     private final IInstitutionalClientRepository institutionalClientRepository;
     private final IPrivateClientRepository privateClientRepository;
+
     private final IInvalidRegistersRepository invalidRegistersRepository;
     private final IUnprocessedRegistersRepository unprocessedRegistersRepository;
     private final IProcessedRegistersRepository processedRegistersRepository;
+
     private final IVehicleRepository vehicleRepository;
     private final IGreenZoneRepository greenZoneRepository;
+    private final IAlarmsRepository alarmsRepository;
+    private final IGpsRepository gpsRepository;
+
     private EntityTransaction tx;
     private int txCount;
 
@@ -70,16 +73,18 @@ public class JPAContext implements IContext {
      */
     public JPAContext(String persistentCtx) {
         super();
-        emf = Persistence.createEntityManagerFactory(persistentCtx);
-        em = emf.createEntityManager();
-        clientRepository = new IClientRepository();
-        institutionalClientRepository = new IInstitutionalClientRepository();
-        privateClientRepository = new IPrivateClientRepository();
-        vehicleRepository = new IVehicleRepository();
-        invalidRegistersRepository = new IInvalidRegistersRepository();
-        unprocessedRegistersRepository = new IUnprocessedRegistersRepository();
-        processedRegistersRepository = new IProcessedRegistersRepository();
-        greenZoneRepository = new IGreenZoneRepository();
+        this.emf = Persistence.createEntityManagerFactory(persistentCtx);
+        this.em = emf.createEntityManager();
+        this.clientRepository = new ClientRepository();
+        this.institutionalClientRepository = new InstitutionalClientRepository();
+        this.privateClientRepository = new PrivateClientRepository();
+        this.vehicleRepository = new VehicleRepository();
+        this.invalidRegistersRepository = new InvalidRegistersRepository();
+        this.unprocessedRegistersRepository = new UnprocessedRegistersRepository();
+        this.processedRegistersRepository = new ProcessedRegistersRepository();
+        this.greenZoneRepository = new GreenZoneRepository();
+        this.alarmsRepository = new AlarmsRepository();
+        this.gpsRepository = new GpsRepository();
     }
 
     /**
@@ -108,6 +113,7 @@ public class JPAContext implements IContext {
             tx.begin();
             txCount = 0;
         }
+        ++txCount;
     }
 
     /**
@@ -116,7 +122,7 @@ public class JPAContext implements IContext {
     @Override
     public void commit() {
         --txCount;
-        if (txCount == 0 & tx != null) {
+        if (txCount == 0 && tx != null) {
             tx.commit();
             tx = null;
         }
@@ -185,6 +191,16 @@ public class JPAContext implements IContext {
         return greenZoneRepository;
     }
 
+    @Override
+    public IAlarmsRepository getAlarms() {
+        return alarmsRepository;
+    }
+
+    @Override
+    public IGpsRepository getGpss() {
+        return gpsRepository;
+    }
+
     /**
      * todo
      *
@@ -199,27 +215,15 @@ public class JPAContext implements IContext {
     }
 
     /**
-     * todo por aqui as queries que queremos para cada class
+     * REPOSITORIES
      */
-    protected class IClientRepository implements isel.sisinf.grp3.logic.repos.client.IClientRepository {
+    protected class ClientRepository implements isel.sisinf.grp3.logic.repos.client.IClientRepository {
 
-        /**
-         *
-         * @param key
-         * @return
-         */
         @Override
         public Client findByKey(String key) {
             return em.createNamedQuery("Client.findByKey", Client.class).setParameter("key", key).getSingleResult();
         }
 
-        /**
-         * todo
-         *
-         * @param jpql
-         * @param params
-         * @return
-         */
         @SuppressWarnings("unchecked")
         @Override
         public Collection<Client> find(String jpql, Object... params) {
@@ -229,24 +233,13 @@ public class JPAContext implements IContext {
 
     }
 
-    protected class IPrivateClientRepository implements isel.sisinf.grp3.logic.repos.client.IPrivateClientRepository {
+    protected class PrivateClientRepository implements IPrivateClientRepository {
 
-        /**
-         *
-         * @param key
-         * @return
-         */
         @Override
         public PrivateClient findByKey(String key) {
             return em.createNamedQuery("PrivateClient.findByKey", PrivateClient.class).setParameter("key", key).getSingleResult();
         }
 
-        /**
-         *
-         * @param jpql
-         * @param params
-         * @return
-         */
         @SuppressWarnings("unchecked")
         @Override
         public Collection<PrivateClient> find(String jpql, Object... params) {
@@ -254,53 +247,27 @@ public class JPAContext implements IContext {
         }
     }
 
-    protected class IInstitutionalClientRepository implements isel.sisinf.grp3.logic.repos.client.IInstitutionalClientRepository {
+    protected class InstitutionalClientRepository implements isel.sisinf.grp3.logic.repos.client.IInstitutionalClientRepository {
 
-        /**
-         *
-         * @param key
-         * @return
-         */
         @Override
         public InstitutionalClient findByKey(String key) {
             return em.createNamedQuery("InstitutionalClient.findByKey", InstitutionalClient.class).setParameter("key", key).getSingleResult();
         }
 
-        /**
-         *
-         * @param jpql
-         * @param params
-         * @return
-         */
         @SuppressWarnings("unchecked")
         @Override
         public Collection<InstitutionalClient> find(String jpql, Object... params) {
-            return helperQueryImpl(jpql,params);
+            return helperQueryImpl(jpql, params);
         }
     }
 
-    /**
-     * todo
-     */
-    protected class IUnprocessedRegistersRepository implements isel.sisinf.grp3.logic.repos.registers.IUnprocessedRegistersRepository {
+    protected class UnprocessedRegistersRepository implements isel.sisinf.grp3.logic.repos.registers.IUnprocessedRegistersRepository {
 
-        /**
-         *
-         * @param key
-         * @return
-         */
         @Override
         public UnprocessedRegisters findByKey(Long key) {
             return em.createNamedQuery("UnprocessedRegisters.findByKey", UnprocessedRegisters.class).setParameter("key", key).getSingleResult();
         }
 
-        /**
-         * todo
-         *
-         * @param jpql
-         * @param params
-         * @return
-         */
         @SuppressWarnings("unchecked")
         @Override
         public Collection<UnprocessedRegisters> find(String jpql, Object... params) {
@@ -308,27 +275,13 @@ public class JPAContext implements IContext {
         }
     }
 
-    /**
-     * todo
-     */
-    protected class IInvalidRegistersRepository implements isel.sisinf.grp3.logic.repos.registers.IInvalidRegistersRepository {
+    protected class InvalidRegistersRepository implements isel.sisinf.grp3.logic.repos.registers.IInvalidRegistersRepository {
 
-        /**
-         * todo
-         * @param key
-         * @return
-         */
         @Override
         public InvalidRegisters findByKey(Long key) {
             return em.createNamedQuery("InvalidRegisters.findByKey", InvalidRegisters.class).setParameter("key", key).getSingleResult();
         }
 
-        /**
-         * todo
-         * @param jpql
-         * @param params
-         * @return
-         */
         @SuppressWarnings("unchecked")
         @Override
         public Collection<InvalidRegisters> find(String jpql, Object... params) {
@@ -336,27 +289,13 @@ public class JPAContext implements IContext {
         }
     }
 
-    /**
-     * todo
-     */
-    protected class IProcessedRegistersRepository implements isel.sisinf.grp3.logic.repos.registers.IProcessedRegistersRepository {
+    protected class ProcessedRegistersRepository implements isel.sisinf.grp3.logic.repos.registers.IProcessedRegistersRepository {
 
-        /**
-         * todo
-         * @param key
-         * @return
-         */
         @Override
         public ProcessedRegisters findByKey(Long key) {
             return em.createNamedQuery("ProcessedRegisters.findByKey", ProcessedRegisters.class).setParameter("key", key).getSingleResult();
         }
 
-        /**
-         * todo
-         * @param jpql
-         * @param params
-         * @return
-         */
         @SuppressWarnings("unchecked")
         @Override
         public Collection<ProcessedRegisters> find(String jpql, Object... params) {
@@ -364,29 +303,13 @@ public class JPAContext implements IContext {
         }
     }
 
-    /**
-     * todo por aqui as queries que queremos para cada class
-     */
-    protected class IVehicleRepository implements isel.sisinf.grp3.logic.repos.IVehicleRepository {
+    protected class VehicleRepository implements isel.sisinf.grp3.logic.repos.IVehicleRepository {
 
-        /**
-         * todo por aqui as queries que queremos para cada class
-         *
-         * @param key
-         * @return
-         */
         @Override
         public Vehicle findByKey(Long key) {
             return em.createNamedQuery("Vehicle.findByKey", Vehicle.class).setParameter("key", key).getSingleResult();
         }
 
-        /**
-         * todo
-         *
-         * @param jpql
-         * @param params
-         * @return
-         */
         @SuppressWarnings("unchecked")
         @Override
         public Collection<Vehicle> find(String jpql, Object... params) {
@@ -394,29 +317,13 @@ public class JPAContext implements IContext {
         }
     }
 
-    /**
-     * todo por aqui as queries que queremos para cada class
-     */
-    protected class IGreenZoneRepository implements isel.sisinf.grp3.logic.repos.IGreenZoneRepository {
+    protected class GreenZoneRepository implements isel.sisinf.grp3.logic.repos.IGreenZoneRepository {
 
-        /**
-         * todo por aqui as queries que queremos para cada class
-         *
-         * @param key
-         * @return
-         */
         @Override
         public GreenZone findByKey(Long key) {
             return em.createNamedQuery("GreenZone.findByKey", GreenZone.class).setParameter("key", key).getSingleResult();
         }
 
-        /**
-         * todo
-         *
-         * @param jpql
-         * @param params
-         * @return
-         */
         @SuppressWarnings("unchecked")
         @Override
         public Collection<GreenZone> find(String jpql, Object... params) {
@@ -424,7 +331,190 @@ public class JPAContext implements IContext {
         }
     }
 
+    protected class AlarmsRepository implements isel.sisinf.grp3.logic.repos.IAlarmsRepository {
+
+        @Override
+        public Alarms findByKey(Long key) {
+            return em.createNamedQuery("Alarms.findByKey", Alarms.class).setParameter("key", key).getSingleResult();
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public Collection<Alarms> find(String jpql, Object... params) {
+            return helperQueryImpl(jpql, params);
+        }
+    }
+
+    protected class GpsRepository implements isel.sisinf.grp3.logic.repos.IGpsRepository {
+
+        @Override
+        public Gps findByKey(Long key) {
+            return em.createNamedQuery("Gps.findByKey", Gps.class).setParameter("key", key).getSingleResult();
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public Collection<Gps> find(String jpql, Object... params) {
+            return helperQueryImpl(jpql, params);
+        }
+    }
 
 
+    public void addVehicleToClient(String licensePlate, String driverName, String driversPhone, String clientNif, Long greenZoneId, Integer zoneRadius, BigDecimal zoneGpsLat, BigDecimal zoneGpsLon) {
+        StoredProcedureQuery q = em.createNamedStoredProcedureQuery("addVehicleToClient");
+    }
+
+    /**
+     * D
+     */
+    public void insertPrivateClient(String NIF, String name, String address, String phone, String CC, String reference) {
+        beginTransaction();
+        Query q = em.createNativeQuery("call insert_particular(?1,?2,?3, ?4, ?5, ?6)")
+                .setParameter(1, NIF)
+                .setParameter(2, name)
+                .setParameter(3, address)
+                .setParameter(4, phone)
+                .setParameter(5, CC)
+                .setParameter(6, reference);
+
+        q.executeUpdate();
+        commit();
+    }
+
+    public void updatePrivateClient(String nif, String newName, String newAddress, String newPhone, Boolean newStatus) {
+        beginTransaction();
+        Query q = em.createNativeQuery("call update_particular(?1,?2,?3,?4,?5)")
+                .setParameter(1, nif)
+                .setParameter(2, newName)
+                .setParameter(3, newAddress)
+                .setParameter(4, newPhone)
+                .setParameter(5, newStatus);
+
+        q.executeUpdate();
+        commit();
+    }
+
+    public void removePrivateClient(String NIF) {
+        beginTransaction();
+        Query q = em.createNativeQuery("call remove_particular(?1)")
+                .setParameter(1, NIF);
+
+        q.executeUpdate();
+        commit();
+    }
+
+    /**
+     * E
+     */
+    public Integer numberOfAlarmsWLicensePlate(Integer year, String licensePlate) {
+        beginTransaction();
+        StoredProcedureQuery s = em.createStoredProcedureQuery("number_of_alarms")
+                .setParameter(1, year)
+                .setParameter(2, licensePlate);
+        s.execute();
+        int nrAlarms = (int) s.getOutputParameterValue(3);
+        commit();
+        return nrAlarms;
+    }
+
+    public Integer numberOfAlarms(Integer year) {
+        return numberOfAlarmsWLicensePlate(year, null);
+    }
+
+    /**
+     * F
+     */
+    public void processRegisters() {
+        beginTransaction();
+        Query q = em.createNativeQuery("call process_registers()");
+        q.executeUpdate();
+        commit();
+    }
+
+    /**
+     * H
+     * ver se ponho o objecto em vez dos parametros.
+     */
+    public void addVehicleToClient(String licencePlate, String driverName, String driverPhone, String clientNif, Integer greenZoneId, Integer zoneRadius, Integer zoneGpsLat, Integer zoneGpsLon) {
+        beginTransaction();
+        Query q = em.createNativeQuery("call add_vehicle_to_client_or_not(?1,?2,?3, ?4, ?5, ?6, ?7)")
+                .setParameter(1, licencePlate)
+                .setParameter(2, driverName)
+                .setParameter(3, driverPhone)
+                .setParameter(4, clientNif)
+                .setParameter(5, greenZoneId)
+                .setParameter(6, zoneRadius)
+                .setParameter(7, zoneGpsLat)
+                .setParameter(8, zoneGpsLon);
+
+        q.executeUpdate();
+        commit();
+    }
+
+    /**
+     * I
+     * como e uma vista pode ser feito atravez de selects
+     * ver o tipo de retorno porque tenho de printar para a consola
+     */
+    public Collection<List<String>> allAlarms() {
+        beginTransaction();
+        //List q = em.createNamedQuery("Vehicle.alarms").getResultList();
+        return null;
+    }
+
+    /**
+     * J
+     * duvida
+     */
+    public void addAlarm() {
+
+    }
+
+    /**
+     * K
+     */
+    public void eliminateInvalidRegisters() {
+        beginTransaction();
+        Query q = em.createNativeQuery("call eliminate_invalid_registers()");
+        q.executeUpdate();
+        commit();
+    }
+
+    /**
+     * L
+     */
+    public void deleteClient() {
+        beginTransaction();
+        Query q = em.createQuery("delete from Client");
+        q.executeUpdate();
+        commit();
+    }
+
+    /**
+     * H by hand
+     */
+    public void addVehicleToClientOrNot(String licensePlate, String driverName, String driverPhone, String clientNif, Long greenZoneId, Integer zoneRadius, BigDecimal zoneGpsLat, BigDecimal zoneGpsLon) {
+        beginTransaction();
+        Client client = clientRepository.findByKey(clientNif);
+        if (client.getInstitutionalClient() != null) {
+            Vehicle vehicle = new Vehicle(licensePlate, driverName, driverPhone, clientNif, null);
+            addVehicleToGreenZone(greenZoneId, zoneRadius, zoneGpsLat, zoneGpsLon, licensePlate);
+        } else {
+            if (client.getVehicles().size() < 3) {
+                Vehicle v = new Vehicle(licensePlate, driverName, driverPhone, clientNif, null);
+                addVehicleToGreenZone(greenZoneId, zoneRadius, zoneGpsLat, zoneGpsLon, licensePlate);
+            }
+        }
+        //...
+        commit();
+    }
+
+    public void addVehicleToGreenZone(Long greenZoneId, Integer zoneRadius, BigDecimal zoneGpsLat, BigDecimal zoneGpsLon, String licencePlate) {
+        beginTransaction();
+        GreenZone newGreenZone = new GreenZone(greenZoneId, zoneRadius, zoneGpsLat, zoneGpsLon, licencePlate);
+        em.merge(newGreenZone);
+        //...
+        commit();
+    }
 
 }

@@ -10,17 +10,17 @@ import java.math.BigDecimal;
 @Entity
 @NamedQuery(name = "GreenZone.findByKey",
         query = "SELECT gz FROM GreenZone gz WHERE gz.id =:key")
-@NamedStoredProcedureQuery(
-        name =  , // TODO: 09/06/2022 esta e auxiliar e preciso por ?
-        procedureName = "valid_green_zone",
-        parameters = {
-                @StoredProcedureParameter(mode = ParameterMode.IN, type = Integer.class),
-                @StoredProcedureParameter(mode = ParameterMode.IN, type = Integer.class),
-                @StoredProcedureParameter(mode = ParameterMode.IN, type = Integer.class),
-                @StoredProcedureParameter(mode = ParameterMode.IN, type = Integer.class),
-                @StoredProcedureParameter(mode = ParameterMode.IN, type = Integer.class)
-        }
-)
+//@NamedStoredProcedureQuery(
+//        name = "", // TODO: 09/06/2022 esta e auxiliar e preciso por ?
+//        procedureName = "valid_green_zone",
+//        parameters = {
+//                @StoredProcedureParameter(mode = ParameterMode.IN, type = Integer.class),
+//                @StoredProcedureParameter(mode = ParameterMode.IN, type = Integer.class),
+//                @StoredProcedureParameter(mode = ParameterMode.IN, type = Integer.class),
+//                @StoredProcedureParameter(mode = ParameterMode.IN, type = Integer.class),
+//                @StoredProcedureParameter(mode = ParameterMode.IN, type = Integer.class)
+//        }
+//)
 @Table(name = "zona_verde")
 public class GreenZone implements IGreenZone {
 
@@ -30,7 +30,7 @@ public class GreenZone implements IGreenZone {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "matricula")
-    private Vehicle licencePlate;
+    private Vehicle vehicle;
 
     @Column(name = "raio", nullable = false)
     private Integer radius;
@@ -40,6 +40,17 @@ public class GreenZone implements IGreenZone {
 
     @Column(name = "longitude", nullable = false, precision = 8, scale = 5)
     private BigDecimal longitude;
+
+    public GreenZone() {
+    }
+
+    public GreenZone(Long id, Integer radius, BigDecimal latitude, BigDecimal longitude, String licencePlate) {
+        this.id = id;
+        this.radius = radius;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.vehicle.setLicensePlate(licencePlate);
+    }
 
     @Override
     public BigDecimal getLongitude() {
@@ -71,12 +82,12 @@ public class GreenZone implements IGreenZone {
         this.radius = radius;
     }
 
-    public Vehicle getLicencePlate() {
-        return licencePlate;
+    public Vehicle getVehicle() {
+        return vehicle;
     }
 
-    public void setLicencePlate(Vehicle licencePlate) {
-        this.licencePlate = licencePlate;
+    public void setVehicle(Vehicle licencePlate) {
+        this.vehicle = licencePlate;
     }
 
     @Override

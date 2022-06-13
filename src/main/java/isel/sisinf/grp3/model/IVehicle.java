@@ -4,9 +4,9 @@ package isel.sisinf.grp3.model;
  * todo
  */
 public interface IVehicle {
-    String getLicencePlate();
+    String getLicensePlate();
 
-    void setLicencePlate(String id);
+    void setLicensePlate(String id);
 
     String getDriversName();
 

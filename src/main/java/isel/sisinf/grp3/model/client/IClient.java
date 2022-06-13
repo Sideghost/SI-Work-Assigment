@@ -20,8 +20,8 @@ public interface IClient {
 
     void setPhone(String phone);
 
-    Client getReference();
+    PrivateClient getReference();
 
-    void setReference(Client reference);
+    void setReference(PrivateClient reference);
 
 }

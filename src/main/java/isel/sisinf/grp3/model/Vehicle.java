@@ -7,17 +7,6 @@ import jakarta.persistence.*;
  * todo
  */
 @Entity
-@NamedQuery(name = "Vehicle.findByKey",
-        query = "SELECT v FROM Vehicle v WHERE v.licencePlate =:key")
-@NamedStoredProcedureQuery(
-        name = ,
-        procedureName = "number_of_alarms",
-        parameters = {
-                @StoredProcedureParameter(mode = ParameterMode.IN, type = Integer.class),
-                @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class),
-                @StoredProcedureParameter(mode = ParameterMode.OUT, type = Integer.class)
-        }
-)
 @Table(name = "veiculo")
 public class Vehicle implements IVehicle {
 
@@ -32,11 +21,30 @@ public class Vehicle implements IVehicle {
     private String driversPhone;
 
     @ManyToOne(fetch = FetchType.LAZY) //foreign key
-    @JoinColumn(name = "nif")
-    private Client clientNIF;
+    @JoinColumn(name = "nif", nullable = false)
+    private Client client;
 
     @Column(name = "n_alarmes")
     private Integer nrAlarms;
+
+    public Vehicle() {
+    }
+
+    public Vehicle(String licensePlate, String driversName, String driversPhone, String clientNif, Integer nrAlarms) {
+        this.licensePlate = licensePlate;
+        this.driversName = driversName;
+        this.driversPhone = driversPhone;
+        this.client.setClientId(clientNif);
+        this.nrAlarms = nrAlarms;
+    }
+
+    public Vehicle(String licensePlate, String driversName, String clientNif, Integer nrAlarms) {
+        this.licensePlate = licensePlate;
+        this.driversName = driversName;
+        this.driversPhone = null;
+        this.client.setClientId(clientNif);
+        this.nrAlarms = nrAlarms;
+    }
 
     @Override
     public Integer getNrAlarms() {
@@ -48,12 +56,12 @@ public class Vehicle implements IVehicle {
         this.nrAlarms = nrAlarms;
     }
 
-    public Client getClientNIF() {
-        return clientNIF;
+    public Client getClient() {
+        return client;
     }
 
-    public void setClientNIF(Client clientNIF) {
-        this.clientNIF = clientNIF;
+    public void setClient(Client client) {
+        this.client = client;
     }
 
     @Override
@@ -76,13 +84,11 @@ public class Vehicle implements IVehicle {
         this.driversName = driversName;
     }
 
-    @Override
-    public String getLicencePlate() {
-        return licencePlate;
+    public String getLicensePlate() {
+        return licensePlate;
     }
 
-    @Override
-    public void setLicencePlate(String id) {
-        this.licencePlate = id;
+    public void setLicensePlate(String id) {
+        this.licensePlate = id;
     }
 }

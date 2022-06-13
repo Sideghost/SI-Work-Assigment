@@ -88,12 +88,12 @@ public class InstitutionalClient implements IInstitucionalClient {
     }
 
     @Override
-    public Client getReference() {
+    public PrivateClient getReference() {
         return client.getReference();
     }
 
     @Override
-    public void setReference(Client reference) {
+    public void setReference(PrivateClient reference) {
         this.client.setReference(reference);
     }
 

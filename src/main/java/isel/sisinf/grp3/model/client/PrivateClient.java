@@ -10,37 +10,6 @@ import java.util.Set;
 @Entity
 @NamedQuery(name = "PrivateClient.findByKey",
         query = "SELECT pc FROM PrivateClient pc WHERE pc.nif =:key")
-@NamedStoredProcedureQuery(
-        name = "updatePrivateClient",
-        procedureName = "update_particular",
-        parameters = {
-                @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class),
-                @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class),
-                @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class),
-                @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class),
-                @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class),
-                @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class)
-        }
-)
-@NamedStoredProcedureQuery(
-        name = "insertPrivateClient",
-        procedureName = "insert_particular",
-        parameters = {
-                @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class),
-                @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class),
-                @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class),
-                @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class),
-                @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class),
-                @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class),
-        }
-)
-@NamedStoredProcedureQuery(
-        name = "removePrivateClient",
-        procedureName = "remove_particular",
-        parameters = {
-                @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class)
-        }
-)
 @Table(name = "particulares")
 public class PrivateClient implements IPrivateClient {
 
@@ -113,12 +82,12 @@ public class PrivateClient implements IPrivateClient {
     }
 
     @Override
-    public Client getReference() {
-        return client;
+    public PrivateClient getReference() {
+        return client.getReference();
     }
 
     @Override
-    public void setReference(Client reference) {
+    public void setReference(PrivateClient reference) {
         client.setReference(reference);
     }
 

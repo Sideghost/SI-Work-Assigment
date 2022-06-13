@@ -1,9 +1,11 @@
 package isel.sisinf.grp3.model.registors;
 
-import isel.sisinf.grp3.model.Gps;
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
+import java.sql.Timestamp;
+import java.util.Objects;
+
+//import java.time.LocalDate;
 
 /**
  * todo
@@ -11,11 +13,11 @@ import java.time.LocalDate;
 @Entity
 @NamedQuery(name = "UnprocessedRegisters.findByKey",
         query = "SELECT ur FROM UnprocessedRegisters ur WHERE ur.id =:key")
-@NamedStoredProcedureQuery(
-        name = "", //todo
-        procedureName = "process_registers",
-        parameters = {}
-)
+//@NamedStoredProcedureQuery(
+//        name = "", //todo
+//        procedureName = "process_registers",
+//        parameters = {}
+//)
 @Table(name = "registos_nao_processados")
 public class UnprocessedRegisters implements IUnprocessedRegisters {
 
@@ -27,33 +29,24 @@ public class UnprocessedRegisters implements IUnprocessedRegisters {
     @Column(name = "id_gps", nullable = false, length = 50)
     private Long idGps;
 
-    @MapsId
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "id_gps", nullable = false)
-    private Gps Gps;
-
-
     @Column(name = "marca_temporal")
-    private LocalDate timeStamp;
+    private Timestamp timeStamp;
 
-    @Override
-    public LocalDate getTimeStamp() {
-        return timeStamp;
+    public UnprocessedRegisters(){
+
     }
 
-    @Override
-    public void setTimeStamp(LocalDate timeStamp) {
+    public UnprocessedRegisters(Long id, Timestamp timeStamp, Long idGps) {
+        this.id = id;
+        this.idGps = idGps;
         this.timeStamp = timeStamp;
     }
 
-    public Gps getGps() {
-        return Gps;
+    public UnprocessedRegisters(Long id, Timestamp timestamp){
+        this.id = id;
+        this.idGps = null;
+        this.timeStamp = timestamp;
     }
-
-    public void setGps(Gps gps) {
-        this.Gps = gps;
-    }
-
     @Override
     public Long getId() {
         return id;
@@ -70,7 +63,17 @@ public class UnprocessedRegisters implements IUnprocessedRegisters {
     }
 
     @Override
-    public void setIdGps(Long idgps) {
-        this.idGps = idgps;
+    public void setIdGps(Long idGps) {
+        this.idGps = idGps;
+    }
+
+    @Override
+    public Timestamp getTimeStamp() {
+        return timeStamp;
+    }
+
+    @Override
+    public void setTimeStamp(Timestamp timeStamp) {
+        this.timeStamp = timeStamp;
     }
 }

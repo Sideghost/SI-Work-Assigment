@@ -1,6 +1,8 @@
 package isel.sisinf.grp3.model.registors;
 
-import java.time.LocalDate;
+//import java.time.LocalDate;
+
+import java.sql.Timestamp;
 
 /**
  * Interface of a generic register.
@@ -14,7 +16,7 @@ public interface IRegisters {
 
     void setIdGps(Long idGps);
 
-    LocalDate getTimeStamp();
+    Timestamp getTimeStamp();
 
-    void setTimeStamp(LocalDate timeStamp);
+    void setTimeStamp(Timestamp timeStamp);
 }

@@ -4,9 +4,9 @@ import isel.sisinf.grp3.model.registors.UnprocessedRegisters;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
-import java.time.Instant;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.sql.Timestamp;
+import java.util.Objects;
+//import java.time.LocalDate;
 
 /**
  * todo
@@ -15,14 +15,19 @@ import java.util.Set;
 @NamedQuery(name = "Gps.findByKey",
         query = "SELECT gps FROM Gps gps WHERE gps.id =:key")
 @Table(name = "gps")
-public class Gps {
+public class Gps implements IGps {
 
     @Id
     @Column(name = "id", nullable = false, length = 50)
-    private String id;
+    private Long id;
+
+    @MapsId
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "id", nullable = false)
+    private Alarms alarms;
 
     @Column(name = "marca_temporal", nullable = false)
-    private Instant timeStamp;
+    private Timestamp timeStamp;
 
     @Column(name = "latitude", nullable = false, precision = 8, scale = 5)
     private BigDecimal latitude;
@@ -30,57 +35,74 @@ public class Gps {
     @Column(name = "longitude", nullable = false, precision = 8, scale = 5)
     private BigDecimal longitude;
 
-    @OneToMany(mappedBy = "idGps")
-    private Set<Vehicle> vehicles = new LinkedHashSet<>();
-
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "Gps")
+    @ManyToOne(fetch = FetchType.LAZY)
     private UnprocessedRegisters unprocessedRegisters;
 
     public UnprocessedRegisters getUnprocessedRegisters() {
         return unprocessedRegisters;
     }
 
-    public void setUnprocessedRegisters(UnprocessedRegisters registosNaoProcessado) {
-        this.unprocessedRegisters = registosNaoProcessado;
+    public void setUnprocessedRegisters(UnprocessedRegisters unprocessedRegisters) {
+        this.unprocessedRegisters = unprocessedRegisters;
     }
 
-    public Set<Vehicle> getVeiculos() {
-        return vehicles;
-    }
-
-    public void setVeiculos(Set<Vehicle> vehicles) {
-        this.vehicles = vehicles;
-    }
-
+    @Override
     public BigDecimal getLongitude() {
         return longitude;
     }
 
+    @Override
     public void setLongitude(BigDecimal longitude) {
         this.longitude = longitude;
     }
 
+    @Override
     public BigDecimal getLatitude() {
         return latitude;
     }
 
+    @Override
     public void setLatitude(BigDecimal latitude) {
         this.latitude = latitude;
     }
 
-    public Instant getTimeStamp() {
+    @Override
+    public String getLicencePlate() {
+        return vehicle.getLicensePlate();
+    }
+
+    @Override
+    public void setLicensePlate(String licensePlate) {
+        this.vehicle.setLicensePlate(licensePlate);
+    }
+
+    @Override
+    public String getStatus() {
+        return null;
+    }
+
+    @Override
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    @Override
+    public Timestamp getTimeStamp() {
         return timeStamp;
     }
 
-    public void setTimeStamp(Instant marcaTemporal) {
-        this.timeStamp = marcaTemporal;
+    @Override
+    public void setTimeStamp(Timestamp timeStamp) {
+        this.timeStamp = timeStamp;
     }
 
-    public String getId() {
+    @Override
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    @Override
+    public void setId(Long id) {
         this.id = id;
     }
 }

@@ -2,7 +2,9 @@ package isel.sisinf.grp3.model;
 
 import isel.sisinf.grp3.model.registors.ProcessedRegisters;
 import jakarta.persistence.*;
-import org.eclipse.persistence.jpa.jpql.parser.DateTime;
+
+import java.sql.Timestamp;
+import java.util.Objects;
 
 /**
  * todo
@@ -11,12 +13,20 @@ import org.eclipse.persistence.jpa.jpql.parser.DateTime;
 @NamedQuery(name = "Alarms.findByKey",
         query = "SELECT a FROM Alarms a WHERE a.id =:key")
 @Table(name = "alarmes")
-public class Alarms implements IAlarm{
+@NamedQuery(name = "Alarms.findByKey",
+        query = "SELECT a FROM Alarms a WHERE a.id =:key")
+public class Alarms implements IAlarm {
 
     @Id
     @Column(name = "id", nullable = false, length = 50)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "marca_temporal")
+    private Timestamp timeStamp;
+
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "alarms")
+    private Gps gps;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinTable(name = "registos_processados",
@@ -55,32 +65,32 @@ public class Alarms implements IAlarm{
     }
 
     @Override
-    public void setAlarmId(Long id) {
-        setId(id);
-    }
-
-    @Override
     public Long getAlarmId() {
         return this.getId();
     }
 
     @Override
-    public void setGpsId(Long id) {
-
+    public void setAlarmId(Long id) {
+        setId(id);
     }
 
     @Override
     public Long getGpsId() {
-        return null;
+        return gps.getId();
     }
 
     @Override
-    public void setTimeStamp(DateTime timeStamp) {
-
+    public void setGpsId(Long id) {
+        gps.setId(id);
     }
 
     @Override
-    public DateTime getTimestamp() {
-        return null;
+    public void setTimeStamp(Timestamp timeStamp) {
+        this.timeStamp = timeStamp;
+    }
+
+    @Override
+    public Timestamp getTimestamp() {
+        return this.timeStamp;
     }
 }
