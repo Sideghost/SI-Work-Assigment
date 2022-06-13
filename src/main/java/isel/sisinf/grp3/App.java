@@ -1,7 +1,12 @@
 package isel.sisinf.grp3;
 
 import isel.sisinf.grp3.logic.repos.JPAContext;
+import isel.sisinf.grp3.model.client.PrivateClient;
+import isel.sisinf.grp3.ui.Handler;
 import isel.sisinf.grp3.ui.UserInterface;
+import org.eclipse.persistence.sessions.coordination.Command;
+
+import java.util.Map;
 
 
 /**

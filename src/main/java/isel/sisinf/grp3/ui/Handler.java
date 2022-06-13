@@ -1,8 +1,12 @@
 package isel.sisinf.grp3.ui;
 
+import org.eclipse.persistence.sessions.coordination.Command;
+
+import java.util.Map;
+
 public class Handler {
 
-//    public static Map<String, Command> buildCommandDispatcher()  {
+//    public static Map<String, Command> buildCommandDispatcher() {
 //        return Map.ofEntries(
 //                Map.entry("1", new Commands.exitCommand()),
 //                Map.entry("2", new Commands.insertAsset()),
