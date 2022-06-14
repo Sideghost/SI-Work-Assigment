@@ -162,6 +162,22 @@ public class Commands {
                 return "4";
             }
         });
+        commandsMap.put("5", new IComands() {
+            @Override
+            public void action() {
+                System.out.println("Not implemented");
+            }
+
+            @Override
+            public void show() {
+                System.out.println("5.Trigger g");
+            }
+
+            @Override
+            public String getSyntax() {
+                return "5";
+            }
+        });
         commandsMap.put("6", new IComands() {
             @Override
             public void action() {

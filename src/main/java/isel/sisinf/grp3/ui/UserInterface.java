@@ -16,15 +16,14 @@ public class UserInterface {
         System.out.println("2.Insert/Remove/Update private clients info"); //d
         System.out.println("3.Get total alarms for a vehicle in a year"); //e
         System.out.println("4.Process all the Unprocessed Registers");//f
-        //System.out.println("5.Trigger g)"); //g
+        System.out.println("5.Trigger g)"); //g
         System.out.println("6.Create a vehicle");//h
         System.out.println("7.Create a view with all the alarms");//i
         System.out.println("8.Trigger j)");//j
         System.out.println("9.Delete Invalid Registers from 15 days ago");//k
         System.out.println("10.Trigger l)");//l
         System.out.println("11.Create a vehicle by hand");//h ha la pata
-        System.out.println("Help menu");
-        printPrompt();
+        System.out.println("12.Help menu");
     }
 
     /**
@@ -47,6 +46,7 @@ public class UserInterface {
             String command = parseCommand(new Scanner(System.in).nextLine());
             if (command != null)
                 return command;
+
         }
     }
 
@@ -61,6 +61,6 @@ public class UserInterface {
      * Print a prompt char in the Standard Output
      */
     public static void printPrompt() {
-        System.out.println(">");
+        System.out.print(">");
     }
 }
