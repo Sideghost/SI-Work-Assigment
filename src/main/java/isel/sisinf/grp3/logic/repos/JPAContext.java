@@ -45,7 +45,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * todo
+ * JPAContext class that inherits IContext interface
  */
 public class JPAContext implements IContext {
 
@@ -70,7 +70,7 @@ public class JPAContext implements IContext {
     private int txCount;
 
     /**
-     * todo
+     * JPA constructor.
      */
     public JPAContext() {
         this("t42dg3");
@@ -98,11 +98,10 @@ public class JPAContext implements IContext {
     }
 
     /**
-     * todo
-     *
-     * @param jpql
-     * @param params
-     * @return
+     * Util function.
+     * @param jpql query.
+     * @param params arguments to set in query.
+     * @return Result of Query.
      */
     protected List helperQueryImpl(String jpql, Object... params) {
         Query q = em.createQuery(jpql);
@@ -114,7 +113,7 @@ public class JPAContext implements IContext {
     }
 
     /**
-     * todo
+     * Transaction beginner
      */
     @Override
     public void beginTransaction() {
@@ -127,7 +126,7 @@ public class JPAContext implements IContext {
     }
 
     /**
-     * todo
+     * Commit operation
      */
     @Override
     public void commit() {
@@ -139,7 +138,7 @@ public class JPAContext implements IContext {
     }
 
     /**
-     * todo
+     * Flush operation.
      */
     @Override
     public void flush() {
@@ -157,11 +156,6 @@ public class JPAContext implements IContext {
         emf.close();
     }
 
-    /**
-     * todo
-     *
-     * @return
-     */
     @Override
     public IClientRepository getClients() {
         return clientRepository;
@@ -192,21 +186,11 @@ public class JPAContext implements IContext {
         return processedRegistersRepository;
     }
 
-    /**
-     * todo
-     *
-     * @return
-     */
     @Override
     public IVehicleRepository getVehicles() {
         return vehicleRepository;
     }
 
-    /**
-     * todo
-     *
-     * @return
-     */
     @Override
     public IGreenZoneRepository getGreenZones() {
         return greenZoneRepository;
@@ -400,7 +384,9 @@ public class JPAContext implements IContext {
             return em.createNamedQuery("Client.getVehicles", Client.class).setParameter("key", key).getMaxResults();
         }
     }
-
+    /**
+     * Class that represents an implementation of {@link IPrivateClientRepository} and implements its methods.
+     */
     protected class PrivateClientRepository implements IPrivateClientRepository {
 
         @Override
@@ -415,8 +401,10 @@ public class JPAContext implements IContext {
         }
 
     }
-
-    protected class InstitutionalClientRepository implements isel.sisinf.grp3.logic.repos.client.IInstitutionalClientRepository {
+    /**
+     * Class that represents an implementation of {@link IInstitutionalClientRepository} and implements its methods.
+     */
+    protected class InstitutionalClientRepository implements IInstitutionalClientRepository {
 
         @Override
         public InstitutionalClient findByKey(String key) {
@@ -429,8 +417,10 @@ public class JPAContext implements IContext {
             return helperQueryImpl(jpql, params);
         }
     }
-
-    protected class UnprocessedRegistersRepository implements isel.sisinf.grp3.logic.repos.registers.IUnprocessedRegistersRepository {
+    /**
+     * Class that represents an implementation of {@link IUnprocessedRegistersRepository} and implements its methods.
+     */
+    protected class UnprocessedRegistersRepository implements IUnprocessedRegistersRepository {
 
         @Override
         public UnprocessedRegisters findByKey(Long key) {
@@ -443,8 +433,10 @@ public class JPAContext implements IContext {
             return helperQueryImpl(jpql, params);
         }
     }
-
-    protected class InvalidRegistersRepository implements isel.sisinf.grp3.logic.repos.registers.IInvalidRegistersRepository {
+    /**
+     * Class that represents an implementation of {@link IInvalidRegistersRepository} and implements its methods.
+     */
+    protected class InvalidRegistersRepository implements IInvalidRegistersRepository {
 
         @Override
         public InvalidRegisters findByKey(Long key) {
@@ -457,8 +449,10 @@ public class JPAContext implements IContext {
             return helperQueryImpl(jpql, params);
         }
     }
-
-    protected class ProcessedRegistersRepository implements isel.sisinf.grp3.logic.repos.registers.IProcessedRegistersRepository {
+    /**
+     * Class that represents an implementation of {@link IProcessedRegistersRepository} and implements its methods.
+     */
+    protected class ProcessedRegistersRepository implements IProcessedRegistersRepository {
 
         @Override
         public ProcessedRegisters findByKey(Long key) {
@@ -471,8 +465,10 @@ public class JPAContext implements IContext {
             return helperQueryImpl(jpql, params);
         }
     }
-
-    protected class VehicleRepository implements isel.sisinf.grp3.logic.repos.IVehicleRepository {
+    /**
+     * Class that represents an implementation of {@link IVehicleRepository} and implements its methods.
+     */
+    protected class VehicleRepository implements IVehicleRepository {
 
         @Override
         public Vehicle findByKey(Long key) {
@@ -485,8 +481,10 @@ public class JPAContext implements IContext {
             return helperQueryImpl(jpql, params);
         }
     }
-
-    protected class GreenZoneRepository implements isel.sisinf.grp3.logic.repos.IGreenZoneRepository {
+    /**
+     * Class that represents an implementation of {@link IGreenZoneRepository} and implements its methods.
+     */
+    protected class GreenZoneRepository implements IGreenZoneRepository {
 
         @Override
         public GreenZone findByKey(Long key) {
@@ -499,8 +497,10 @@ public class JPAContext implements IContext {
             return helperQueryImpl(jpql, params);
         }
     }
-
-    protected class AlarmsRepository implements isel.sisinf.grp3.logic.repos.IAlarmsRepository {
+    /**
+     * Class that represents an implementation of {@link IAlarmsRepository} and implements its methods.
+     */
+    protected class AlarmsRepository implements IAlarmsRepository {
 
         @Override
         public Alarms findByKey(Long key) {
@@ -514,7 +514,10 @@ public class JPAContext implements IContext {
         }
     }
 
-    protected class GpsRepository implements isel.sisinf.grp3.logic.repos.IGpsRepository {
+    /**
+     * Class that represents an implementation of {@link IGpsRepository} and implements its methods.
+     */
+    protected class GpsRepository implements IGpsRepository {
 
         @Override
         public Gps findByKey(Long key) {
@@ -528,6 +531,9 @@ public class JPAContext implements IContext {
         }
     }
 
+    /**
+     * Class that represents an implementation of {@link IAlarmsRepository} and implements its methods.
+     */
     protected class AllAlarmsRepository implements IAllAlarmRepository {
         @Override
         public AllAlarm findByKey(Long key) {
