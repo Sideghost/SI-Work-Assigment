@@ -1,48 +1,31 @@
 package isel.sisinf.grp3;
 
 import isel.sisinf.grp3.ui.Commands;
+import isel.sisinf.grp3.ui.IComands;
 import isel.sisinf.grp3.ui.UserInterface;
 
-import java.util.Map;
+import java.util.HashMap;
+
 
 /**
  * Entry point of the SI phase II.
  */
 public class App {
-    public static void main(String[] args) throws Exception {
-
-        /* TRY MONGO CONNECTION*/
-        /*UserInterface.printCommands();
-        UserInterface.printPrompt();*/
-        /*while (true) {
-            String command = UserInterface.readCommand();*/
-
-        //(123456780, 'joca', 'casa do joca', 123456780, 'P',null)
-        //PrivateClient pv = ctx.getPrivateClients().findByKey("123456780");
-        //System.out.println(pv);
-        //System.out.println(ctx.numberOfAlarmsWLicensePlate(2022,"12345A" ));
-
-        //System.out.println(ctx.numberOfAlarms(2022,"12345A"));
-
-        //System.out.println(ctx.getPrivateClients().findByKey("010101010"));
-
-        Map<String, Object> dispatcher = new Commands().getCommands();
+    public static void main(String[] args) {
+        HashMap<String, IComands> cmds = new Commands().getCommands();
         UserInterface.printCommands();
         while (true) {
-            UserInterface.printPrompt();
             String commands = UserInterface.readCommand();
-            System.out.println(commands);
-            Commands event = (Commands) dispatcher.get(commands);//GG aqui
-            System.out.println(event);
-            if (event == null) {
-                System.out.println("Invalid command");
-                continue;
+            IComands cmd = cmds.get(commands);
+            if (cmd == null) {
+                System.out.println("Invalid Command! \nUse the Command HELP for available command list.");
+            } else {
+                try {
+                    cmd.action();
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
             }
-            event.getCommands().get(commands);
         }
-
     }
-
 }
-
-

@@ -5,5 +5,6 @@ import isel.sisinf.grp3.model.registors.InvalidRegisters;
 
 import java.util.Collection;
 
+
 public interface IInvalidRegistersRepository extends IRepository<InvalidRegisters, Collection<InvalidRegisters>, Long/*tipo da chave*/> {
 }

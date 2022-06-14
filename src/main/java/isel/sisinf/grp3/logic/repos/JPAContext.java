@@ -24,16 +24,14 @@ SOFTWARE.
 
 package isel.sisinf.grp3.logic.repos;
 
+import com.sun.istack.Nullable;
 import isel.sisinf.grp3.logic.repos.client.IClientRepository;
 import isel.sisinf.grp3.logic.repos.client.IInstitutionalClientRepository;
 import isel.sisinf.grp3.logic.repos.client.IPrivateClientRepository;
 import isel.sisinf.grp3.logic.repos.registers.IInvalidRegistersRepository;
 import isel.sisinf.grp3.logic.repos.registers.IProcessedRegistersRepository;
 import isel.sisinf.grp3.logic.repos.registers.IUnprocessedRegistersRepository;
-import isel.sisinf.grp3.model.Alarms;
-import isel.sisinf.grp3.model.Gps;
-import isel.sisinf.grp3.model.GreenZone;
-import isel.sisinf.grp3.model.Vehicle;
+import isel.sisinf.grp3.model.*;
 import isel.sisinf.grp3.model.client.Client;
 import isel.sisinf.grp3.model.client.InstitutionalClient;
 import isel.sisinf.grp3.model.client.PrivateClient;
@@ -66,6 +64,8 @@ public class JPAContext implements IContext {
     private final IAlarmsRepository alarmsRepository;
     private final IGpsRepository gpsRepository;
 
+    private final IAllAlarmRepository allAlarmRepository; //vista
+
     private EntityTransaction tx;
     private int txCount;
 
@@ -95,6 +95,7 @@ public class JPAContext implements IContext {
         this.greenZoneRepository = new GreenZoneRepository();
         this.alarmsRepository = new AlarmsRepository();
         this.gpsRepository = new GpsRepository();
+        this.allAlarmRepository = new AllAlarmsRepository();
     }
 
     /**
@@ -211,6 +212,10 @@ public class JPAContext implements IContext {
         return gpsRepository;
     }
 
+    public IAllAlarmRepository getAllAlarmRepository() {
+        return allAlarmRepository;
+    }
+
     /**
      * todo
      *
@@ -231,7 +236,7 @@ public class JPAContext implements IContext {
     /**
      * D
      */
-    public void insertPrivateClient(PrivateClient privateClient) {
+    public void insertPrivateClient(PrivateClient privateClient, String reference) {
         beginTransaction();
         Query q = em.createNativeQuery("call insert_particular(?1,?2,?3, ?4, ?5, ?6)")
                 .setParameter(1, privateClient.getNif())
@@ -239,7 +244,7 @@ public class JPAContext implements IContext {
                 .setParameter(3, privateClient.getClient().getAddress())
                 .setParameter(4, privateClient.getClient().getPhone())
                 .setParameter(5, privateClient.getCC())
-                .setParameter(6, privateClient.getClient().getReference());
+                .setParameter(6, reference);
         q.executeUpdate();
         commit();
     }
@@ -269,7 +274,7 @@ public class JPAContext implements IContext {
     /**
      * E
      */
-    public Integer numberOfAlarms(Integer year, String licensePlate) {
+    public Integer numberOfAlarms(Integer year, @Nullable String licensePlate) {
         beginTransaction();
         StoredProcedureQuery s = em.createStoredProcedureQuery("number_of_alarms")
                 .setParameter(1, year)
@@ -298,29 +303,27 @@ public class JPAContext implements IContext {
      * H
      * ver se ponho o objecto em vez dos parametros.
      */
-    public void addVehicleToClient(String licencePlate, String driverName, String driverPhone, String clientNif, Integer zoneRadius, Integer zoneGpsLat, Integer zoneGpsLon) {
+    public void addVehicleToClient(Vehicle vehicle, GreenZone greenZone) {
         beginTransaction();
         Query q = em.createNativeQuery("call add_vehicle_to_client_or_not(?1,?2,?3, ?4, ?5, ?6, ?7)")
-                .setParameter(1, licencePlate)
-                .setParameter(2, driverName)
-                .setParameter(3, driverPhone)
-                .setParameter(4, clientNif)
-                .setParameter(5, zoneRadius)
-                .setParameter(6, zoneGpsLat)
-                .setParameter(7, zoneGpsLon);
+                .setParameter(1, vehicle.getLicensePlate())
+                .setParameter(2, vehicle.getDriversName())
+                .setParameter(3, vehicle.getDriversPhone())
+                .setParameter(4, vehicle.getClient().getClientId())
+                .setParameter(5, greenZone.getRadius())
+                .setParameter(6, greenZone.getLatitude())
+                .setParameter(7, greenZone.getLongitude());
         q.executeUpdate();
         commit();
     }
 
     /**
      * I
-     * como e uma vista pode ser feito atravez de selects
-     * ver o tipo de retorno porque tenho de printar para a consola
+     * duvida
      */
-    public Collection<List<String>> allAlarms() {
+    public Collection<AllAlarm> allAlarms() {
         beginTransaction();
-        //List q = em.createNamedQuery("Vehicle.alarms").getResultList();
-        return null;
+        return allAlarmRepository.findAll();
     }
 
     /**
@@ -354,22 +357,18 @@ public class JPAContext implements IContext {
     /**
      * H by hand
      */
-    public void addVehicleToClientOrNot(String licensePlate, String driverName, String driverPhone, String clientNif, Integer zoneRadius, BigDecimal zoneGpsLat, BigDecimal zoneGpsLon) {
+    public void addVehicleToClientOrNot(String licensePlate, String driverName, String driverPhone, String clientNif, Integer zoneRadius, BigDecimal zoneGpsLat, BigDecimal zoneGpsLon, Vehicle vehicle) {
         beginTransaction();
         Client client = clientRepository.findByKey(clientNif);
         if (client.getInstitutionalClient() != null) {
-            Vehicle vehicle = new Vehicle(licensePlate, driverName, driverPhone, clientNif, null);
             em.merge(vehicle);
             addVehicleToGreenZone(zoneRadius, zoneGpsLat, zoneGpsLon, licensePlate);
         } else {
             if (client.getVehicles().size() < 3) {
-                Vehicle v = new Vehicle(licensePlate, driverName, driverPhone, clientNif, null);
-                em.merge(v);
+                em.merge(vehicle);
                 addVehicleToGreenZone(zoneRadius, zoneGpsLat, zoneGpsLon, licensePlate);
-            }
-            else throw new IllegalStateException("Client already has top number of Vehicles");
+            } else throw new IllegalStateException("Client already has top number of Vehicles");
         }
-        //...
         commit();
     }
 
@@ -393,8 +392,11 @@ public class JPAContext implements IContext {
         public Collection<Client> find(String jpql, Object... params) {
             return helperQueryImpl(jpql, params);
         }
-        // apenas fazer o repositorio com o find e o findByKey
 
+        @Override
+        public Integer getClientVehicles(String key) {
+            return em.createNamedQuery("Client.getVehicles", Client.class).setParameter("key", key).getMaxResults();
+        }
     }
 
     protected class PrivateClientRepository implements IPrivateClientRepository {
@@ -409,6 +411,7 @@ public class JPAContext implements IContext {
         public Collection<PrivateClient> find(String jpql, Object... params) {
             return helperQueryImpl(jpql, params);
         }
+
     }
 
     protected class InstitutionalClientRepository implements isel.sisinf.grp3.logic.repos.client.IInstitutionalClientRepository {
@@ -523,4 +526,22 @@ public class JPAContext implements IContext {
         }
     }
 
+    protected class AllAlarmsRepository implements IAllAlarmRepository {
+
+        @Override
+        public AllAlarm findByKey(Long key) {
+            return em.createNamedQuery("AllAlarm.findByKey", AllAlarm.class).setParameter("key", key).getSingleResult();
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public Collection<AllAlarm> find(String jpql, Object... params) {
+            return helperQueryImpl(jpql, params);
+        }
+
+        @Override
+        public Collection<AllAlarm> findAll() {
+            return em.createNamedQuery("AllAlarm.findAll", AllAlarm.class).getResultList();
+        }
+    }
 }

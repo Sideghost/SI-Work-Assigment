@@ -1,6 +1,7 @@
 package isel.sisinf.grp3.logic.restrictions;
 
 import isel.sisinf.grp3.model.Gps;
+import isel.sisinf.grp3.model.GreenZone;
 import isel.sisinf.grp3.model.Vehicle;
 import isel.sisinf.grp3.model.client.Client;
 import isel.sisinf.grp3.model.client.InstitutionalClient;
@@ -13,7 +14,7 @@ import java.util.Objects;
  */
 public class Restrictions {
 
-    protected class ClientRestrictions implements IRestrictions<Client> {
+    public static class ClientRestrictions implements IRestrictions<Client> {
         @Override
         public Boolean checkRestrictions(Client entity) throws IllegalArgumentException {
             int phone = Integer.parseInt(entity.getPhone());
@@ -26,10 +27,10 @@ public class Restrictions {
                 throw new IllegalArgumentException("Invalid nif");
             }
 
-            int ref = Integer.parseInt(entity.getReference().getNif());
-            if (!(ref > 0 && ref < 999999999) || ref == nif) {
-                throw new IllegalArgumentException("Invalid ref");
-            }
+//            int ref = Integer.parseInt(entity.getReference().getNif());
+//            if (!(ref > 0 && ref < 999999999) || ref == nif) {
+//                throw new IllegalArgumentException("Invalid ref");
+//            }
 
             PrivateClient privateClient = entity.getPrivateClient();
             InstitutionalClient institutionalClient = entity.getInstitutionalClient();
@@ -38,10 +39,9 @@ public class Restrictions {
             }
             return true;
         }
-
     }
 
-    protected class PrivateClientRestrictions implements IPrivateClientRestrictions {
+    public static class PrivateClientRestrictions implements IPrivateClientRestrictions {
 
         @Override
         public Boolean checkRestrictions(PrivateClient entity) throws IllegalArgumentException {
@@ -58,7 +58,7 @@ public class Restrictions {
 
     }
 
-    protected class InstitutionalClientRestrictions implements IInstitutionalClientRestriction {
+    public static class InstitutionalClientRestrictions implements IInstitutionalClientRestriction {
 
         @Override
         public Boolean checkRestrictions(InstitutionalClient entity) throws IllegalArgumentException {
@@ -72,7 +72,7 @@ public class Restrictions {
     }
 
 
-    protected class VehicleRestrictions implements IVehicleRestrictions {
+    public static class VehicleRestrictions implements IVehicleRestrictions {
 
         @Override
         public Boolean checkRestrictions(Vehicle entity) throws IllegalArgumentException {
@@ -90,7 +90,7 @@ public class Restrictions {
 
     }
 
-    protected class GpsRestrictions implements IGpsRestrictions {
+    public static class GpsRestrictions implements IGpsRestrictions {
 
         @Override
         public Boolean checkRestrictions(Gps entity) throws IllegalArgumentException { //do with enum class
@@ -98,6 +98,14 @@ public class Restrictions {
             if (Objects.equals(status, "Activo") || Objects.equals(status, "PausaDeAlarmes") || Objects.equals(status, "Inactivo")) {
                 throw new IllegalArgumentException("Invalid status");
             }
+            return true;
+        }
+    }
+
+    public static class GreenZoneRestrictions implements IGreenZoneRestrictions {
+
+        @Override
+        public Boolean checkRestrictions(GreenZone entity) throws IllegalArgumentException { // TODO: 14/06/2022
             return true;
         }
     }

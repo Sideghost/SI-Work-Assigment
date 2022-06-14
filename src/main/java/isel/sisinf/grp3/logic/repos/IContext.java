@@ -38,4 +38,6 @@ public interface IContext extends AutoCloseable {
     IAlarmsRepository getAlarms();
 
     IGpsRepository getGpss();
+
+    IAllAlarmRepository getAllAlarmRepository();
 }

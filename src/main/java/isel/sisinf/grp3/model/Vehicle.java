@@ -39,7 +39,7 @@ public class Vehicle implements IVehicle {
         this.licensePlate = licensePlate;
         this.driversName = driversName;
         this.driversPhone = driversPhone;
-        this.client.setClientId(clientNif);
+        this.client.setClientId(clientNif); //ta errado
         this.nrAlarms = nrAlarms;
     }
 

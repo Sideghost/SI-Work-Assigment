@@ -1,6 +1,6 @@
 package isel.sisinf.grp3.ui;
 
-public interface IComandsOO {
+public interface IComands {
     void action();
 
     void show();

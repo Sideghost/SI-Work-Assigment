@@ -16,19 +16,21 @@ public class UserInterface {
         System.out.println("2.Insert/Remove/Update private clients info"); //d
         System.out.println("3.Get total alarms for a vehicle in a year"); //e
         System.out.println("4.Process all the Unprocessed Registers");//f
-        System.out.println("5.Trigger g)"); //g
+        //System.out.println("5.Trigger g)"); //g
         System.out.println("6.Create a vehicle");//h
         System.out.println("7.Create a view with all the alarms");//i
         System.out.println("8.Trigger j)");//j
         System.out.println("9.Delete Invalid Registers from 15 days ago");//k
         System.out.println("10.Trigger l)");//l
+        System.out.println("11.Create a vehicle by hand");//h ha la pata
+        System.out.println("Help menu");
         printPrompt();
     }
 
     /**
      * todo
      */
-    static void privateClientOptions() {
+    public static void privateClientOptions() {
         System.out.println("Client Options:");
         System.out.println("Insert");
         System.out.println("Remove");
@@ -37,28 +39,28 @@ public class UserInterface {
     }
 
     /**
-     * todo
-     *
-     * @return
-     */
-    public static String readOption() {
-        return readCommand().toUpperCase();
-    }
-
-    /**
-     * todo
-     *
-     * @return
+     * Reads and handles a command.
      */
     public static String readCommand() {
-        Scanner reader = new Scanner(System.in);
-        return reader.nextLine().trim();
+        while (true) {
+            printPrompt();
+            String command = parseCommand(new Scanner(System.in).nextLine());
+            if (command != null)
+                return command;
+        }
+    }
+
+    public static String parseCommand(String command) {
+        String cleanString = command.trim();
+        if (cleanString.isEmpty() || cleanString.isBlank())
+            return null;
+        else return cleanString;
     }
 
     /**
-     * todo
+     * Print a prompt char in the Standard Output
      */
     public static void printPrompt() {
-        System.out.print(">");
+        System.out.println(">");
     }
 }

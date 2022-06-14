@@ -14,6 +14,8 @@ import java.util.Set;
 @Entity
 @NamedQuery(name = "Client.findByKey",
         query = "SELECT c FROM Client c WHERE c.nif =:key")
+@NamedQuery(name = "Client.getVehicles",
+        query = "SELECT c From Client c join c.vehicles v WHERE v.client.nif =:key")
 @NamedStoredProcedureQuery(
         name = "addVehicleToClient",
         procedureName = "add_vehicle_to_client_or_not",
@@ -55,22 +57,23 @@ public class Client implements IClient {
     @OneToMany(mappedBy = "client")
     private Set<Vehicle> vehicles = new LinkedHashSet<>();
 
-    @ManyToOne
-    @JoinTable(name = "cliente",
-            joinColumns = @JoinColumn(name = "referencia"),
-            inverseJoinColumns = @JoinColumn(name = "referencia"))
+    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinTable(name = "cliente",
+//            joinColumns = @JoinColumn(name = "referencia"),
+//            inverseJoinColumns = @JoinColumn(name = "referencia"))
+    @JoinColumn(name = "referencia", referencedColumnName = "nif")
     private PrivateClient reference;
 
     public Client() {
     }
 
-    public Client(String nif, String name, String address, String phone, String reference) {
+    public Client(String nif, String name, String address, String phone, PrivateClient reference) {
         this.nif = nif;
         this.name = name;
         this.address = address;
         this.phone = phone;
         this.status = true;
-        //this.reference = reference;
+        this.reference = reference;
         this.institutionalClient = null;
     }
 
