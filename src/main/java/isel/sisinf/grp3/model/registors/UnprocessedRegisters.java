@@ -12,12 +12,7 @@ import java.util.Objects;
  */
 @Entity
 @NamedQuery(name = "UnprocessedRegisters.findByKey",
-        query = "SELECT ur FROM UnprocessedRegisters ur WHERE ur.id =:key")
-//@NamedStoredProcedureQuery(
-//        name = "", //todo
-//        procedureName = "process_registers",
-//        parameters = {}
-//)
+        query = "SELECT ur FROM UnprocessedRegisters ur WHERE ur.id =:key") // finds a UnprocessedRegister by its key
 @Table(name = "registos_nao_processados")
 public class UnprocessedRegisters implements IUnprocessedRegisters {
 

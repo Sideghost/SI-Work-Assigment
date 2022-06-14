@@ -9,11 +9,10 @@ import java.util.Set;
 
 /**
  * Mapping of table "Cliente" present in DB.
- * todo
  */
 @Entity
 @NamedQuery(name = "Client.findByKey",
-        query = "SELECT c FROM Client c WHERE c.nif =:key")
+        query = "SELECT c FROM Client c WHERE c.nif =:key") // finds a client by its key
 @NamedQuery(name = "Client.getVehicles",
         query = "SELECT c From Client c join c.vehicles v WHERE v.client.nif =:key")
 @NamedStoredProcedureQuery(

@@ -7,8 +7,8 @@ import java.sql.Timestamp;
 
 @Entity
 @NamedQuery(name = "AllAlarm.findByKey",
-        query = "SELECT a FROM AllAlarm a WHERE a.idAlarm =:key")
-@NamedQuery(name = "AllAlarm.findAll", query = "SELECT a FROM AllAlarm a")
+        query = "SELECT a FROM AllAlarm a WHERE a.idAlarm =:key") //finds an alarm in all_alarms view by its key.
+@NamedQuery(name = "AllAlarm.findAll", query = "SELECT a FROM AllAlarm a") // finds all the alarms in the view.
 @Table(name = "all_alarms")
 public class AllAlarm implements IAllAlarm {
     @Id

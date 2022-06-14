@@ -3,6 +3,10 @@ package isel.sisinf.grp3.model;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
+/**
+ * Interface Gps that has all the signatures of the setters and getters needed for
+ * the "gps" table present in the DB.
+ */
 public interface IGps {
     Long getId();
 

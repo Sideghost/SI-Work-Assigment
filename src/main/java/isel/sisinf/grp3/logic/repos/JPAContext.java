@@ -20,7 +20,7 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-*/// TODO: 07/06/2022 por este aviso em todas as interfaces
+*/
 
 package isel.sisinf.grp3.logic.repos;
 
@@ -148,6 +148,17 @@ public class JPAContext implements IContext {
     }
 
     /**
+     * Close operation.
+     */
+    @Override
+    public void close() throws Exception {
+        if (tx != null)
+            tx.rollback();
+        em.close();
+        emf.close();
+    }
+
+    /**
      * todo
      *
      * @return
@@ -216,22 +227,6 @@ public class JPAContext implements IContext {
         return allAlarmRepository;
     }
 
-    /**
-     * todo
-     *
-     * @throws Exception
-     */
-    @Override
-    public void close() throws Exception {
-        if (tx != null)
-            tx.rollback();
-        em.close();
-        emf.close();
-    }
-
-    public void addVehicleToClient(String licensePlate, String driverName, String driversPhone, String clientNif, Long greenZoneId, Integer zoneRadius, BigDecimal zoneGpsLat, BigDecimal zoneGpsLon) {
-        StoredProcedureQuery q = em.createNamedStoredProcedureQuery("addVehicleToClient");
-    }
 
     /**
      * D
@@ -323,6 +318,7 @@ public class JPAContext implements IContext {
      */
     public Collection<AllAlarm> allAlarms() {
         beginTransaction();
+        System.out.println("NOT IMPLEMENTED");
         return allAlarmRepository.findAll();
     }
 
@@ -331,7 +327,7 @@ public class JPAContext implements IContext {
      * duvida
      */
     public void addAlarm() {
-
+        System.out.println("not Implemented");
     }
 
     /**
@@ -357,7 +353,7 @@ public class JPAContext implements IContext {
     /**
      * H by hand
      */
-    public void addVehicleToClientOrNot(String licensePlate, String driverName, String driverPhone, String clientNif, Integer zoneRadius, BigDecimal zoneGpsLat, BigDecimal zoneGpsLon, Vehicle vehicle) {
+    public void addVehicleToClientOrNot(String licensePlate, String clientNif, Integer zoneRadius, BigDecimal zoneGpsLat, BigDecimal zoneGpsLon, Vehicle vehicle) {
         beginTransaction();
         Client client = clientRepository.findByKey(clientNif);
         if (client.getInstitutionalClient() != null) {
@@ -377,10 +373,12 @@ public class JPAContext implements IContext {
         em.merge(newGreenZone);
     }
 
+    /** REPOSITORIES */
+
     /**
-     * REPOSITORIES
+     * Class that represents an implementation of {@link IClientRepository} and implements its methods.
      */
-    protected class ClientRepository implements isel.sisinf.grp3.logic.repos.client.IClientRepository {
+    protected class ClientRepository implements IClientRepository {
 
         @Override
         public Client findByKey(String key) {

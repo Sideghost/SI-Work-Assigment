@@ -1,8 +1,5 @@
 package isel.sisinf.grp3.model.registors;
 
-//import java.time.LocalDate;
-
-
 import java.sql.Timestamp;
 
 /**

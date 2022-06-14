@@ -10,18 +10,7 @@ import java.util.Objects;
  */
 @Entity
 @NamedQuery(name = "GreenZone.findByKey",
-        query = "SELECT gz FROM GreenZone gz WHERE gz.id =:key")
-//@NamedStoredProcedureQuery(
-//        name = "", // TODO: 09/06/2022 esta e auxiliar e preciso por ?
-//        procedureName = "valid_green_zone",
-//        parameters = {
-//                @StoredProcedureParameter(mode = ParameterMode.IN, type = Integer.class),
-//                @StoredProcedureParameter(mode = ParameterMode.IN, type = Integer.class),
-//                @StoredProcedureParameter(mode = ParameterMode.IN, type = Integer.class),
-//                @StoredProcedureParameter(mode = ParameterMode.IN, type = Integer.class),
-//                @StoredProcedureParameter(mode = ParameterMode.IN, type = Integer.class)
-//        }
-//)
+        query = "SELECT gz FROM GreenZone gz WHERE gz.id =:key") //finds a green Zone by its key
 @Table(name = "zona_verde")
 public class GreenZone implements IGreenZone {
 

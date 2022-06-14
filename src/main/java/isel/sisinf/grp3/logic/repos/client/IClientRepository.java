@@ -6,7 +6,8 @@ import isel.sisinf.grp3.model.client.Client;
 import java.util.Collection;
 
 /**
- * Repository of Clients present in DB
+ * Repository of {@link Client} class in project.
+ * @see IRepository
  */
 public interface IClientRepository extends IRepository<Client, Collection<Client>, String/*key type*/> {
 

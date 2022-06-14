@@ -9,7 +9,8 @@ import isel.sisinf.grp3.logic.repos.registers.IProcessedRegistersRepository;
 import isel.sisinf.grp3.logic.repos.registers.IUnprocessedRegistersRepository;
 
 /**
- * todo
+ * Interface Context is an entity manager and its responsible for managing the transactions.
+ * @see AutoCloseable
  */
 public interface IContext extends AutoCloseable {
 

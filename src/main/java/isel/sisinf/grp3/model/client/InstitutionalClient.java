@@ -5,13 +5,13 @@ import jakarta.persistence.*;
 import java.util.Objects;
 
 /**
- * todo
+ * Mapping of table "institucionais" present in DB.
  */
 @Entity
 @NamedQuery(name = "InstitutionalClient.findByKey",
         query = "SELECT ic FROM InstitutionalClient ic WHERE ic.nif =:key")
 @Table(name = "institucionais")
-public class InstitutionalClient implements IInstitucionalClient {
+public class InstitutionalClient implements IInstitutionalClient {
 
     @Id
     @Column(name = "nif", nullable = false, length = 15)

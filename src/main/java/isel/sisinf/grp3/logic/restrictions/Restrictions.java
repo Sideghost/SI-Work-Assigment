@@ -16,10 +16,10 @@ public class Restrictions {
 
     public static class ClientRestrictions implements IRestrictions<Client> {
         @Override
-        public Boolean checkRestrictions(Client entity) throws IllegalArgumentException {
+        public Boolean checkRestrictions(Client entity) throws RestrictionException {
             int phone = Integer.parseInt(entity.getPhone());
-            if (!(phone > 0 && phone < 999999999)) {
-                throw new IllegalArgumentException("Invalid phone");
+            if (!(phone >= 0 && phone <= 999999999)) {
+                throw new RestrictionException("Invalid phone");
             }
 
             int nif = Integer.parseInt(entity.getNif());
@@ -27,10 +27,10 @@ public class Restrictions {
                 throw new IllegalArgumentException("Invalid nif");
             }
 
-//            int ref = Integer.parseInt(entity.getReference().getNif());
-//            if (!(ref > 0 && ref < 999999999) || ref == nif) {
-//                throw new IllegalArgumentException("Invalid ref");
-//            }
+            int ref = Integer.parseInt(entity.getReference().getNif());
+            if (!(ref >= 0 && ref <= 999999999) || ref == nif) {
+                throw new RestrictionException("Invalid ref");
+            }
 
             PrivateClient privateClient = entity.getPrivateClient();
             InstitutionalClient institutionalClient = entity.getInstitutionalClient();
@@ -46,8 +46,8 @@ public class Restrictions {
         @Override
         public Boolean checkRestrictions(PrivateClient entity) throws IllegalArgumentException {
             int nif = Integer.parseInt(entity.getNif());
-            if (!(nif > 0 && nif < 999999999)) {
-                throw new IllegalArgumentException("Invalid nif");
+            if (!(nif >= 0 && nif <= 999999999)) {
+                throw new RestrictionException("Invalid nif");
             }
             int cc = Integer.parseInt(entity.getCC());
             if (!(cc > 0 && cc < 99999999)) {
@@ -63,8 +63,8 @@ public class Restrictions {
         @Override
         public Boolean checkRestrictions(InstitutionalClient entity) throws IllegalArgumentException {
             int nif = Integer.parseInt(entity.getNif());
-            if (!(nif > 0 && nif < 999999999)) {
-                throw new IllegalArgumentException("Invalid nif");
+            if (!(nif >= 0 && nif <= 999999999)) {
+                throw new RestrictionException("Invalid nif");
             }
             return true;
         }
@@ -77,17 +77,15 @@ public class Restrictions {
         @Override
         public Boolean checkRestrictions(Vehicle entity) throws IllegalArgumentException {
             int phone = Integer.parseInt(entity.getDriversPhone());
-            if (!(phone > 0 && phone < 999999999)) {
-                throw new IllegalArgumentException("Invalid number");
+            if (!(phone >= 0 && phone <= 999999999)) {
+                throw new RestrictionException("Invalid number");
             }
             int nif = Integer.parseInt(entity.getClient().getClientId());
-            if (!(nif > 0 && nif < 999999999)) {
-                throw new IllegalArgumentException("Invalid nif");
+            if (!(nif >= 0 && nif <= 999999999)) {
+                throw new RestrictionException("Invalid nif");
             }
             return true;
         }
-
-
     }
 
     public static class GpsRestrictions implements IGpsRestrictions {

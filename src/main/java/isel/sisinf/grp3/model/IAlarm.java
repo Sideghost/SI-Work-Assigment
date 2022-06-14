@@ -1,9 +1,11 @@
 package isel.sisinf.grp3.model;
 
-//import java.time.LocalDate;
-
 import java.sql.Timestamp;
 
+/**
+ * Interface Alarm that has all the signatures of the setters and getters needed for
+ * the "alarmes" table present in the DB.
+ */
 public interface IAlarm {
 
     Long getAlarmId();

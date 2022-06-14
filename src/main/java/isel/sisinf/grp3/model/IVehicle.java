@@ -1,7 +1,8 @@
 package isel.sisinf.grp3.model;
 
 /**
- * todo
+ * Interface Vehicle that has all the signatures of the setters and getters needed for
+ * the "veiculo" table present in the DB.
  */
 public interface IVehicle {
     String getLicensePlate();

@@ -5,7 +5,7 @@ package isel.sisinf.grp3.model.registors;
 import java.sql.Timestamp;
 
 /**
- * Interface of a generic register.
+ * Interface of a generic register with all the getters and setters.
  */
 public interface IRegisters {
     Long getId();

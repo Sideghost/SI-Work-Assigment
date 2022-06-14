@@ -6,7 +6,7 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * todo
+ * Mapping of table "particulares" present in DB.
  */
 @Entity
 @NamedQuery(name = "PrivateClient.findByKey",
@@ -30,6 +30,7 @@ public class PrivateClient implements IPrivateClient {
     }
 
     public PrivateClient(String nif, String cc) {
+        this.client = getClient();
         this.nif = nif;
         this.cc = cc;
     }
@@ -44,10 +45,6 @@ public class PrivateClient implements IPrivateClient {
 
     public String getNif() {
         return nif;
-    }
-
-    public void setNif(String id) {
-        this.nif = id;
     }
 
     @Override

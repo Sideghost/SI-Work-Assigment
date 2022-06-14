@@ -360,11 +360,11 @@ public class Commands {
 
                             GreenZone greenZone = new GreenZone(Integer.parseInt(radius), BigDecimal.valueOf(Integer.parseInt(latitude)), BigDecimal.valueOf(Integer.parseInt(longitude)), license);
                             if (new Restrictions.GreenZoneRestrictions().checkRestrictions(greenZone)) {
-                                ctx.addVehicleToClientOrNot(license, driverName, driverPhone, NIF, Integer.parseInt(radius), BigDecimal.valueOf(Integer.parseInt(latitude)), BigDecimal.valueOf(Integer.parseInt(longitude)), vehicle);
+                                ctx.addVehicleToClientOrNot(license, NIF, Integer.parseInt(radius), BigDecimal.valueOf(Integer.parseInt(latitude)), BigDecimal.valueOf(Integer.parseInt(longitude)), vehicle);
                                 return;
                             }
                         }
-                        ctx.addVehicleToClientOrNot(license, driverName, driverPhone, NIF, null, null, null, vehicle);
+                        ctx.addVehicleToClientOrNot(license, NIF, null, null, null, vehicle);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
