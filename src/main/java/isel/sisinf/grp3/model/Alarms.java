@@ -13,6 +13,15 @@ import java.util.Objects;
 @Table(name = "alarmes")
 @NamedQuery(name = "Alarms.findByKey",
         query = "SELECT a FROM Alarms a WHERE a.id =:key")
+@NamedStoredProcedureQuery(
+        name = "numberOfAlarms",
+        procedureName = "number_of_alarms",
+        parameters = {
+                @StoredProcedureParameter(mode = ParameterMode.IN, type = Integer.class),
+                @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class),
+                @StoredProcedureParameter(mode = ParameterMode.OUT, type = Integer.class)
+        }
+)
 public class Alarms implements IAlarm {
 
     @Id

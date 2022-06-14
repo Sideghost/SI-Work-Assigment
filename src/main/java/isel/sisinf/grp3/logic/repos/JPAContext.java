@@ -298,18 +298,16 @@ public class JPAContext implements IContext {
      * H
      * ver se ponho o objecto em vez dos parametros.
      */
-    public void addVehicleToClient(String licencePlate, String driverName, String driverPhone, String clientNif, Integer greenZoneId, Integer zoneRadius, Integer zoneGpsLat, Integer zoneGpsLon) {
+    public void addVehicleToClient(String licencePlate, String driverName, String driverPhone, String clientNif, Integer zoneRadius, Integer zoneGpsLat, Integer zoneGpsLon) {
         beginTransaction();
         Query q = em.createNativeQuery("call add_vehicle_to_client_or_not(?1,?2,?3, ?4, ?5, ?6, ?7)")
                 .setParameter(1, licencePlate)
                 .setParameter(2, driverName)
                 .setParameter(3, driverPhone)
                 .setParameter(4, clientNif)
-                .setParameter(5, greenZoneId)
-                .setParameter(6, zoneRadius)
-                .setParameter(7, zoneGpsLat)
-                .setParameter(8, zoneGpsLon);
-
+                .setParameter(5, zoneRadius)
+                .setParameter(6, zoneGpsLat)
+                .setParameter(7, zoneGpsLon);
         q.executeUpdate();
         commit();
     }
