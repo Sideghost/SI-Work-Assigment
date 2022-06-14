@@ -64,7 +64,7 @@ public class JPAContext implements IContext {
     private final IAlarmsRepository alarmsRepository;
     private final IGpsRepository gpsRepository;
 
-    private final IAllAlarmRepository allAlarmRepository; //vista
+    private final IAllAlarmRepository allAlarmRepository;
 
     private EntityTransaction tx;
     private int txCount;
@@ -77,9 +77,8 @@ public class JPAContext implements IContext {
     }
 
     /**
-     * todo
-     *
-     * @param persistentCtx
+     * JPA constructor.
+     * @param persistentCtx name of prescience unit.
      */
     public JPAContext(String persistentCtx) {
         super();
@@ -229,7 +228,7 @@ public class JPAContext implements IContext {
 
 
     /**
-     * D
+     * Implementation of exercise D.
      */
     public void insertPrivateClient(PrivateClient privateClient, String reference) {
         beginTransaction();
@@ -267,7 +266,7 @@ public class JPAContext implements IContext {
     }
 
     /**
-     * E
+     * Implementation of exercise E.
      */
     public Integer numberOfAlarms(Integer year, @Nullable String licensePlate) {
         beginTransaction();
@@ -285,7 +284,7 @@ public class JPAContext implements IContext {
     }
 
     /**
-     * F
+     * Implementation of exercise F.
      */
     public void processRegisters() {
         beginTransaction();
@@ -295,8 +294,15 @@ public class JPAContext implements IContext {
     }
 
     /**
-     * H
-     * ver se ponho o objecto em vez dos parametros.
+     * Implementation of exercise G.
+     */
+    public void insertInView() {
+        System.out.println("NOT YET IMPLEMENTED");
+    }
+
+
+    /**
+     * Implementation of exercise H.
      */
     public void addVehicleToClient(Vehicle vehicle, GreenZone greenZone) {
         beginTransaction();
@@ -313,8 +319,7 @@ public class JPAContext implements IContext {
     }
 
     /**
-     * I
-     * duvida
+     * Implementation of exercise I.
      */
     public Collection<AllAlarm> allAlarms() {
         beginTransaction();
@@ -323,15 +328,14 @@ public class JPAContext implements IContext {
     }
 
     /**
-     * J
-     * duvida
+     * Implementation of exercise J.
      */
     public void addAlarm() {
         System.out.println("not Implemented");
     }
 
     /**
-     * K
+     * Implementation of exercise K.
      */
     public void eliminateInvalidRegisters() {
         beginTransaction();
@@ -341,7 +345,7 @@ public class JPAContext implements IContext {
     }
 
     /**
-     * L
+     * Implementation of exercise L.
      */
     public void deleteClient() {
         beginTransaction();
@@ -351,7 +355,7 @@ public class JPAContext implements IContext {
     }
 
     /**
-     * H by hand
+     * Implementation of exercise H, by hand.
      */
     public void addVehicleToClientOrNot(String licensePlate, String clientNif, Integer zoneRadius, BigDecimal zoneGpsLat, BigDecimal zoneGpsLon, Vehicle vehicle) {
         beginTransaction();
@@ -525,7 +529,6 @@ public class JPAContext implements IContext {
     }
 
     protected class AllAlarmsRepository implements IAllAlarmRepository {
-
         @Override
         public AllAlarm findByKey(Long key) {
             return em.createNamedQuery("AllAlarm.findByKey", AllAlarm.class).setParameter("key", key).getSingleResult();

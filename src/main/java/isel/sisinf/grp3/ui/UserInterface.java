@@ -3,12 +3,12 @@ package isel.sisinf.grp3.ui;
 import java.util.Scanner;
 
 /**
- * todo
+ * Class UserInterface treats all the ui input /output necessities
  */
 public class UserInterface {
 
     /**
-     * todo
+     * Prints all the available commands
      */
     public static void printCommands() {
         System.out.println("Commands: \n");
@@ -27,7 +27,7 @@ public class UserInterface {
     }
 
     /**
-     * todo
+     * Prints all the private client options
      */
     public static void privateClientOptions() {
         System.out.println("Client Options:");
@@ -50,6 +50,12 @@ public class UserInterface {
         }
     }
 
+    /**
+     * Reads and parses the command
+     *
+     * @param command
+     * @return
+     */
     public static String parseCommand(String command) {
         String cleanString = command.trim();
         if (cleanString.isEmpty() || cleanString.isBlank())

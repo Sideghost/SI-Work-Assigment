@@ -1,5 +1,6 @@
 package isel.sisinf.grp3.logic.restrictions;
 
+import isel.sisinf.grp3.logic.repos.IRepository;
 import isel.sisinf.grp3.model.client.PrivateClient;
 
 /**

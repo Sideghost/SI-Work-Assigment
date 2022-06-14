@@ -1,3 +1,26 @@
+/*
+MIT License
+
+Copyright (c) 2022, Nuno Datia, ISEL
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
 package isel.sisinf.grp3.model.client;
 
 import isel.sisinf.grp3.model.Vehicle;
@@ -14,7 +37,7 @@ import java.util.Set;
 @NamedQuery(name = "Client.findByKey",
         query = "SELECT c FROM Client c WHERE c.nif =:key") // finds a client by its key
 @NamedQuery(name = "Client.getVehicles",
-        query = "SELECT c From Client c join c.vehicles v WHERE v.client.nif =:key")
+        query = "SELECT c From Client c join c.vehicles v WHERE v.client.nif =:key") // finds all client vehicles
 @NamedStoredProcedureQuery(
         name = "addVehicleToClient",
         procedureName = "add_vehicle_to_client_or_not",
