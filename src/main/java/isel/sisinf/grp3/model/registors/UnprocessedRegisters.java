@@ -32,7 +32,7 @@ public class UnprocessedRegisters implements IUnprocessedRegisters {
     @Column(name = "marca_temporal")
     private Timestamp timeStamp;
 
-    public UnprocessedRegisters(){
+    public UnprocessedRegisters() {
 
     }
 
@@ -42,11 +42,12 @@ public class UnprocessedRegisters implements IUnprocessedRegisters {
         this.timeStamp = timeStamp;
     }
 
-    public UnprocessedRegisters(Long id, Timestamp timestamp){
+    public UnprocessedRegisters(Long id, Timestamp timestamp) {
         this.id = id;
         this.idGps = null;
         this.timeStamp = timestamp;
     }
+
     @Override
     public Long getId() {
         return id;

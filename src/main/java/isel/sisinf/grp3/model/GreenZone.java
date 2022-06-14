@@ -26,6 +26,7 @@ import java.util.Objects;
 public class GreenZone implements IGreenZone {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, length = 50)
     private Long id;
 
@@ -45,8 +46,7 @@ public class GreenZone implements IGreenZone {
     public GreenZone() {
     }
 
-    public GreenZone(Long id, Integer radius, BigDecimal latitude, BigDecimal longitude, String licencePlate) {
-        this.id = id;
+    public GreenZone(Integer radius, BigDecimal latitude, BigDecimal longitude, String licencePlate) {
         this.radius = radius;
         this.latitude = latitude;
         this.longitude = longitude;

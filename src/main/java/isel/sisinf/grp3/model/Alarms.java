@@ -38,7 +38,8 @@ public class Alarms implements IAlarm {
             inverseJoinColumns = @JoinColumn(name = "matricula"))
     private Vehicle vehicle;
 
-    public Alarms() {}
+    public Alarms() {
+    }
 
     public Alarms(Timestamp timeStamp) {
         this.timeStamp = timeStamp;

@@ -32,7 +32,7 @@ public class InstitutionalClient implements IInstitucionalClient {
         this.nif = nif;
         this.contactName = contactName;
     }
-    
+
     public String getContactName() {
         return contactName;
     }

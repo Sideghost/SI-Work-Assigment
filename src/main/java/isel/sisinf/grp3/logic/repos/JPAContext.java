@@ -24,11 +24,22 @@ SOFTWARE.
 
 package isel.sisinf.grp3.logic.repos;
 
-import isel.sisinf.grp3.logic.repos.client.*;
-import isel.sisinf.grp3.logic.repos.registers.*;
-import isel.sisinf.grp3.model.*;
-import isel.sisinf.grp3.model.client.*;
-import isel.sisinf.grp3.model.registors.*;
+import isel.sisinf.grp3.logic.repos.client.IClientRepository;
+import isel.sisinf.grp3.logic.repos.client.IInstitutionalClientRepository;
+import isel.sisinf.grp3.logic.repos.client.IPrivateClientRepository;
+import isel.sisinf.grp3.logic.repos.registers.IInvalidRegistersRepository;
+import isel.sisinf.grp3.logic.repos.registers.IProcessedRegistersRepository;
+import isel.sisinf.grp3.logic.repos.registers.IUnprocessedRegistersRepository;
+import isel.sisinf.grp3.model.Alarms;
+import isel.sisinf.grp3.model.Gps;
+import isel.sisinf.grp3.model.GreenZone;
+import isel.sisinf.grp3.model.Vehicle;
+import isel.sisinf.grp3.model.client.Client;
+import isel.sisinf.grp3.model.client.InstitutionalClient;
+import isel.sisinf.grp3.model.client.PrivateClient;
+import isel.sisinf.grp3.model.registors.InvalidRegisters;
+import isel.sisinf.grp3.model.registors.ProcessedRegisters;
+import isel.sisinf.grp3.model.registors.UnprocessedRegisters;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -40,9 +51,8 @@ import java.util.List;
  */
 public class JPAContext implements IContext {
 
-    private final EntityManagerFactory emf;
     public final EntityManager em;
-
+    private final EntityManagerFactory emf;
     private final IClientRepository clientRepository;
     private final IInstitutionalClientRepository institutionalClientRepository;
     private final IPrivateClientRepository privateClientRepository;
@@ -214,6 +224,162 @@ public class JPAContext implements IContext {
         emf.close();
     }
 
+    public void addVehicleToClient(String licensePlate, String driverName, String driversPhone, String clientNif, Long greenZoneId, Integer zoneRadius, BigDecimal zoneGpsLat, BigDecimal zoneGpsLon) {
+        StoredProcedureQuery q = em.createNamedStoredProcedureQuery("addVehicleToClient");
+    }
+
+    /**
+     * D
+     */
+    public void insertPrivateClient(PrivateClient privateClient) {
+        beginTransaction();
+        Query q = em.createNativeQuery("call insert_particular(?1,?2,?3, ?4, ?5, ?6)")
+                .setParameter(1, privateClient.getNif())
+                .setParameter(2, privateClient.getClient().getName())
+                .setParameter(3, privateClient.getClient().getAddress())
+                .setParameter(4, privateClient.getClient().getPhone())
+                .setParameter(5, privateClient.getCC())
+                .setParameter(6, privateClient.getClient().getReference());
+        q.executeUpdate();
+        commit();
+    }
+
+    public void updatePrivateClient(String nif, String newName, String newAddress, String newPhone, Boolean newStatus) {
+        beginTransaction();
+        Query q = em.createNativeQuery("call update_particular(?1,?2,?3,?4,?5)")
+                .setParameter(1, nif)
+                .setParameter(2, newName)
+                .setParameter(3, newAddress)
+                .setParameter(4, newPhone)
+                .setParameter(5, newStatus);
+
+        q.executeUpdate();
+        commit();
+    }
+
+    public void removePrivateClient(String NIF) {
+        beginTransaction();
+        Query q = em.createNativeQuery("call remove_particular(?1)")
+                .setParameter(1, NIF);
+
+        q.executeUpdate();
+        commit();
+    }
+
+    /**
+     * E
+     */
+    public Integer numberOfAlarms(Integer year, String licensePlate) {
+        beginTransaction();
+        StoredProcedureQuery s = em.createStoredProcedureQuery("number_of_alarms")
+                .setParameter(1, year)
+                .setParameter(2, licensePlate);
+        s.execute();
+        int nrAlarms = (int) s.getOutputParameterValue(3);
+        commit();
+        return nrAlarms;
+    }
+
+    public Integer numberOfAlarms(Integer year) {
+        return numberOfAlarms(year, null);
+    }
+
+    /**
+     * F
+     */
+    public void processRegisters() {
+        beginTransaction();
+        Query q = em.createNativeQuery("call process_registers()");
+        q.executeUpdate();
+        commit();
+    }
+
+    /**
+     * H
+     * ver se ponho o objecto em vez dos parametros.
+     */
+    public void addVehicleToClient(String licencePlate, String driverName, String driverPhone, String clientNif, Integer greenZoneId, Integer zoneRadius, Integer zoneGpsLat, Integer zoneGpsLon) {
+        beginTransaction();
+        Query q = em.createNativeQuery("call add_vehicle_to_client_or_not(?1,?2,?3, ?4, ?5, ?6, ?7)")
+                .setParameter(1, licencePlate)
+                .setParameter(2, driverName)
+                .setParameter(3, driverPhone)
+                .setParameter(4, clientNif)
+                .setParameter(5, greenZoneId)
+                .setParameter(6, zoneRadius)
+                .setParameter(7, zoneGpsLat)
+                .setParameter(8, zoneGpsLon);
+
+        q.executeUpdate();
+        commit();
+    }
+
+    /**
+     * I
+     * como e uma vista pode ser feito atravez de selects
+     * ver o tipo de retorno porque tenho de printar para a consola
+     */
+    public Collection<List<String>> allAlarms() {
+        beginTransaction();
+        //List q = em.createNamedQuery("Vehicle.alarms").getResultList();
+        return null;
+    }
+
+    /**
+     * J
+     * duvida
+     */
+    public void addAlarm() {
+
+    }
+
+    /**
+     * K
+     */
+    public void eliminateInvalidRegisters() {
+        beginTransaction();
+        Query q = em.createNativeQuery("call eliminate_invalid_registers()");
+        q.executeUpdate();
+        commit();
+    }
+
+    /**
+     * L
+     */
+    public void deleteClient() {
+        beginTransaction();
+        Query q = em.createQuery("delete from Client");
+        q.executeUpdate();
+        commit();
+    }
+
+    /**
+     * H by hand
+     */
+    public void addVehicleToClientOrNot(String licensePlate, String driverName, String driverPhone, String clientNif, Integer zoneRadius, BigDecimal zoneGpsLat, BigDecimal zoneGpsLon) {
+        beginTransaction();
+        Client client = clientRepository.findByKey(clientNif);
+        if (client.getInstitutionalClient() != null) {
+            Vehicle vehicle = new Vehicle(licensePlate, driverName, driverPhone, clientNif, null);
+            em.merge(vehicle);
+            addVehicleToGreenZone(zoneRadius, zoneGpsLat, zoneGpsLon, licensePlate);
+        } else {
+            if (client.getVehicles().size() < 3) {
+                Vehicle v = new Vehicle(licensePlate, driverName, driverPhone, clientNif, null);
+                em.merge(v);
+                addVehicleToGreenZone(zoneRadius, zoneGpsLat, zoneGpsLon, licensePlate);
+            }
+            else throw new IllegalStateException("Client already has top number of Vehicles");
+        }
+        //...
+        commit();
+    }
+
+    public void addVehicleToGreenZone(Integer zoneRadius, BigDecimal zoneGpsLat, BigDecimal zoneGpsLon, String licencePlate) {
+        GreenZone newGreenZone = new GreenZone(zoneRadius, zoneGpsLat, zoneGpsLon, licencePlate);
+        em.merge(newGreenZone);
+    }
+
     /**
      * REPOSITORIES
      */
@@ -357,164 +523,6 @@ public class JPAContext implements IContext {
         public Collection<Gps> find(String jpql, Object... params) {
             return helperQueryImpl(jpql, params);
         }
-    }
-
-
-    public void addVehicleToClient(String licensePlate, String driverName, String driversPhone, String clientNif, Long greenZoneId, Integer zoneRadius, BigDecimal zoneGpsLat, BigDecimal zoneGpsLon) {
-        StoredProcedureQuery q = em.createNamedStoredProcedureQuery("addVehicleToClient");
-    }
-
-    /**
-     * D
-     */
-    public void insertPrivateClient(String NIF, String name, String address, String phone, String CC, String reference) {
-        beginTransaction();
-        Query q = em.createNativeQuery("call insert_particular(?1,?2,?3, ?4, ?5, ?6)")
-                .setParameter(1, NIF)
-                .setParameter(2, name)
-                .setParameter(3, address)
-                .setParameter(4, phone)
-                .setParameter(5, CC)
-                .setParameter(6, reference);
-
-        q.executeUpdate();
-        commit();
-    }
-
-    public void updatePrivateClient(String nif, String newName, String newAddress, String newPhone, Boolean newStatus) {
-        beginTransaction();
-        Query q = em.createNativeQuery("call update_particular(?1,?2,?3,?4,?5)")
-                .setParameter(1, nif)
-                .setParameter(2, newName)
-                .setParameter(3, newAddress)
-                .setParameter(4, newPhone)
-                .setParameter(5, newStatus);
-
-        q.executeUpdate();
-        commit();
-    }
-
-    public void removePrivateClient(String NIF) {
-        beginTransaction();
-        Query q = em.createNativeQuery("call remove_particular(?1)")
-                .setParameter(1, NIF);
-
-        q.executeUpdate();
-        commit();
-    }
-
-    /**
-     * E
-     */
-    public Integer numberOfAlarmsWLicensePlate(Integer year, String licensePlate) {
-        beginTransaction();
-        StoredProcedureQuery s = em.createStoredProcedureQuery("number_of_alarms")
-                .setParameter(1, year)
-                .setParameter(2, licensePlate);
-        s.execute();
-        int nrAlarms = (int) s.getOutputParameterValue(3);
-        commit();
-        return nrAlarms;
-    }
-
-    public Integer numberOfAlarms(Integer year) {
-        return numberOfAlarmsWLicensePlate(year, null);
-    }
-
-    /**
-     * F
-     */
-    public void processRegisters() {
-        beginTransaction();
-        Query q = em.createNativeQuery("call process_registers()");
-        q.executeUpdate();
-        commit();
-    }
-
-    /**
-     * H
-     * ver se ponho o objecto em vez dos parametros.
-     */
-    public void addVehicleToClient(String licencePlate, String driverName, String driverPhone, String clientNif, Integer greenZoneId, Integer zoneRadius, Integer zoneGpsLat, Integer zoneGpsLon) {
-        beginTransaction();
-        Query q = em.createNativeQuery("call add_vehicle_to_client_or_not(?1,?2,?3, ?4, ?5, ?6, ?7)")
-                .setParameter(1, licencePlate)
-                .setParameter(2, driverName)
-                .setParameter(3, driverPhone)
-                .setParameter(4, clientNif)
-                .setParameter(5, greenZoneId)
-                .setParameter(6, zoneRadius)
-                .setParameter(7, zoneGpsLat)
-                .setParameter(8, zoneGpsLon);
-
-        q.executeUpdate();
-        commit();
-    }
-
-    /**
-     * I
-     * como e uma vista pode ser feito atravez de selects
-     * ver o tipo de retorno porque tenho de printar para a consola
-     */
-    public Collection<List<String>> allAlarms() {
-        beginTransaction();
-        //List q = em.createNamedQuery("Vehicle.alarms").getResultList();
-        return null;
-    }
-
-    /**
-     * J
-     * duvida
-     */
-    public void addAlarm() {
-
-    }
-
-    /**
-     * K
-     */
-    public void eliminateInvalidRegisters() {
-        beginTransaction();
-        Query q = em.createNativeQuery("call eliminate_invalid_registers()");
-        q.executeUpdate();
-        commit();
-    }
-
-    /**
-     * L
-     */
-    public void deleteClient() {
-        beginTransaction();
-        Query q = em.createQuery("delete from Client");
-        q.executeUpdate();
-        commit();
-    }
-
-    /**
-     * H by hand
-     */
-    public void addVehicleToClientOrNot(String licensePlate, String driverName, String driverPhone, String clientNif, Long greenZoneId, Integer zoneRadius, BigDecimal zoneGpsLat, BigDecimal zoneGpsLon) {
-        beginTransaction();
-        Client client = clientRepository.findByKey(clientNif);
-        if (client.getInstitutionalClient() != null) {
-            Vehicle vehicle = new Vehicle(licensePlate, driverName, driverPhone, clientNif, null);
-            addVehicleToGreenZone(greenZoneId, zoneRadius, zoneGpsLat, zoneGpsLon, licensePlate);
-        } else {
-            if (client.getVehicles().size() < 3) {
-                Vehicle v = new Vehicle(licensePlate, driverName, driverPhone, clientNif, null);
-                addVehicleToGreenZone(greenZoneId, zoneRadius, zoneGpsLat, zoneGpsLon, licensePlate);
-            }
-        }
-        //...
-        commit();
-    }
-
-    public void addVehicleToGreenZone(Long greenZoneId, Integer zoneRadius, BigDecimal zoneGpsLat, BigDecimal zoneGpsLon, String licencePlate) {
-        beginTransaction();
-        GreenZone newGreenZone = new GreenZone(greenZoneId, zoneRadius, zoneGpsLat, zoneGpsLon, licencePlate);
-        em.merge(newGreenZone);
-        //...
-        commit();
     }
 
 }

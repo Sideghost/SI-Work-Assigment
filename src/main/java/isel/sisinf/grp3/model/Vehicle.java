@@ -9,24 +9,10 @@ import java.util.Objects;
  * todo
  */
 
-@NamedStoredProcedureQuery(
-        name = "numberOfAlarms",
-        procedureName = "number_of_alarms",
-        parameters = {
-                @StoredProcedureParameter(mode = ParameterMode.IN, type = Integer.class),
-                @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class),
-                @StoredProcedureParameter(mode = ParameterMode.OUT, type = Integer.class)
-        }
-)
 @Entity
+@NamedQuery(name = "Vehicle.findByKey",
+        query = "SELECT v FROM Vehicle v WHERE v.licensePlate =:key")
 @Table(name = "veiculo")
-@NamedQueries({
-        @NamedQuery(name = "Vehicle.findByKey",
-                query = "SELECT v FROM Vehicle v WHERE v.licensePlate =:key"),
-        @NamedQuery(name = "Vehicle.alarms",
-                query = "select Alarms.id as id_alarm, Vehicle.licensePlate, Vehicle.driversName, Gps.latitude, Gps.longitude, Alarms.timeStamp as dia_hora from Vehicle join Gps on (Vehicle.licensePlate = Gps.vehicle.licensePlate) join Alarms on (Alarms.gps.id = Gps.id)")
-
-})
 public class Vehicle implements IVehicle {
 
     @Id

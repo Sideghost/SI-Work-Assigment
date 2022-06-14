@@ -37,7 +37,7 @@ public class InvalidRegisters implements IInvalidRegisters {
         this.timeStamp = new Timestamp(System.currentTimeMillis());
     }
 
-    public InvalidRegisters(){
+    public InvalidRegisters() {
         this.idGps = null;
         this.timeStamp = new Timestamp(System.currentTimeMillis());
     }

@@ -22,15 +22,18 @@ public class UserInterface {
         System.out.println("8.Trigger j)");//j
         System.out.println("9.Delete Invalid Registers from 15 days ago");//k
         System.out.println("10.Trigger l)");//l
+        printPrompt();
     }
 
     /**
      * todo
      */
     static void privateClientOptions() {
-        System.out.println("Insert private client");
-        System.out.println("Remove private client");
-        System.out.println("Update private client");
+        System.out.println("Client Options:");
+        System.out.println("Insert");
+        System.out.println("Remove");
+        System.out.println("Update");
+        printPrompt();
     }
 
     /**
